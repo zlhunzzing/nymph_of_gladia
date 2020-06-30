@@ -1,0 +1,40 @@
+.Main {
+  width: 800px;
+  height: 600px;
+  border: 1px solid black;
+  text-align: center;
+}
+.MainTitle {
+  margin-top: 80px;
+}
+.account {
+  border: 1px solid black;
+  width: 300px;
+  display: inline-block;
+  height: 200px;
+  margin-top: 40px;
+}
+.accountForm {
+  margin-top: 20px;
+}
+.accountInputs {
+  width: 210px;
+  vertical-align: top;
+  display: inline-block;
+}
+.accountInput {
+  width: 200px;
+  height: 20px;
+}
+.accountButton {
+  height: 50px;
+  margin-top: 3px;
+}
+.signupLink {
+  text-decoration: none;
+  color: black;
+  font-size: 15px;
+}
+.signupLink:hover {
+  text-decoration: underline;
+}
