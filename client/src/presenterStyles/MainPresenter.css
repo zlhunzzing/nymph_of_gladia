@@ -28,13 +28,14 @@
 }
 .accountButton {
   height: 50px;
+  width: 55px;
   margin-top: 3px;
 }
-.signupLink {
+.accountLink {
   text-decoration: none;
   color: black;
   font-size: 15px;
 }
-.signupLink:hover {
+.accountLink:hover {
   text-decoration: underline;
 }

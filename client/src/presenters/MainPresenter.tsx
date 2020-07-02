@@ -23,7 +23,7 @@ export default function MainPresenter() {
           </div>
           <button className="accountButton">로그인</button>
         </form>
-        <a className="signupLink" href="/signup">
+        <a className="accountLink" href="/signup">
           회원가입
         </a>
       </div>
