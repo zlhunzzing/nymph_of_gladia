@@ -1,5 +1,6 @@
 import React from "react";
 import "../presenterStyles/MainPresenter.css";
+import { Link } from "react-router-dom";
 
 export default function MainPresenter() {
   return (
@@ -26,6 +27,17 @@ export default function MainPresenter() {
         <a className="accountLink" href="/signup">
           회원가입
         </a>
+        <Link
+          to="/singlemode"
+          style={{
+            textDecoration: "none",
+          }}
+        >
+          <br></br>
+          <br></br>
+          <br></br>
+          Play
+        </Link>
       </div>
     </div>
   );
