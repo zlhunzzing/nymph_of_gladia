@@ -1,28 +1,28 @@
 import React from "react";
-import "../presenterStyles/SinglemodePresenter.css";
+import "../presenterStyles/SelectCharacterPresenter.css";
 import { Link } from "react-router-dom";
 import { ERROR_MESSAGE } from "../common/ErrorMessages";
 
 interface Props {
-  selectedGla: string;
-  setSelectedGla: any;
+  selectedCharacter: string;
+  setSelectedCharacter: any;
   isSelect: boolean;
   setIsSelect: any;
 }
 
-const SinglemodePresenter: React.FunctionComponent<Props> = ({
-  selectedGla,
-  setSelectedGla,
+const SelectCharacterPresenter: React.FunctionComponent<Props> = ({
+  selectedCharacter,
+  setSelectedCharacter,
   isSelect,
   setIsSelect,
 }: Props) => {
   return (
     <div className="Main">
       <h1 className="MainTitle">Nymph of Gladia</h1>
-      <h2>- 싱글모드 -</h2>
+      <h2>- 캐릭터 선택 -</h2>
 
       {isSelect ? (
-        <div className="selectedCharacter">{selectedGla}</div>
+        <div className="selectedCharacter">{selectedCharacter}</div>
       ) : (
         <div className="selectedCharacter">{ERROR_MESSAGE.UNSELECT}</div>
       )}
@@ -33,7 +33,7 @@ const SinglemodePresenter: React.FunctionComponent<Props> = ({
             className="characters"
             onClick={(e) => {
               e.preventDefault();
-              setSelectedGla("라디");
+              setSelectedCharacter("라디");
               setIsSelect(true);
             }}
           >
@@ -43,7 +43,7 @@ const SinglemodePresenter: React.FunctionComponent<Props> = ({
             href="#2"
             onClick={(e) => {
               e.preventDefault();
-              setSelectedGla("레티");
+              setSelectedCharacter("레티");
               setIsSelect(true);
             }}
           >
@@ -79,4 +79,4 @@ const SinglemodePresenter: React.FunctionComponent<Props> = ({
   );
 };
 
-export default SinglemodePresenter;
+export default SelectCharacterPresenter;

@@ -5,39 +5,43 @@
   text-align: center;
 }
 .MainTitle {
-  margin-top: 80px;
+  margin-top: 120px;
 }
-.account {
+.forSelectLink {
+  text-decoration: none;
+  font-size: 30px;
+  display: block;
+  margin-top: 130px;
+}
+/* .account {
   border: 1px solid black;
   width: 300px;
   display: inline-block;
   height: 200px;
   margin-top: 40px;
-}
-.accountForm {
+} */
+/* .accountForm {
   margin-top: 20px;
-  display: none; /**/
-}
-.accountInputs {
+} */
+/* .accountInputs {
   width: 210px;
   vertical-align: top;
   display: inline-block;
-}
-.accountInput {
+} */
+/* .accountInput {
   width: 200px;
   height: 20px;
-}
-.accountButton {
+} */
+/* .accountButton {
   height: 50px;
   width: 55px;
   margin-top: 3px;
-}
-.accountLink {
+} */
+/* .accountLink {
   text-decoration: none;
   color: black;
   font-size: 15px;
-  display: none; /**/
-}
-.accountLink:hover {
+} */
+/* .accountLink:hover {
   text-decoration: underline;
-}
+} */

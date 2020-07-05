@@ -3,8 +3,8 @@ import { Switch, Route } from "react-router-dom";
 
 /* pages */
 import Main from "./pages/Main";
-import Signup from "./pages/Signup";
-import Singlemode from "./pages/Singlemode";
+// import Signup from "./pages/Signup";
+import SelectCharacter from "./pages/SelectCharacter";
 
 function App() {
   return (
@@ -12,10 +12,10 @@ function App() {
       <Switch>
         <Route path="/main" render={() => <Main></Main>}></Route>
         <Route
-          path="/singlemode"
-          render={() => <Singlemode></Singlemode>}
+          path="/selectCharacter"
+          render={() => <SelectCharacter></SelectCharacter>}
         ></Route>
-        <Route path="/signup" render={() => <Signup></Signup>}></Route>
+        {/* <Route path="/signup" render={() => <Signup></Signup>}></Route> */}
         <Route path="/" render={() => <Main></Main>}></Route>
       </Switch>
     </div>

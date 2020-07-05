@@ -8,7 +8,10 @@ export default function MainPresenter() {
       <h1 className="MainTitle">Nymph of Gladia</h1>
       <h2>- 검투의 요정 -</h2>
 
-      <div className="account">
+      <Link to="/selectCharacter" className="forSelectLink">
+        Play
+      </Link>
+      {/* <div className="account">
         <form className="accountForm">
           <div className="accountInputs">
             <input
@@ -27,18 +30,7 @@ export default function MainPresenter() {
         <a className="accountLink" href="/signup">
           회원가입
         </a>
-        <Link
-          to="/singlemode"
-          style={{
-            textDecoration: "none",
-          }}
-        >
-          <br></br>
-          <br></br>
-          <br></br>
-          Play
-        </Link>
-      </div>
+      </div> */}
     </div>
   );
 }
