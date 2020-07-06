@@ -5,6 +5,7 @@ import { Switch, Route } from "react-router-dom";
 import Main from "./pages/Main";
 // import Signup from "./pages/Signup";
 import SelectCharacter from "./pages/SelectCharacter";
+import Battle from "./pages/Battle";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           path="/selectCharacter"
           render={() => <SelectCharacter></SelectCharacter>}
         ></Route>
+        <Route path="/battle" render={() => <Battle></Battle>}></Route>
         {/* <Route path="/signup" render={() => <Signup></Signup>}></Route> */}
         <Route path="/" render={() => <Main></Main>}></Route>
       </Switch>
