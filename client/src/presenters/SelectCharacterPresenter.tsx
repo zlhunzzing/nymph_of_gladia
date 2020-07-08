@@ -1,9 +1,8 @@
-import React from "react";
-import "../presenterStyles/SelectCharacterPresenter.css";
-import { Link } from "react-router-dom";
-import { ERROR_MESSAGE } from "../common/ErrorMessages";
-// import * as battleActions from "../modules/Battle";
-import store from "../store";
+import React from 'react';
+import '../presenterStyles/SelectCharacterPresenter.css';
+import { Link } from 'react-router-dom';
+import ERROR_MESSAGE from '../common/ErrorMessages';
+import store from '../store';
 
 interface Props {
   userCharacter: string;
@@ -34,9 +33,9 @@ const SelectCharacterPresenter: React.FunctionComponent<Props> = ({
           // className="characters"
           onClick={(e) => {
             e.preventDefault();
-            setUserCharacter("세키");
+            setUserCharacter('세키');
             // battleActions.selectCharacter("Seki");
-            store.dispatch({ type: "SELECT_CHARACTER", name: "Seki" });
+            store.dispatch({ type: 'SELECT_CHARACTER', name: 'Seki' });
             setIsSelect(true);
           }}
         >
@@ -46,9 +45,9 @@ const SelectCharacterPresenter: React.FunctionComponent<Props> = ({
           href="#2"
           onClick={(e) => {
             e.preventDefault();
-            setUserCharacter("레티");
+            setUserCharacter('레티');
             // battleActions.selectCharacter("Reti");
-            store.dispatch({ type: "SELECT_CHARACTER", name: "Reti" });
+            store.dispatch({ type: 'SELECT_CHARACTER', name: 'Reti' });
             setIsSelect(true);
           }}
         >
@@ -60,12 +59,12 @@ const SelectCharacterPresenter: React.FunctionComponent<Props> = ({
     <Link
       to="/battle"
       style={{
-        textDecoration: "none",
+        textDecoration: 'none',
       }}
       onClick={(e) => {
         if (!isSelect) {
           e.preventDefault();
-          alert("캐릭터를 선택해주세요.");
+          alert('캐릭터를 선택해주세요.');
         }
       }}
     >
@@ -75,7 +74,7 @@ const SelectCharacterPresenter: React.FunctionComponent<Props> = ({
     <Link
       to="/main"
       style={{
-        textDecoration: "none",
+        textDecoration: 'none',
       }}
     >
       뒤로가기

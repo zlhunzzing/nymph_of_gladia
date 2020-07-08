@@ -19,16 +19,16 @@ export default class Character {
 
   move(action: string) {
     switch (action) {
-      case "UP":
+      case 'UP':
         this.yPosition += 1;
         break;
-      case "DOWN":
+      case 'DOWN':
         this.yPosition -= 1;
         break;
-      case "LEFT":
+      case 'LEFT':
         this.xPosition += 1;
         break;
-      case "RIGHT":
+      case 'RIGHT':
         this.xPosition -= 1;
         break;
       default:

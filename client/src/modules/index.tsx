@@ -1,5 +1,5 @@
-import { combineReducers } from "redux";
-import Battle from "./Battle";
+import { combineReducers } from 'redux';
+import Battle from './Battle';
 
 const reducers = combineReducers({
   Battle,

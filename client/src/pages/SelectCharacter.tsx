@@ -1,5 +1,5 @@
-import React from "react";
-import SelectCharacterContainer from "../containers/SelectCharacterContainer";
+import React from 'react';
+import SelectCharacterContainer from '../containers/SelectCharacterContainer';
 
 export default function SelectCharacter() {
   return <SelectCharacterContainer />;

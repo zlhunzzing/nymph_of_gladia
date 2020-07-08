@@ -1,13 +1,13 @@
-import { createAction } from "redux-actions";
-import * as characterConfig from "../config/Character";
+import { createAction } from 'redux-actions';
+import * as characterConfig from '../common/Character';
 
-const SELECT_CHARACTER = "App/Battle/SELECT_CHARACTER";
+const SELECT_CHARACTER = 'App/Battle/SELECT_CHARACTER';
 
 export const selectCharacter = createAction(SELECT_CHARACTER);
 // payload: {CharacterName: Seki <string> }
 
 const initialState = {
-  userCharacter: "",
+  userCharacter: '',
   // eneme: characterConfig.getCharacter("Rati"),
 };
 

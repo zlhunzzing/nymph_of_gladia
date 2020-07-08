@@ -1,6 +1,6 @@
-import React from "react";
-import "../presenterStyles/MainPresenter.css";
-import { Link } from "react-router-dom";
+import React from 'react';
+import '../presenterStyles/MainPresenter.css';
+import { Link } from 'react-router-dom';
 
 export default function MainPresenter() {
   return (

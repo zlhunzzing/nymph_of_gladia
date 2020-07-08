@@ -1,6 +1,5 @@
-import React from "react";
-import store from "../store";
-
+import React from 'react';
+import store from '../store';
 
 export default function BattleEntryPresenter() {
   return (

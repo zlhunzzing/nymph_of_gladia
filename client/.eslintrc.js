@@ -1,20 +1,21 @@
 module.exports = {
-  parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint"],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
   extends: [
-    "airbnb-base",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:react/recommended",
+    'plguin:prettier/recommended',
+    'airbnb-base',
+    'plugin:react/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
   ],
   rules: {
-    quotes: ["error", "double"],
-    "import/extensions": [
-      "error",
-      "ignorePackages",
-      { js: "never", jsx: "never", ts: "never", tsx: "never", json: "never" },
+    quotes: ['error', 'double'],
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      { js: 'never', jsx: 'never', ts: 'never', tsx: 'never', json: 'never' },
     ],
   },
   settings: {
-    "import/resolver": { node: { extensions: [".js", ".jsx", ".ts", ".tsx"] } },
+    'import/resolver': { node: { extensions: ['.js', '.jsx', '.ts', '.tsx'] } },
   },
 };
