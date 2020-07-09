@@ -64,7 +64,11 @@ const SelectCharacterPresenter: React.FunctionComponent<Props> = ({
       onClick={(e) => {
         if (!isSelect) {
           e.preventDefault();
-          alert('캐릭터를 선택해주세요.');
+          store.dispatch({
+            type: 'SET_MODAL_CONTENT',
+            content: ERROR_MESSAGE.UNSELECT,
+          });
+          store.dispatch({ type: 'SET_MODAL_IS_OPEN', isOpen: true });
         }
       }}
     >
