@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Modal from 'react-modal';
-import store from './store';
+import store from './index';
 import modalCustomStyles from './common/ModalCustomStyles';
 
 /* pages */
@@ -14,10 +14,12 @@ Modal.setAppElement('#root');
 function App() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalContent, setIsModalContent] = useState('');
+  const [modalIsButton, setModalIsButton] = useState(true);
 
   store.subscribe(() => {
-    setModalIsOpen(store.getState().modalIsOpen);
-    setIsModalContent(store.getState().modalContent);
+    setModalIsOpen(store.getState().HandleModal.modalIsOpen);
+    setIsModalContent(store.getState().HandleModal.modalContent);
+    setModalIsButton(store.getState().HandleModal.modalIsButton);
   });
 
   return (
@@ -33,7 +35,9 @@ function App() {
       </Switch>
       <Modal isOpen={modalIsOpen} style={modalCustomStyles}>
         <div>{modalContent}</div>
-        <button onClick={() => setModalIsOpen(false)}>확인</button>
+        {modalIsButton ? (
+          <button onClick={() => setModalIsOpen(false)}>확인</button>
+        ) : null}
       </Modal>
     </div>
   );

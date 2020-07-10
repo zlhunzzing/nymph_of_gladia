@@ -1,8 +1,10 @@
 import React from 'react';
 import '../presenterStyles/SelectCharacterPresenter.css';
 import { Link } from 'react-router-dom';
-import ERROR_MESSAGE from '../common/ErrorMessages';
-import store from '../store';
+import ERROR_MESSAGES from '../common/ErrorMessages';
+import store from '../index';
+import * as battleActions from '../modules/Battle';
+import * as handleModalActions from '../modules/HandleModal';
 
 interface Props {
   userCharacter: string;
@@ -24,19 +26,17 @@ const SelectCharacterPresenter: React.FunctionComponent<Props> = ({
     {isSelect ? (
       <div className="userCharacter">{userCharacter}</div>
     ) : (
-      <div className="userCharacter">{ERROR_MESSAGE.UNSELECT}</div>
+      <div className="userCharacter">{ERROR_MESSAGES.UNSELECT}</div>
     )}
     <ul className="select">
       <li>
         <a
           href="#1"
-          // className="characters"
           onClick={(e) => {
             e.preventDefault();
-            setUserCharacter('세키');
-            // battleActions.selectCharacter("Seki");
-            store.dispatch({ type: 'SELECT_CHARACTER', name: 'Seki' });
             setIsSelect(true);
+            setUserCharacter('세키');
+            store.dispatch(battleActions.selectCharacter({ name: '세키' }));
           }}
         >
           세키
@@ -45,10 +45,9 @@ const SelectCharacterPresenter: React.FunctionComponent<Props> = ({
           href="#2"
           onClick={(e) => {
             e.preventDefault();
-            setUserCharacter('레티');
-            // battleActions.selectCharacter("Reti");
-            store.dispatch({ type: 'SELECT_CHARACTER', name: 'Reti' });
             setIsSelect(true);
+            setUserCharacter('레티');
+            store.dispatch(battleActions.selectCharacter({ name: '레티' }));
           }}
         >
           레티
@@ -64,11 +63,12 @@ const SelectCharacterPresenter: React.FunctionComponent<Props> = ({
       onClick={(e) => {
         if (!isSelect) {
           e.preventDefault();
-          store.dispatch({
-            type: 'SET_MODAL_CONTENT',
-            content: ERROR_MESSAGE.UNSELECT,
-          });
-          store.dispatch({ type: 'SET_MODAL_IS_OPEN', isOpen: true });
+          store.dispatch(
+            handleModalActions.setModalContent({
+              content: ERROR_MESSAGES.UNSELECT,
+            }),
+          );
+          store.dispatch(handleModalActions.setModalIsOpen({ isOpen: true }));
         }
       }}
     >
