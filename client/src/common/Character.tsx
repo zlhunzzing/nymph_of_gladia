@@ -9,12 +9,21 @@ export default class Character {
 
   yPosition: number;
 
+  basicCards: Array<object>;
+
   constructor(name: string) {
     this.name = name;
     this.hp = 100;
     this.mp = 100;
     this.xPosition = 0;
     this.yPosition = 0;
+    this.basicCards = [
+      [{ type: 'UP' }],
+      [{ type: 'DOWN' }],
+      [{ type: 'LEFT' }],
+      [{ type: 'RIGHT' }],
+      [{ type: 'GUARD' }],
+    ];
   }
 
   move(action: string) {

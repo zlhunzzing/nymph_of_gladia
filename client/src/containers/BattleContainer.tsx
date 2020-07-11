@@ -7,7 +7,7 @@ export default function BattleContainer() {
   const [entryModal, setEntryModal] = useState(true);
 
   useEffect(() => {
-    if (entryModal) {
+    if (entryModal && store.getState().Battle.userCharacter) {
       store.dispatch(
         handleModalActions.setModalContent({
           content:

@@ -1,0 +1,19 @@
+.userStatus {
+  float: left;
+}
+.enemeStatus {
+  float: right;
+}
+
+.card {
+  border: 1px solid black;
+  width: 75px;
+  height: 100px;
+  display: inline-block;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
+.card:hover {
+  background-color: coral;
+}
