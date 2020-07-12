@@ -47,16 +47,20 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
         user.basicCards.map((card: any, id: number) => (
           <span
             key={id}
-            className="card"
+            className={`card ${card.className}`}
             onClick={() => {
+              let el = document.querySelector(
+                `.${card.className}`,
+              ) as HTMLElement;
               for (let value in hand) {
                 if (
                   Object.keys(hand[value]).length === 0 &&
-                  hand[value].constructor === Object
+                  hand[value].constructor === Object &&
+                  el.className !== `card ${card.className} cardOpacity`
                 ) {
+                  el.className = `card ${card.className} cardOpacity`;
                   hand[value] = card;
                   setHand(hand.slice(0, hand.length));
-                  console.log(hand);
                   break;
                 }
               }
@@ -73,9 +77,29 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
     </div>
     <div className="uniqueCards">
       {user.uniqueCards ? (
-        user.uniqueCards.map((x: any, id: number) => (
-          <span key={id} className="card">
-            {x.type}
+        user.uniqueCards.map((card: any, id: number) => (
+          <span
+            key={id}
+            className={`card ${card.className}`}
+            onClick={() => {
+              let el = document.querySelector(
+                `.${card.className}`,
+              ) as HTMLElement;
+              for (let value in hand) {
+                if (
+                  Object.keys(hand[value]).length === 0 &&
+                  hand[value].constructor === Object &&
+                  el.className !== `card ${card.className} cardOpacity`
+                ) {
+                  el.className = `card ${card.className} cardOpacity`;
+                  hand[value] = card;
+                  setHand(hand.slice(0, hand.length));
+                  break;
+                }
+              }
+            }}
+          >
+            {card.type}
           </span>
         ))
       ) : (
@@ -87,15 +111,22 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
     <div className="hand">
       <div>
         {hand
-          ? hand.map((x: any, id: number) => (
+          ? hand.map((card: any, id: number) => (
               <span
                 key={id}
                 className="card"
                 onClick={() => {
-                  console.log(hand, x, x.type);
+                  if (Object.keys(card).length !== 0) {
+                    hand[id] = {};
+                    setHand(hand.slice(0, hand.length));
+                    let el = document.querySelector(
+                      `.${card.className}`,
+                    ) as HTMLElement;
+                    el.className = `card ${card.className}`;
+                  }
                 }}
               >
-                {x.type ? x.type : '비었다'}
+                {card.type ? card.type : '비었다'}
               </span>
             ))
           : null}

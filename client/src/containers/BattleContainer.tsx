@@ -24,7 +24,7 @@ export default function BattleContainer() {
       setTimeout(() => {
         store.dispatch(handleModalActions.setModalIsOpen({ isOpen: false }));
         store.dispatch(handleModalActions.setModalIsButton({ isButton: true }));
-      }, 3000);
+      }, 2000);
       setEntryModal(false);
     }
   }, [entryModal]);

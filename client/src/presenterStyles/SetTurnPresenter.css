@@ -12,14 +12,17 @@
   margin-left: 1px;
   margin-right: 1px;
 }
+.cardOpacity {
+  opacity: 0;
+}
 .card:hover {
   background-color: coral;
 }
 .basicCards {
-  margin-top: 100px;
+  margin-top: 110px;
 }
 .uniqueCards {
-  margin-top: 20px;
+  margin-top: 1px;
 }
 .hand {
   margin-top: 20px;
