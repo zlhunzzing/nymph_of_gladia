@@ -4,7 +4,6 @@
 .enemeStatus {
   float: right;
 }
-
 .card {
   border: 1px solid black;
   width: 75px;
@@ -13,7 +12,15 @@
   margin-left: 1px;
   margin-right: 1px;
 }
-
 .card:hover {
   background-color: coral;
+}
+.basicCards {
+  margin-top: 100px;
+}
+.uniqueCards {
+  margin-top: 20px;
+}
+.hand {
+  margin-top: 20px;
 }

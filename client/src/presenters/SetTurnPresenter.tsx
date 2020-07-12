@@ -1,67 +1,108 @@
 import React from 'react';
-import store from '../index';
 import '../presenterStyles/SetTurnPresenter.css';
 
-export default function SetTurnPresenter() {
-  const user = store.getState().Battle.userCharacter;
-  const eneme = store.getState().Battle.userCharacter;
-
-  return (
-    <div className="Main">
-      {user ? (
-        <div className="status">
-          <div className="userStatus">
-            <div>
-              <div>NAME: {user.name}</div>
-              <div>HP: {user.hp}</div>
-              <div>MP: {user.mp}</div>
-            </div>
-          </div>
-          <div className="enemeStatus">
-            <div>NAME: {eneme.name}</div>
-            <div>HP: {eneme.hp}</div>
-            <div>MP: {eneme.mp}</div>
-          </div>
-        </div>
-      ) : null}
-
-      <div
-        className="basicCards"
-        style={{
-          marginTop: '100px',
-        }}
-      >
-        <span className="card">상</span>
-        <span className="card">하</span>
-        <span className="card">좌</span>
-        <span className="card">우</span>
-        <span className="card">방어</span>
-      </div>
-      <div
-        className="uniqCards"
-        style={{
-          marginTop: '20px',
-        }}
-      >
-        <span className="card">공격1</span>
-        <span className="card">공격2</span>
-        <span className="card">공격3</span>
-        <span className="card">공격4</span>
-        <span className="card">마나회복</span>
-      </div>
-      <div
-        className="deck"
-        style={{
-          marginTop: '20px',
-        }}
-      >
-        <span className="card">공격1</span>
-        <span className="card">공격2</span>
-        <span className="card">공격3</span>
-      </div>
-      <button>확인</button>
-    </div>
-  );
+interface User {
+  name: string;
+  hp: number;
+  mp: number;
+  basicCards: Array<object>;
+  uniqueCards: Array<object>;
 }
 
-// export default SetTurnPresenter;
+interface Props {
+  user: User;
+  setUser: any;
+  eneme: User;
+  setEneme: any;
+  hand: any;
+  setHand: any;
+}
+
+const SetTurnPresenter: React.FunctionComponent<Props> = ({
+  user,
+  eneme,
+  hand,
+  setHand,
+}: Props) => (
+  <div className="Main">
+    {user ? (
+      <div className="status">
+        <div className="userStatus">
+          <div>
+            <div>NAME: {user.name}</div>
+            <div>HP: {user.hp}</div>
+            <div>MP: {user.mp}</div>
+          </div>
+        </div>
+        <div className="enemeStatus">
+          <div>NAME: {eneme.name}</div>
+          <div>HP: {eneme.hp}</div>
+          <div>MP: {eneme.mp}</div>
+        </div>
+      </div>
+    ) : null}
+
+    <div className="basicCards">
+      {user.basicCards ? (
+        user.basicCards.map((card: any, id: number) => (
+          <span
+            key={id}
+            className="card"
+            onClick={() => {
+              for (let value in hand) {
+                if (
+                  Object.keys(hand[value]).length === 0 &&
+                  hand[value].constructor === Object
+                ) {
+                  hand[value] = card;
+                  setHand(hand.slice(0, hand.length));
+                  console.log(hand);
+                  break;
+                }
+              }
+            }}
+          >
+            {card.type}
+          </span>
+        ))
+      ) : (
+        <div>
+          <span className="card">기본카드</span>
+        </div>
+      )}
+    </div>
+    <div className="uniqueCards">
+      {user.uniqueCards ? (
+        user.uniqueCards.map((x: any, id: number) => (
+          <span key={id} className="card">
+            {x.type}
+          </span>
+        ))
+      ) : (
+        <div>
+          <span className="card">고유카드</span>
+        </div>
+      )}
+    </div>
+    <div className="hand">
+      <div>
+        {hand
+          ? hand.map((x: any, id: number) => (
+              <span
+                key={id}
+                className="card"
+                onClick={() => {
+                  console.log(hand, x, x.type);
+                }}
+              >
+                {x.type ? x.type : '비었다'}
+              </span>
+            ))
+          : null}
+      </div>
+    </div>
+    <button>확인</button>
+  </div>
+);
+
+export default SetTurnPresenter;
