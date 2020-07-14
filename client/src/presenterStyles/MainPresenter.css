@@ -3,6 +3,7 @@
   height: 600px;
   border: 1px solid black;
   text-align: center;
+  position: relative;
 }
 .MainTitle {
   margin-top: 120px;

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import SetTurnPresenter from '../presenters/SetTurnPresenter';
+import StadiumPresenter from '../presenters/StadiumPresenter';
 import store from '../index';
 import * as handleModalActions from '../modules/HandleModal';
 
 export default function BattleContainer() {
+  const [isTurn, setIsTurn] = useState(true);
   const [entryModal, setEntryModal] = useState(true);
   const [user, setUser] = useState(store.getState().Battle.userCharacter);
   const [eneme, setEneme] = useState(store.getState().Battle.eneme);
@@ -30,13 +32,20 @@ export default function BattleContainer() {
   }, [entryModal]);
 
   return (
-    <SetTurnPresenter
-      user={user}
-      setUser={setUser}
-      eneme={eneme}
-      setEneme={setEneme}
-      hand={hand}
-      setHand={setHand}
-    />
+    <div>
+      {isTurn ? (
+        <StadiumPresenter setIsTurn={setIsTurn}></StadiumPresenter>
+      ) : (
+        <SetTurnPresenter
+          setIsTurn={setIsTurn}
+          user={user}
+          setUser={setUser}
+          eneme={eneme}
+          setEneme={setEneme}
+          hand={hand}
+          setHand={setHand}
+        />
+      )}
+    </div>
   );
 }

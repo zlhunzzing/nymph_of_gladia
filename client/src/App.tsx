@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import Modal from 'react-modal';
 import store from './index';
 import modalCustomStyles from './common/ModalCustomStyles';
+import * as HandleModalActions from './modules/HandleModal';
 
 /* pages */
 import Main from './pages/Main';
@@ -36,7 +37,15 @@ function App() {
       <Modal isOpen={modalIsOpen} style={modalCustomStyles}>
         <div>{modalContent}</div>
         {modalIsButton ? (
-          <button onClick={() => setModalIsOpen(false)}>확인</button>
+          <button
+            onClick={() =>
+              store.dispatch(
+                HandleModalActions.setModalIsOpen({ isOpen: false }),
+              )
+            }
+          >
+            확인
+          </button>
         ) : null}
       </Modal>
     </div>

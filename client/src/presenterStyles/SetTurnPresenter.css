@@ -24,6 +24,17 @@
 .uniqueCards {
   margin-top: 1px;
 }
+.control {
+  border-top: 1px solid black;
+  position: absolute;
+  bottom: 0%;
+  width: 100%;
+}
 .hand {
-  margin-top: 20px;
+  margin: 50px;
+  float: left;
+}
+.continueButton {
+  margin: 50px;
+  float: left;
 }

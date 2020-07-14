@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 import '../presenterStyles/SetTurnPresenter.css';
 
 interface User {
@@ -10,15 +10,17 @@ interface User {
 }
 
 interface Props {
+  setIsTurn: Dispatch<boolean>;
   user: User;
-  setUser: any;
+  setUser: Dispatch<User>;
   eneme: User;
-  setEneme: any;
-  hand: any;
-  setHand: any;
+  setEneme: Dispatch<User>;
+  hand: Array<object>;
+  setHand: Dispatch<Array<object>>;
 }
 
 const SetTurnPresenter: React.FunctionComponent<Props> = ({
+  setIsTurn,
   user,
   eneme,
   hand,
@@ -71,7 +73,7 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
         ))
       ) : (
         <div>
-          <span className="card">기본카드</span>
+          <span className="card"></span>
         </div>
       )}
     </div>
@@ -104,35 +106,45 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
         ))
       ) : (
         <div>
-          <span className="card">고유카드</span>
+          <span className="card"></span>
         </div>
       )}
     </div>
-    <div className="hand">
-      <div>
-        {hand
-          ? hand.map((card: any, id: number) => (
-              <span
-                key={id}
-                className="card"
-                onClick={() => {
-                  if (Object.keys(card).length !== 0) {
-                    hand[id] = {};
-                    setHand(hand.slice(0, hand.length));
-                    let el = document.querySelector(
-                      `.${card.className}`,
-                    ) as HTMLElement;
-                    el.className = `card ${card.className}`;
-                  }
-                }}
-              >
-                {card.type ? card.type : '비었다'}
-              </span>
-            ))
-          : null}
+
+    <div className="control">
+      <div className="hand">
+        <div>
+          {hand
+            ? hand.map((card: any, id: number) => (
+                <span
+                  key={id}
+                  className="card"
+                  onClick={() => {
+                    if (Object.keys(card).length !== 0) {
+                      hand[id] = {};
+                      setHand(hand.slice(0, hand.length));
+                      let el = document.querySelector(
+                        `.${card.className}`,
+                      ) as HTMLElement;
+                      el.className = `card ${card.className}`;
+                    }
+                  }}
+                >
+                  {card.type ? card.type : '비었다'}
+                </span>
+              ))
+            : null}
+        </div>
       </div>
+      <button
+        className="continueButton"
+        onClick={() => {
+          setIsTurn(true);
+        }}
+      >
+        확인
+      </button>
     </div>
-    <button>확인</button>
   </div>
 );
 

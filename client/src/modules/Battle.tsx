@@ -28,11 +28,11 @@ const initialState = {
       this.xPosition = 0;
       this.yPosition = 0;
       this.basicCards = [
-        { type: 'UP', className: 'Card0' },
-        { type: 'DOWN', className: 'Card1' },
-        { type: 'LEFT', className: 'Card2' },
-        { type: 'RIGHT', className: 'Card3' },
-        { type: 'GUARD', className: 'Card4' },
+        { type: 'UP', className: 'card0' },
+        { type: 'DOWN', className: 'card1' },
+        { type: 'LEFT', className: 'card2' },
+        { type: 'RIGHT', className: 'card3' },
+        { type: 'GUARD', className: 'card4' },
       ];
       this.uniqueCards = [];
     }
@@ -41,11 +41,11 @@ const initialState = {
     const character = new initialState.Instance(name);
     if (name === '세키') {
       character.uniqueCards = [
-        { type: 'ATT1', className: 'Card5' },
-        { type: 'ATT2', className: 'Card6' },
-        { type: 'ATT3', className: 'Card7' },
-        { type: 'ATT4', className: 'Card8' },
-        { type: 'MANA UP', className: 'Card9' },
+        { type: 'ATT1', className: 'card5' },
+        { type: 'ATT2', className: 'card6' },
+        { type: 'ATT3', className: 'card7' },
+        { type: 'ATT4', className: 'card8' },
+        { type: 'MANA UP', className: 'card9' },
       ];
     }
     return character;

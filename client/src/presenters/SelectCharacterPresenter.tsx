@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 import '../presenterStyles/SelectCharacterPresenter.css';
 import { Link } from 'react-router-dom';
 import ERROR_MESSAGES from '../common/ErrorMessages';
@@ -8,9 +8,9 @@ import * as handleModalActions from '../modules/HandleModal';
 
 interface Props {
   userCharacter: string;
-  setUserCharacter: any;
+  setUserCharacter: Dispatch<string>;
   isSelect: boolean;
-  setIsSelect: any;
+  setIsSelect: Dispatch<boolean>;
 }
 
 const SelectCharacterPresenter: React.FunctionComponent<Props> = ({
