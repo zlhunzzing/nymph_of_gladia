@@ -34,7 +34,12 @@ export default function BattleContainer() {
   return (
     <div>
       {isTurn ? (
-        <StadiumPresenter setIsTurn={setIsTurn}></StadiumPresenter>
+        <StadiumPresenter
+          setIsTurn={setIsTurn}
+          user={user}
+          eneme={eneme}
+          hand={hand}
+        ></StadiumPresenter>
       ) : (
         <SetTurnPresenter
           setIsTurn={setIsTurn}

@@ -1,0 +1,14 @@
+.field {
+  margin-top: 100px;
+  height: 50%;
+  position: relative;
+}
+.floor {
+  height: 33%;
+}
+.room {
+  border: 1px solid gray;
+  width: 198px;
+  height: 100%;
+  float: left;
+}
