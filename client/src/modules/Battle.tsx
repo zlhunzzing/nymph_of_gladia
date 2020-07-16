@@ -1,4 +1,5 @@
 import { createAction } from 'redux-actions';
+import { Card } from '../common/interface/BattleInterface';
 
 const SELECT_CHARACTER = 'App/Battle/SELECT_CHARACTER';
 const MOVE_CHARACTER = 'App/Battle/MOVE_CHARACTER';
@@ -24,24 +25,24 @@ const initialState = {
       this.hp = 100;
       this.mp = 100;
       this.basicCards = [
-        { type: 'UP', className: 'card0' },
-        { type: 'DOWN', className: 'card1' },
-        { type: 'LEFT', className: 'card2' },
-        { type: 'RIGHT', className: 'card3' },
-        { type: 'GUARD', className: 'card4' },
+        { type: 'UP', speed: 0, className: 'card0' },
+        { type: 'DOWN', speed: 0, className: 'card1' },
+        { type: 'LEFT', speed: 0, className: 'card2' },
+        { type: 'RIGHT', speed: 0, className: 'card3' },
+        { type: 'GUARD', speed: 0, className: 'card4' },
       ];
       this.uniqueCards = [];
     }
   },
   getCharacter: function (name: string) {
     const character = new initialState.Instance(name);
-    if (name === '세키') {
+    if (name === '세키' || '레티') {
       character.uniqueCards = [
-        { type: 'ATT1', className: 'card5' },
-        { type: 'ATT2', className: 'card6' },
-        { type: 'ATT3', className: 'card7' },
-        { type: 'ATT4', className: 'card8' },
-        { type: 'MANA UP', className: 'card9' },
+        { type: 'ATT1', speed: 1, className: 'card5' },
+        { type: 'ATT2', speed: 1, className: 'card6' },
+        { type: 'ATT3', speed: 1, className: 'card7' },
+        { type: 'ATT4', speed: 1, className: 'card8' },
+        { type: 'MANA UP', speed: 0, className: 'card9' },
       ];
     }
     return character;
@@ -49,6 +50,7 @@ const initialState = {
   userCharacter: {},
   eneme: {},
   hand: [{}, {}, {}],
+  enemeHand: [{ type: 'UP' }, { type: 'UP' }, { type: 'UP' }],
   field: [
     [
       { player: [null, null] },
@@ -69,6 +71,18 @@ const initialState = {
       { player: [null, null] },
     ],
   ],
+  nextTurn: function (playerHand: Array<Card>) {
+    // 서로의 카드를 확인
+    let firstTurn = false;
+    // let middleTurn = false;
+    // let lastTurn = false;
+
+    firstTurn = !firstTurn;
+    if (firstTurn) {
+      return playerHand[0].speed;
+    }
+    // 카드를 순서에 맞게 사용
+  },
 };
 
 export default function Battle(state: any = initialState, action: any) {

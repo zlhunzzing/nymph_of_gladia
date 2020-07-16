@@ -12,3 +12,9 @@
   height: 100%;
   float: left;
 }
+.playerHand {
+  margin: 20px;
+}
+.enemeHand {
+  margin: 20px;
+}

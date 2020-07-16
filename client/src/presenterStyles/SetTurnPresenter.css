@@ -30,11 +30,11 @@
   bottom: 0%;
   width: 100%;
 }
-.hand {
-  margin: 50px;
+.setHand {
   float: left;
+  margin: 20px;
 }
 .continueButton {
-  margin: 50px;
   float: left;
+  margin: 20px;
 }

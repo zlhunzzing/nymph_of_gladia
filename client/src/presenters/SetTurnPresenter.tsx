@@ -1,13 +1,8 @@
 import React, { Dispatch } from 'react';
 import '../presenterStyles/SetTurnPresenter.css';
-
-interface User {
-  name: string;
-  hp: number;
-  mp: number;
-  basicCards: Array<object>;
-  uniqueCards: Array<object>;
-}
+// import store from '../index';
+// import * as handleModalActions from '../modules/HandleModal';
+import { User } from '../common/interface/BattleInterface';
 
 interface Props {
   setIsTurn: Dispatch<boolean>;
@@ -112,8 +107,8 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
     </div>
 
     <div className="control">
-      <div className="hand">
-        <div>
+      <span className="setHand">
+        <span>
           {hand
             ? hand.map((card: any, id: number) => (
                 <span
@@ -134,11 +129,27 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                 </span>
               ))
             : null}
-        </div>
-      </div>
+        </span>
+      </span>
       <button
         className="continueButton"
         onClick={() => {
+          // for (let value in hand) {
+          //   if (
+          //     Object.keys(hand[value]).length === 0 &&
+          //     hand[value].constructor === Object
+          //   ) {
+          //     store.dispatch(
+          //       handleModalActions.setModalContent({
+          //         content: '카드를 세장 선택해주세요.',
+          //       }),
+          //     );
+          //     store.dispatch(
+          //       handleModalActions.setModalIsOpen({ isOpen: true }),
+          //     );
+          //     return;
+          //   }
+          // }
           setIsTurn(true);
         }}
       >

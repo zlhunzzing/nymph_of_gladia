@@ -1,20 +1,14 @@
 import React, { Dispatch } from 'react';
 import '../presenterStyles/StadiumPresenter.css';
 import store from '..';
-
-interface User {
-  name: string;
-  hp: number;
-  mp: number;
-  basicCards: Array<object>;
-  uniqueCards: Array<object>;
-}
+import { User } from '../common/interface/BattleInterface';
 
 interface Props {
   setIsTurn: Dispatch<boolean>;
   user: User;
   eneme: User;
   hand: Array<object>;
+  enemeHand: Array<object>;
 }
 
 const StadiumPresenter: React.FunctionComponent<Props> = ({
@@ -22,6 +16,7 @@ const StadiumPresenter: React.FunctionComponent<Props> = ({
   user,
   eneme,
   hand,
+  enemeHand,
 }: Props) => (
   <div className="Main">
     {user ? (
@@ -64,28 +59,24 @@ const StadiumPresenter: React.FunctionComponent<Props> = ({
     </div>
 
     <div className="control">
-      <div>
+      <span className="playerHand">
         {hand
           ? hand.map((card: any, id: number) => (
-              <span
-                key={id}
-                className="card"
-                // onClick={() => {
-                //   if (Object.keys(card).length !== 0) {
-                //     hand[id] = {};
-                //     // setHand(hand.slice(0, hand.length));
-                //     let el = document.querySelector(
-                //       `.${card.className}`,
-                //     ) as HTMLElement;
-                //     el.className = `card ${card.className}`;
-                //   }
-                // }}
-              >
+              <span key={id} className="card">
                 {card.type ? card.type : '비었다'}
               </span>
             ))
           : null}
-      </div>
+      </span>
+      <span className="enemeHand">
+        {enemeHand
+          ? enemeHand.map((card: any, id: number) => (
+              <span key={id} className="card">
+                {card.type ? card.type : '비었다'}
+              </span>
+            ))
+          : null}
+      </span>
     </div>
   </div>
 );

@@ -5,11 +5,12 @@ import store from '../index';
 import * as handleModalActions from '../modules/HandleModal';
 
 export default function BattleContainer() {
-  const [isTurn, setIsTurn] = useState(true);
+  const [isTurn, setIsTurn] = useState(false);
   const [entryModal, setEntryModal] = useState(true);
   const [user, setUser] = useState(store.getState().Battle.userCharacter);
   const [eneme, setEneme] = useState(store.getState().Battle.eneme);
   const [hand, setHand] = useState(store.getState().Battle.hand);
+  const eneneHand = useState(store.getState().Battle.enemeHand)[0];
 
   useEffect(() => {
     if (entryModal && store.getState().Battle.userCharacter) {
@@ -39,6 +40,7 @@ export default function BattleContainer() {
           user={user}
           eneme={eneme}
           hand={hand}
+          enemeHand={eneneHand}
         ></StadiumPresenter>
       ) : (
         <SetTurnPresenter
