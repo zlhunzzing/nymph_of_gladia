@@ -1,16 +1,16 @@
 import { createAction } from 'redux-actions';
 import { Card } from '../common/interface/BattleInterface';
+import store from '..';
 
 const SELECT_CHARACTER = 'App/Battle/SELECT_CHARACTER';
-const MOVE_CHARACTER = 'App/Battle/MOVE_CHARACTER';
+const MOVE_UP_USER = 'App/Battle/MOVE_UP_USER';
 const MOVE_ENEME = 'App/Battle/MOVE_ENEME';
 
 export const selectCharacter = createAction(SELECT_CHARACTER);
 // payload: {CharacterName: Seki <string> }
-export const moveCharacter = createAction(MOVE_CHARACTER);
-// payload: {xPosition: 3 <number>, yPosition: 1 <number> }
+export const moveUpUser = createAction(MOVE_UP_USER);
+// payload: {number: 1 <n> }
 export const moveEneme = createAction(MOVE_ENEME);
-// payload: {xPosition: 3 <number>, yPosition: 1 <number> }
 
 const initialState = {
   Instance: class Character {
@@ -50,38 +50,55 @@ const initialState = {
   userCharacter: {},
   eneme: {},
   hand: [{}, {}, {}],
-  enemeHand: [{ type: 'UP' }, { type: 'UP' }, { type: 'UP' }],
+  enemeHand: [
+    { type: 'UP', speed: 0 },
+    { type: 'UP', speed: 0 },
+    { type: 'UP', speed: 0 },
+  ],
   field: [
     [
-      { player: [null, null] },
-      { player: [null, null] },
-      { player: [null, null] },
-      { player: [null, null] },
+      { user: [null, null] },
+      { user: [null, null] },
+      { user: [null, null] },
+      { user: [null, null] },
     ],
     [
-      { player: [1, null] },
-      { player: [null, null] },
-      { player: [null, null] },
-      { player: [2, null] },
+      { user: [null, null] },
+      { user: [null, null] },
+      { user: [null, null] },
+      { user: [null, null] },
     ],
     [
-      { player: [null, null] },
-      { player: [null, null] },
-      { player: [null, null] },
-      { player: [null, null] },
+      { user: [null, null] },
+      { user: [null, null] },
+      { user: [null, null] },
+      { user: [null, null] },
     ],
   ],
-  nextTurn: function (playerHand: Array<Card>) {
-    // 서로의 카드를 확인
+  userPosition: { x: 0, y: 1 },
+  enemePosition: { x: 3, y: 1 },
+  nextTurn: function (userHand: Array<Card>, enemeHand: Array<Card>) {
     let firstTurn = false;
     // let middleTurn = false;
     // let lastTurn = false;
 
     firstTurn = !firstTurn;
     if (firstTurn) {
-      return playerHand[0].speed;
+      if (userHand[0].speed <= enemeHand[0].speed) {
+        initialState.cardAction(true, userHand[0]);
+      } else initialState.cardAction(false, enemeHand[0]);
     }
-    // 카드를 순서에 맞게 사용
+  },
+  cardAction(user: boolean, card: Card) {
+    if (user) {
+      switch (card.type) {
+        case 'UP':
+          store.dispatch(
+            moveUpUser({ y: store.getState().Battle.userPosition.y }),
+          );
+      }
+    } else {
+    }
   },
 };
 
@@ -93,13 +110,20 @@ export default function Battle(state: any = initialState, action: any) {
         userCharacter: initialState.getCharacter(action.payload.name),
         eneme: initialState.getCharacter('레티'),
       };
+    case MOVE_UP_USER:
+      return {
+        ...state,
+        userPosition: {
+          ...state.userPosition,
+          y: action.payload.y + 1,
+        },
+      };
     case MOVE_ENEME:
       return {
         ...state,
         eneme: {
           ...state.eneme,
-          xPosition: action.payload.xPosition,
-          yPosition: action.payload.yPosition,
+          enemePosition: action.payload.enemePosition,
         },
       };
     default:

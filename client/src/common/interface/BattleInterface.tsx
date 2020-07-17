@@ -6,6 +6,11 @@ export interface User {
   uniqueCards: Array<object>;
 }
 
+export interface Position {
+  x: number;
+  y: number;
+}
+
 export interface Card {
   type: string;
   speed: number;

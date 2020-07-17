@@ -11,6 +11,14 @@ export default function BattleContainer() {
   const [eneme, setEneme] = useState(store.getState().Battle.eneme);
   const [hand, setHand] = useState(store.getState().Battle.hand);
   const eneneHand = useState(store.getState().Battle.enemeHand)[0];
+  const [userPosition, setUserPostion] = useState(
+    store.getState().Battle.userPosition,
+  );
+  const enemePosition = useState(store.getState().Battle.enemePosition)[0];
+
+  store.subscribe(() => {
+    setUserPostion(store.getState().Battle.userPosition);
+  });
 
   useEffect(() => {
     if (entryModal && store.getState().Battle.userCharacter) {
@@ -41,6 +49,8 @@ export default function BattleContainer() {
           eneme={eneme}
           hand={hand}
           enemeHand={eneneHand}
+          userPosition={userPosition}
+          enemePosition={enemePosition}
         ></StadiumPresenter>
       ) : (
         <SetTurnPresenter

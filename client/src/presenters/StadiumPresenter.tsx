@@ -1,7 +1,7 @@
 import React, { Dispatch } from 'react';
 import '../presenterStyles/StadiumPresenter.css';
 import store from '..';
-import { User } from '../common/interface/BattleInterface';
+import { User, Position } from '../common/interface/BattleInterface';
 
 interface Props {
   setIsTurn: Dispatch<boolean>;
@@ -9,6 +9,8 @@ interface Props {
   eneme: User;
   hand: Array<object>;
   enemeHand: Array<object>;
+  userPosition: Position;
+  enemePosition: Position;
 }
 
 const StadiumPresenter: React.FunctionComponent<Props> = ({
@@ -17,8 +19,15 @@ const StadiumPresenter: React.FunctionComponent<Props> = ({
   eneme,
   hand,
   enemeHand,
+  userPosition,
+  enemePosition,
 }: Props) => (
   <div className="Main">
+    <button
+      onClick={async () => {
+        await store.getState().Battle.nextTurn(hand, enemeHand);
+      }}
+    ></button>
     {user ? (
       <div className="status">
         <div className="userStatus">
@@ -44,18 +53,23 @@ const StadiumPresenter: React.FunctionComponent<Props> = ({
     </button>
 
     <div className="field">
-      {store.getState().Battle.field.map((rooms: any, id: number) => (
-        <div key={id} className="floor">
-          {rooms.map((room: any, id: number) => (
-            <div key={id} className="room">
-              {room.player[0] === 1 ? user.name : null}
-              {room.player[0] === 2 ? eneme.name : null}
-              {room.player[1] === 1 ? user.name : null}
-              {room.player[1] === 2 ? eneme.name : null}
-            </div>
-          ))}
-        </div>
-      ))}
+      {store
+        .getState()
+        .Battle.field.reverse()
+        .map((floor: any, floorId: number) => (
+          <div key={floorId} className="floor">
+            {floor.map((room: any, roomId: number) => (
+              <div key={roomId} className="room">
+                {userPosition.x === roomId && userPosition.y === floorId
+                  ? user.name
+                  : null}
+                {enemePosition.x === roomId && enemePosition.y === floorId
+                  ? eneme.name
+                  : null}
+              </div>
+            ))}
+          </div>
+        ))}
     </div>
 
     <div className="control">

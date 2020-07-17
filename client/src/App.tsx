@@ -18,9 +18,15 @@ function App() {
   const [modalIsButton, setModalIsButton] = useState(true);
 
   store.subscribe(() => {
-    setModalIsOpen(store.getState().HandleModal.modalIsOpen);
-    setIsModalContent(store.getState().HandleModal.modalContent);
-    setModalIsButton(store.getState().HandleModal.modalIsButton);
+    if (modalIsOpen !== store.getState().HandleModal.modalIsOpen) {
+      setModalIsOpen(store.getState().HandleModal.modalIsOpen);
+    }
+    if (modalContent !== store.getState().HandleModal.modalContent) {
+      setIsModalContent(store.getState().HandleModal.modalContent);
+    }
+    if (modalIsButton !== store.getState().HandleModal.modalIsButton) {
+      setModalIsButton(store.getState().HandleModal.modalIsButton);
+    }
   });
 
   return (
