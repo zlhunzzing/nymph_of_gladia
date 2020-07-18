@@ -3,11 +3,18 @@ import { Card } from '../common/interface/BattleInterface';
 import store from '..';
 
 const SELECT_CHARACTER = 'App/Battle/SELECT_CHARACTER';
+const SET_IS_TURN = 'App/Battle/SET_IS_TURN';
+const SET_ENTRY_MODAL = 'App/Battle/SET_ENTRY_MODAL';
+const SET_USER_HAND = 'App/Battle/SET_USER_HAND';
 const MOVE_UP_USER = 'App/Battle/MOVE_UP_USER';
 const MOVE_ENEME = 'App/Battle/MOVE_ENEME';
 
 export const selectCharacter = createAction(SELECT_CHARACTER);
 // payload: {CharacterName: Seki <string> }
+export const setIsTurn = createAction(SET_IS_TURN);
+export const setEntryModal = createAction(SET_ENTRY_MODAL);
+export const setUserHand = createAction(SET_USER_HAND);
+// payload: {hand: [{},{},{}] Array<Card> }
 export const moveUpUser = createAction(MOVE_UP_USER);
 // payload: {number: 1 <n> }
 export const moveEneme = createAction(MOVE_ENEME);
@@ -49,6 +56,8 @@ const initialState = {
   },
   userCharacter: {},
   eneme: {},
+  isTurn: false,
+  entryModal: true,
   hand: [{}, {}, {}],
   enemeHand: [
     { type: 'UP', speed: 0 },
@@ -110,12 +119,27 @@ export default function Battle(state: any = initialState, action: any) {
         userCharacter: initialState.getCharacter(action.payload.name),
         eneme: initialState.getCharacter('레티'),
       };
+    case SET_IS_TURN:
+      return {
+        ...state,
+        isTurn: !state.isTurn,
+      };
+    case SET_ENTRY_MODAL:
+      return {
+        ...state,
+        entryModal: false,
+      };
+    case SET_USER_HAND:
+      return {
+        ...state,
+        hand: action.payload.hand,
+      };
     case MOVE_UP_USER:
       return {
         ...state,
         userPosition: {
           ...state.userPosition,
-          y: action.payload.y + 1,
+          y: action.payload.y - 1,
         },
       };
     case MOVE_ENEME:

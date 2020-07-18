@@ -1,10 +1,10 @@
-import React, { Dispatch } from 'react';
-import '../presenterStyles/StadiumPresenter.css';
+import React from 'react';
+import '../presenterStyles/FieldPresenter.css';
 import store from '..';
 import { User, Position } from '../common/interface/BattleInterface';
+import * as battleActions from '../modules/Battle';
 
 interface Props {
-  setIsTurn: Dispatch<boolean>;
   user: User;
   eneme: User;
   hand: Array<object>;
@@ -13,8 +13,7 @@ interface Props {
   enemePosition: Position;
 }
 
-const StadiumPresenter: React.FunctionComponent<Props> = ({
-  setIsTurn,
+const FieldPresenter: React.FunctionComponent<Props> = ({
   user,
   eneme,
   hand,
@@ -46,30 +45,27 @@ const StadiumPresenter: React.FunctionComponent<Props> = ({
     ) : null}
     <button
       onClick={() => {
-        setIsTurn(false);
+        store.dispatch(battleActions.setIsTurn());
       }}
     >
       임시
     </button>
 
     <div className="field">
-      {store
-        .getState()
-        .Battle.field.reverse()
-        .map((floor: any, floorId: number) => (
-          <div key={floorId} className="floor">
-            {floor.map((room: any, roomId: number) => (
-              <div key={roomId} className="room">
-                {userPosition.x === roomId && userPosition.y === floorId
-                  ? user.name
-                  : null}
-                {enemePosition.x === roomId && enemePosition.y === floorId
-                  ? eneme.name
-                  : null}
-              </div>
-            ))}
-          </div>
-        ))}
+      {store.getState().Battle.field.map((floor: any, floorId: number) => (
+        <div key={floorId} className="floor">
+          {floor.map((room: any, roomId: number) => (
+            <div key={roomId} className="room">
+              {userPosition.x === roomId && userPosition.y === floorId
+                ? user.name
+                : null}
+              {enemePosition.x === roomId && enemePosition.y === floorId
+                ? eneme.name
+                : null}
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
 
     <div className="control">
@@ -95,4 +91,4 @@ const StadiumPresenter: React.FunctionComponent<Props> = ({
   </div>
 );
 
-export default StadiumPresenter;
+export default FieldPresenter;

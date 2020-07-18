@@ -3,19 +3,17 @@ import '../presenterStyles/SetTurnPresenter.css';
 // import store from '../index';
 // import * as handleModalActions from '../modules/HandleModal';
 import { User } from '../common/interface/BattleInterface';
+import store from '..';
+import * as battleActions from '../modules/Battle';
 
 interface Props {
-  setIsTurn: Dispatch<boolean>;
   user: User;
-  setUser: Dispatch<User>;
   eneme: User;
-  setEneme: Dispatch<User>;
   hand: Array<object>;
   setHand: Dispatch<Array<object>>;
 }
 
 const SetTurnPresenter: React.FunctionComponent<Props> = ({
-  setIsTurn,
   user,
   eneme,
   hand,
@@ -58,6 +56,11 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                   el.className = `card ${card.className} cardOpacity`;
                   hand[value] = card;
                   setHand(hand.slice(0, hand.length));
+                  store.dispatch(
+                    battleActions.setUserHand({
+                      hand: hand.slice(0, hand.length),
+                    }),
+                  );
                   break;
                 }
               }
@@ -91,6 +94,11 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                   el.className = `card ${card.className} cardOpacity`;
                   hand[value] = card;
                   setHand(hand.slice(0, hand.length));
+                  store.dispatch(
+                    battleActions.setUserHand({
+                      hand: hand.slice(0, hand.length),
+                    }),
+                  );
                   break;
                 }
               }
@@ -118,6 +126,11 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                     if (Object.keys(card).length !== 0) {
                       hand[id] = {};
                       setHand(hand.slice(0, hand.length));
+                      store.dispatch(
+                        battleActions.setUserHand({
+                          hand: hand.slice(0, hand.length),
+                        }),
+                      );
                       let el = document.querySelector(
                         `.${card.className}`,
                       ) as HTMLElement;
@@ -150,7 +163,8 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
           //     return;
           //   }
           // }
-          setIsTurn(true);
+          // setIsTurn(true);
+          store.dispatch(battleActions.setIsTurn());
         }}
       >
         확인
