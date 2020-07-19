@@ -11,13 +11,9 @@ export default function FieldContainer() {
   const [userPosition, setUserPostion] = useState(
     store.getState().Battle.userPosition,
   );
-  const enemePosition = useState(store.getState().Battle.enemePosition)[0];
-
-  store.subscribe(() => {
-    if (userPosition !== store.getState().Battle.userPosition) {
-      setUserPostion(store.getState().Battle.userPosition);
-    }
-  });
+  const [enemePosition, setEnemePosition] = useState(
+    store.getState().Battle.enemePosition,
+  );
 
   useEffect(() => {
     if (isTurn) {
@@ -26,6 +22,8 @@ export default function FieldContainer() {
         .Battle.nextTurn(
           store.getState().Battle.hand,
           store.getState().Battle.enemeHand,
+          setUserPostion,
+          setEnemePosition,
         );
     }
   }, [isTurn]);

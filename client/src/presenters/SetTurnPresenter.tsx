@@ -42,25 +42,25 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
         user.basicCards.map((card: any, id: number) => (
           <span
             key={id}
-            className={`card ${card.className}`}
+            className={`card ${card.position}`}
             onClick={() => {
               let el = document.querySelector(
-                `.${card.className}`,
+                `.${card.position}`,
               ) as HTMLElement;
               for (let value in hand) {
                 if (
                   Object.keys(hand[value]).length === 0 &&
                   hand[value].constructor === Object &&
-                  el.className !== `card ${card.className} cardOpacity`
+                  el.className !== `card ${card.position} cardOpacity`
                 ) {
-                  el.className = `card ${card.className} cardOpacity`;
+                  el.className = `card ${card.position} cardOpacity`;
                   hand[value] = card;
-                  setHand(hand.slice(0, hand.length));
                   store.dispatch(
-                    battleActions.setUserHand({
+                    battleActions.set_user_hand({
                       hand: hand.slice(0, hand.length),
                     }),
                   );
+                  setHand(hand.slice(0, hand.length));
                   break;
                 }
               }
@@ -80,25 +80,25 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
         user.uniqueCards.map((card: any, id: number) => (
           <span
             key={id}
-            className={`card ${card.className}`}
+            className={`card ${card.position}`}
             onClick={() => {
               let el = document.querySelector(
-                `.${card.className}`,
+                `.${card.position}`,
               ) as HTMLElement;
               for (let value in hand) {
                 if (
                   Object.keys(hand[value]).length === 0 &&
                   hand[value].constructor === Object &&
-                  el.className !== `card ${card.className} cardOpacity`
+                  el.className !== `card ${card.position} cardOpacity`
                 ) {
-                  el.className = `card ${card.className} cardOpacity`;
+                  el.className = `card ${card.position} cardOpacity`;
                   hand[value] = card;
-                  setHand(hand.slice(0, hand.length));
                   store.dispatch(
-                    battleActions.setUserHand({
+                    battleActions.set_user_hand({
                       hand: hand.slice(0, hand.length),
                     }),
                   );
+                  setHand(hand.slice(0, hand.length));
                   break;
                 }
               }
@@ -125,16 +125,16 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                   onClick={() => {
                     if (Object.keys(card).length !== 0) {
                       hand[id] = {};
-                      setHand(hand.slice(0, hand.length));
                       store.dispatch(
-                        battleActions.setUserHand({
+                        battleActions.set_user_hand({
                           hand: hand.slice(0, hand.length),
                         }),
                       );
+                      setHand(hand.slice(0, hand.length));
                       let el = document.querySelector(
-                        `.${card.className}`,
+                        `.${card.position}`,
                       ) as HTMLElement;
-                      el.className = `card ${card.className}`;
+                      el.className = `card ${card.position}`;
                     }
                   }}
                 >
@@ -164,7 +164,7 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
           //   }
           // }
           // setIsTurn(true);
-          store.dispatch(battleActions.setIsTurn());
+          store.dispatch(battleActions.set_is_turn());
         }}
       >
         확인

@@ -36,7 +36,7 @@ const SelectCharacterPresenter: React.FunctionComponent<Props> = ({
             e.preventDefault();
             setIsSelect(true);
             setUserCharacter('세키');
-            store.dispatch(battleActions.selectCharacter({ name: '세키' }));
+            store.dispatch(battleActions.select_character({ name: '세키' }));
           }}
         >
           세키
@@ -47,7 +47,7 @@ const SelectCharacterPresenter: React.FunctionComponent<Props> = ({
             e.preventDefault();
             setIsSelect(true);
             setUserCharacter('레티');
-            store.dispatch(battleActions.selectCharacter({ name: '레티' }));
+            store.dispatch(battleActions.select_character({ name: '레티' }));
           }}
         >
           레티

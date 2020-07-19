@@ -26,7 +26,7 @@ export default function SetTurnContainer() {
         store.dispatch(handleModalActions.setModalIsOpen({ isOpen: false }));
         store.dispatch(handleModalActions.setModalIsButton({ isButton: true }));
       }, 2000);
-      store.dispatch(BattleActions.setEntryModal());
+      store.dispatch(BattleActions.set_entry_modal());
     }
   }, [entryModal]);
 

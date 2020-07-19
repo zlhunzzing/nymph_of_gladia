@@ -22,11 +22,6 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
   enemePosition,
 }: Props) => (
   <div className="Main">
-    <button
-      onClick={async () => {
-        await store.getState().Battle.nextTurn(hand, enemeHand);
-      }}
-    ></button>
     {user ? (
       <div className="status">
         <div className="userStatus">
@@ -45,7 +40,7 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
     ) : null}
     <button
       onClick={() => {
-        store.dispatch(battleActions.setIsTurn());
+        store.dispatch(battleActions.set_is_turn());
       }}
     >
       임시
