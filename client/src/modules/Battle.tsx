@@ -6,7 +6,6 @@ import { Dispatch } from 'react';
 
 const SELECT_CHARACTER = 'App/Battle/SELECT_CHARACTER';
 const SET_IS_TURN = 'App/Battle/SET_IS_TURN';
-const SET_ENTRY_MODAL = 'App/Battle/SET_ENTRY_MODAL';
 const SET_USER_HAND = 'App/Battle/SET_USER_HAND';
 const MOVE_USER_X_POSITION = 'App/Battle/MOVE_USER_X_POSITION';
 const MOVE_USER_Y_POSITION = 'App/Battle/MOVE_USER_Y_POSITION';
@@ -16,7 +15,6 @@ const MOVE_ENEME_Y_POSITION = 'App/Battle/MOVE_ENEME_Y_POSITION';
 export const select_character = createAction(SELECT_CHARACTER);
 // payload: {CharacterName: Seki <string> }
 export const set_is_turn = createAction(SET_IS_TURN);
-export const set_entry_modal = createAction(SET_ENTRY_MODAL);
 export const set_user_hand = createAction(SET_USER_HAND);
 // payload: {hand: [{},{},{}] Array<Card> }
 export const move_user_x_position = createAction(MOVE_USER_X_POSITION);
@@ -66,7 +64,6 @@ const initialState = {
   userCharacter: {},
   eneme: {},
   isTurn: false,
-  entryModal: true,
   hand: [{}, {}, {}],
   enemeHand: [CARD_DICTIONARY.LEFT, CARD_DICTIONARY.LEFT, CARD_DICTIONARY.LEFT],
   field: [
@@ -112,7 +109,6 @@ const initialState = {
         firstTurn = !firstTurn;
         setTimeout(() => (middleTurn = !middleTurn), 1000);
       }
-      // initialState.cardAction(false, enemeHand[0], setEnemePosition);
     }
     setTimeout(() => {
       if (middleTurn) {
@@ -123,9 +119,9 @@ const initialState = {
               initialState.cardAction(false, enemeHand[1], setEnemePosition),
             500,
           );
-          // middleTurn = !middleTurn;
+          middleTurn = !middleTurn;
+          setTimeout(() => (lastTurn = !lastTurn), 1000);
         }
-        // initialState.cardAction(false, enemeHand[0], setEnemePosition);
       }
     }, 1500);
     setTimeout(() => {
@@ -137,11 +133,10 @@ const initialState = {
               initialState.cardAction(false, enemeHand[2], setEnemePosition),
             500,
           );
-          // middleTurn = !middleTurn;
+          lastTurn = !lastTurn;
         }
-        // initialState.cardAction(false, enemeHand[0], setEnemePosition);
+        setTimeout(() => store.dispatch(set_is_turn()), 2000);
       }
-      store.dispatch(set_is_turn());
     }, 3000);
   },
   cardAction(user: boolean, card: Card, setPosition: Dispatch<Position>) {
@@ -201,6 +196,13 @@ const initialState = {
       }
     }
   },
+  clearHand: function () {
+    store.dispatch(
+      set_user_hand({
+        hand: [{}, {}, {}].slice(0, [{}, {}, {}].length),
+      }),
+    );
+  },
 };
 
 export default function Battle(state: any = initialState, action: any) {
@@ -215,11 +217,6 @@ export default function Battle(state: any = initialState, action: any) {
       return {
         ...state,
         isTurn: !state.isTurn,
-      };
-    case SET_ENTRY_MODAL:
-      return {
-        ...state,
-        entryModal: false,
       };
     case SET_USER_HAND:
       return {
