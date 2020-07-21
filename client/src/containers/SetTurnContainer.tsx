@@ -8,6 +8,8 @@ export default function SetTurnContainer() {
   const user = useState(store.getState().Battle.userCharacter)[0];
   const eneme = useState(store.getState().Battle.eneme)[0];
   const [hand, setHand] = useState(store.getState().Battle.hand);
+  const userPosition = useState(store.getState().Battle.userPosition)[0];
+  const enemePosition = useState(store.getState().Battle.enemePosition)[0];
 
   useEffect(() => {
     if (entryModal && store.getState().Battle.userCharacter) {
@@ -32,6 +34,13 @@ export default function SetTurnContainer() {
   }, [entryModal]);
 
   return (
-    <SetTurnPresenter user={user} eneme={eneme} hand={hand} setHand={setHand} />
+    <SetTurnPresenter
+      user={user}
+      eneme={eneme}
+      hand={hand}
+      setHand={setHand}
+      userPosition={userPosition}
+      enemePosition={enemePosition}
+    />
   );
 }

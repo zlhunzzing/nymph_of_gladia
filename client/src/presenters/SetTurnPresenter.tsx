@@ -2,7 +2,7 @@ import React, { Dispatch } from 'react';
 import '../presenterStyles/SetTurnPresenter.css';
 // import store from '../index';
 // import * as handleModalActions from '../modules/HandleModal';
-import { User } from '../common/interface/BattleInterface';
+import { User, Position } from '../common/interface/BattleInterface';
 import store from '..';
 import * as battleActions from '../modules/Battle';
 
@@ -11,6 +11,8 @@ interface Props {
   eneme: User;
   hand: Array<object>;
   setHand: Dispatch<Array<object>>;
+  userPosition: Position;
+  enemePosition: Position;
 }
 
 const SetTurnPresenter: React.FunctionComponent<Props> = ({
@@ -18,6 +20,8 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
   eneme,
   hand,
   setHand,
+  userPosition,
+  enemePosition,
 }: Props) => (
   <div className="Main">
     {user ? (
@@ -144,6 +148,7 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
             : null}
         </span>
       </span>
+
       <button
         className="continueButton"
         onClick={() => {
@@ -169,6 +174,23 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
       >
         확인
       </button>
+
+      <div className="miniField">
+        {store.getState().Battle.field.map((floor: any, floorId: number) => (
+          <div key={floorId} className="miniFloor">
+            {floor.map((room: any, roomId: number) => (
+              <div key={roomId} className="miniRoom">
+                {userPosition.x === roomId && userPosition.y === floorId
+                  ? user.name
+                  : null}
+                {enemePosition.x === roomId && enemePosition.y === floorId
+                  ? eneme.name
+                  : null}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   </div>
 );

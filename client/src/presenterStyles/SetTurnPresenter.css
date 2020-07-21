@@ -4,6 +4,7 @@
 .enemeStatus {
   float: right;
 }
+
 .card {
   border: 1px solid black;
   width: 75px;
@@ -24,6 +25,7 @@
 .uniqueCards {
   margin-top: 1px;
 }
+
 .control {
   border-top: 1px solid black;
   position: absolute;
@@ -37,4 +39,15 @@
 .continueButton {
   float: left;
   margin: 20px;
+}
+
+.miniField {
+  margin: 20px;
+  float: right;
+}
+.miniRoom {
+  border: 1px solid gray;
+  width: 44px;
+  height: 33px;
+  float: left;
 }
