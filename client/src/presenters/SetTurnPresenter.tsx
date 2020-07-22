@@ -11,6 +11,7 @@ interface Props {
   eneme: User;
   hand: Array<object>;
   setHand: Dispatch<Array<object>>;
+  setUser: Dispatch<Object>;
   userPosition: Position;
   enemePosition: Position;
 }
@@ -20,6 +21,7 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
   eneme,
   hand,
   setHand,
+  setUser,
   userPosition,
   enemePosition,
 }: Props) => (
@@ -55,9 +57,9 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                 if (
                   Object.keys(hand[value]).length === 0 &&
                   hand[value].constructor === Object &&
-                  el.className !== `card ${card.position} cardOpacity`
+                  el.className !== `card ${card.position} selectedCard`
                 ) {
-                  el.className = `card ${card.position} cardOpacity`;
+                  el.className = `card ${card.position} selectedCard`;
                   hand[value] = card;
                   store.dispatch(
                     battleActions.set_user_hand({
@@ -65,6 +67,7 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                     }),
                   );
                   setHand(hand.slice(0, hand.length));
+                  setUser({ ...user, mp: user.mp - card.cost });
                   break;
                 }
               }
@@ -84,7 +87,9 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
         user.uniqueCards.map((card: any, id: number) => (
           <span
             key={id}
-            className={`card ${card.position}`}
+            className={`card ${card.position} ${
+              user.mp < card.cost ? 'lackedMana' : null
+            }`}
             onClick={() => {
               let el = document.querySelector(
                 `.${card.position}`,
@@ -93,9 +98,10 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                 if (
                   Object.keys(hand[value]).length === 0 &&
                   hand[value].constructor === Object &&
-                  el.className !== `card ${card.position} cardOpacity`
+                  el.className !== `card ${card.position} selectedCard` &&
+                  el.className !== `card ${card.position} lackedMana`
                 ) {
-                  el.className = `card ${card.position} cardOpacity`;
+                  el.className = `card ${card.position} selectedCard`;
                   hand[value] = card;
                   store.dispatch(
                     battleActions.set_user_hand({
@@ -103,6 +109,12 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                     }),
                   );
                   setHand(hand.slice(0, hand.length));
+                  if (card.cost) {
+                    store.dispatch(
+                      battleActions.set_user_mp({ mp: user.mp - card.cost }),
+                    );
+                    setUser({ ...user, mp: user.mp - card.cost });
+                  }
                   break;
                 }
               }
@@ -135,10 +147,20 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                         }),
                       );
                       setHand(hand.slice(0, hand.length));
+                      if (card.cost) {
+                        store.dispatch(
+                          battleActions.set_user_mp({
+                            mp: user.mp + card.cost,
+                          }),
+                        );
+                        setUser({ ...user, mp: user.mp + card.cost });
+                      }
                       let el = document.querySelector(
                         `.${card.position}`,
                       ) as HTMLElement;
-                      el.className = `card ${card.position}`;
+                      el.className = `card ${card.position} ${
+                        user.mp < card.cost ? 'lackedMana' : null
+                      }`;
                     }
                   }}
                 >

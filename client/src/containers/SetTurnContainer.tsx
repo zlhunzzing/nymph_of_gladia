@@ -5,7 +5,7 @@ import * as handleModalActions from '../modules/HandleModal';
 
 export default function SetTurnContainer() {
   const entryModal = useState(store.getState().Battle.entryModal)[0];
-  const user = useState(store.getState().Battle.userCharacter)[0];
+  const [user, setUser] = useState(store.getState().Battle.userCharacter);
   const eneme = useState(store.getState().Battle.eneme)[0];
   const [hand, setHand] = useState(store.getState().Battle.hand);
   const userPosition = useState(store.getState().Battle.userPosition)[0];
@@ -39,6 +39,7 @@ export default function SetTurnContainer() {
       eneme={eneme}
       hand={hand}
       setHand={setHand}
+      setUser={setUser}
       userPosition={userPosition}
       enemePosition={enemePosition}
     />

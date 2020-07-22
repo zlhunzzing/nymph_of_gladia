@@ -7,6 +7,8 @@ import { Dispatch } from 'react';
 const SELECT_CHARACTER = 'App/Battle/SELECT_CHARACTER';
 const SET_IS_TURN = 'App/Battle/SET_IS_TURN';
 const SET_USER_HAND = 'App/Battle/SET_USER_HAND';
+const SET_USER_MP = 'App/Battle/SET_USER_MP';
+// const SET_ENEME_MP = 'App/Battle/SET_ENEME_MP';
 const MOVE_USER_X_POSITION = 'App/Battle/MOVE_USER_X_POSITION';
 const MOVE_USER_Y_POSITION = 'App/Battle/MOVE_USER_Y_POSITION';
 const MOVE_ENEME_X_POSITION = 'App/Battle/MOVE_ENEME_X_POSITION';
@@ -17,6 +19,10 @@ export const select_character = createAction(SELECT_CHARACTER);
 export const set_is_turn = createAction(SET_IS_TURN);
 export const set_user_hand = createAction(SET_USER_HAND);
 // payload: {hand: [{},{},{}] Array<Card> }
+export const set_user_mp = createAction(SET_USER_MP);
+// payload: {mp: 50 <mumber> }
+// export const set_eneme_mp = createAction(SET_ENEME_MP);
+// // payload: {mp: 50 <mumber> }
 export const move_user_x_position = createAction(MOVE_USER_X_POSITION);
 // payload: {x: 1 <number> }
 export const move_user_y_position = createAction(MOVE_USER_Y_POSITION);
@@ -166,6 +172,12 @@ const initialState = {
           store.dispatch(move_user_x_position({ x: rightX }));
           setPosition(store.getState().Battle.userPosition);
           break;
+        // case 'ATT':
+        // let rightX1 = store.getState().Battle.userPosition.x + 1;
+        // if (rightX > 3) rightX = 3;
+        // store.dispatch(move_user_x_position({ x: rightX }));
+        // setPosition(store.getState().Battle.userPosition);
+        // break;
       }
     } else {
       switch (card.type) {
@@ -222,6 +234,11 @@ export default function Battle(state: any = initialState, action: any) {
       return {
         ...state,
         hand: action.payload.hand,
+      };
+    case SET_USER_MP:
+      return {
+        ...state,
+        userCharacter: { ...state.userCharacter, mp: action.payload.mp },
       };
     case MOVE_USER_X_POSITION:
       return {

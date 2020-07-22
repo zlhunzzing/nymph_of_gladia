@@ -13,8 +13,11 @@
   margin-left: 1px;
   margin-right: 1px;
 }
-.cardOpacity {
+.selectedCard {
   opacity: 0;
+}
+.lackedMana {
+  color: gray;
 }
 .card:hover {
   background-color: coral;
