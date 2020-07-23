@@ -14,4 +14,6 @@ export interface Position {
 export interface Card {
   type: string;
   speed: number;
+  damage: number;
+  range: Array<Array<number>>;
 }

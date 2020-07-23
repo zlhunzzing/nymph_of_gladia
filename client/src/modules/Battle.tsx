@@ -8,7 +8,7 @@ const SELECT_CHARACTER = 'App/Battle/SELECT_CHARACTER';
 const SET_IS_TURN = 'App/Battle/SET_IS_TURN';
 const SET_USER_HAND = 'App/Battle/SET_USER_HAND';
 const SET_USER_MP = 'App/Battle/SET_USER_MP';
-// const SET_ENEME_MP = 'App/Battle/SET_ENEME_MP';
+const SET_ENEME_HP = 'App/Battle/SET_ENEME_HP';
 const MOVE_USER_X_POSITION = 'App/Battle/MOVE_USER_X_POSITION';
 const MOVE_USER_Y_POSITION = 'App/Battle/MOVE_USER_Y_POSITION';
 const MOVE_ENEME_X_POSITION = 'App/Battle/MOVE_ENEME_X_POSITION';
@@ -21,8 +21,8 @@ export const set_user_hand = createAction(SET_USER_HAND);
 // payload: {hand: [{},{},{}] Array<Card> }
 export const set_user_mp = createAction(SET_USER_MP);
 // payload: {mp: 50 <mumber> }
-// export const set_eneme_mp = createAction(SET_ENEME_MP);
-// // payload: {mp: 50 <mumber> }
+export const set_eneme_hp = createAction(SET_ENEME_HP);
+// payload: {hp: 75 <number> }
 export const move_user_x_position = createAction(MOVE_USER_X_POSITION);
 // payload: {x: 1 <number> }
 export const move_user_y_position = createAction(MOVE_USER_Y_POSITION);
@@ -74,22 +74,22 @@ const initialState = {
   enemeHand: [CARD_DICTIONARY.LEFT, CARD_DICTIONARY.LEFT, CARD_DICTIONARY.LEFT],
   field: [
     [
-      { user: [null, null] },
-      { user: [null, null] },
-      { user: [null, null] },
-      { user: [null, null] },
+      { effect: false },
+      { effect: false },
+      { effect: false },
+      { effect: false },
     ],
     [
-      { user: [null, null] },
-      { user: [null, null] },
-      { user: [null, null] },
-      { user: [null, null] },
+      { effect: false },
+      { effect: false },
+      { effect: false },
+      { effect: false },
     ],
     [
-      { user: [null, null] },
-      { user: [null, null] },
-      { user: [null, null] },
-      { user: [null, null] },
+      { effect: false },
+      { effect: false },
+      { effect: false },
+      { effect: false },
     ],
   ],
   userPosition: { x: 0, y: 1 },
@@ -114,15 +114,31 @@ const initialState = {
         );
         firstTurn = !firstTurn;
         setTimeout(() => (middleTurn = !middleTurn), 1000);
+      } else {
+        initialState.cardAction(false, enemeHand[0], setEnemePosition);
+        setTimeout(
+          () => initialState.cardAction(true, userHand[0], setUserPosition),
+          500,
+        );
+        firstTurn = !firstTurn;
+        setTimeout(() => (middleTurn = !middleTurn), 1000);
       }
     }
     setTimeout(() => {
       if (middleTurn) {
-        if (userHand[1].speed <= enemeHand[1].speed) {
+        if (userHand[1].speed >= enemeHand[1].speed) {
           initialState.cardAction(true, userHand[1], setUserPosition);
           setTimeout(
             () =>
               initialState.cardAction(false, enemeHand[1], setEnemePosition),
+            500,
+          );
+          middleTurn = !middleTurn;
+          setTimeout(() => (lastTurn = !lastTurn), 1000);
+        } else {
+          initialState.cardAction(false, enemeHand[1], setEnemePosition);
+          setTimeout(
+            () => initialState.cardAction(true, userHand[1], setUserPosition),
             500,
           );
           middleTurn = !middleTurn;
@@ -137,6 +153,13 @@ const initialState = {
           setTimeout(
             () =>
               initialState.cardAction(false, enemeHand[2], setEnemePosition),
+            500,
+          );
+          lastTurn = !lastTurn;
+        } else {
+          initialState.cardAction(false, enemeHand[2], setEnemePosition);
+          setTimeout(
+            () => initialState.cardAction(true, userHand[2], setUserPosition),
             500,
           );
           lastTurn = !lastTurn;
@@ -172,12 +195,32 @@ const initialState = {
           store.dispatch(move_user_x_position({ x: rightX }));
           setPosition(store.getState().Battle.userPosition);
           break;
-        // case 'ATT':
-        // let rightX1 = store.getState().Battle.userPosition.x + 1;
-        // if (rightX > 3) rightX = 3;
-        // store.dispatch(move_user_x_position({ x: rightX }));
-        // setPosition(store.getState().Battle.userPosition);
-        // break;
+        case 'ATT':
+          let effectiveRangeX = null;
+          let effectiveRangeY = null;
+          let userPosition = store.getState().Battle.userPosition;
+          let enemePosition = store.getState().Battle.enemePosition;
+          for (let i = 0; i < card.range.length; i++) {
+            effectiveRangeX = userPosition.x + card.range[i][0];
+            effectiveRangeY = userPosition.y + card.range[i][1];
+            if (
+              effectiveRangeX <= 3 &&
+              effectiveRangeX >= 0 &&
+              effectiveRangeY >= 2 &&
+              effectiveRangeY >= -1
+            ) {
+            }
+            if (
+              effectiveRangeX === enemePosition.x &&
+              effectiveRangeY === enemePosition.y
+            ) {
+              store.dispatch(
+                set_eneme_hp({
+                  hp: store.getState().Battle.eneme.hp - card.damage,
+                }),
+              );
+            }
+          }
       }
     } else {
       switch (card.type) {
@@ -239,6 +282,11 @@ export default function Battle(state: any = initialState, action: any) {
       return {
         ...state,
         userCharacter: { ...state.userCharacter, mp: action.payload.mp },
+      };
+    case SET_ENEME_HP:
+      return {
+        ...state,
+        eneme: { ...state.userCharacter, hp: action.payload.hp },
       };
     case MOVE_USER_X_POSITION:
       return {
