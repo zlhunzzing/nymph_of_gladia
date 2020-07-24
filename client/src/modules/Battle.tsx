@@ -221,6 +221,17 @@ const initialState = {
               );
             }
           }
+          break;
+        case CARD_DICTIONARY.MANA_UP.type:
+          let mp = store.getState().Battle.userCharacter.mp + 15;
+          if (mp >= 100) mp = 100;
+          store.dispatch(
+            set_user_mp({
+              mp,
+            }),
+          );
+          // store.dispatch();
+          break;
       }
     } else {
       switch (card.type) {
