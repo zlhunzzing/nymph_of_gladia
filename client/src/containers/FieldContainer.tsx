@@ -4,7 +4,7 @@ import store from '../index';
 
 export default function FieldContainer() {
   const isTurn = useState(store.getState().Battle.isTurn)[0];
-  const user = useState(store.getState().Battle.userCharacter)[0];
+  const [user, setUser] = useState(store.getState().Battle.userCharacter);
   const eneme = useState(store.getState().Battle.eneme)[0];
   const hand = useState(store.getState().Battle.hand)[0];
   const enemeHand = useState(store.getState().Battle.enemeHand)[0];
@@ -24,6 +24,7 @@ export default function FieldContainer() {
           store.getState().Battle.enemeHand,
           setUserPostion,
           setEnemePosition,
+          setUser,
         );
     }
   }, [isTurn]);

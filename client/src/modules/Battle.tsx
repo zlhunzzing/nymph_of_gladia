@@ -99,6 +99,7 @@ const initialState = {
     enemeHand: Array<Card>,
     setUserPosition: Dispatch<Position>,
     setEnemePosition: Dispatch<Position>,
+    setUser: Dispatch<object>,
   ) {
     let firstTurn = false;
     let middleTurn = false;
@@ -107,17 +108,29 @@ const initialState = {
     firstTurn = !firstTurn;
     if (firstTurn) {
       if (userHand[0].speed <= enemeHand[0].speed) {
-        initialState.cardAction(true, userHand[0], setUserPosition);
+        initialState.cardAction(true, userHand[0], setUserPosition, setUser);
         setTimeout(
-          () => initialState.cardAction(false, enemeHand[0], setEnemePosition),
+          () =>
+            initialState.cardAction(
+              false,
+              enemeHand[0],
+              setEnemePosition,
+              setUser,
+            ),
           500,
         );
         firstTurn = !firstTurn;
         setTimeout(() => (middleTurn = !middleTurn), 1000);
       } else {
-        initialState.cardAction(false, enemeHand[0], setEnemePosition);
+        initialState.cardAction(false, enemeHand[0], setEnemePosition, setUser);
         setTimeout(
-          () => initialState.cardAction(true, userHand[0], setUserPosition),
+          () =>
+            initialState.cardAction(
+              true,
+              userHand[0],
+              setUserPosition,
+              setUser,
+            ),
           500,
         );
         firstTurn = !firstTurn;
@@ -127,18 +140,34 @@ const initialState = {
     setTimeout(() => {
       if (middleTurn) {
         if (userHand[1].speed >= enemeHand[1].speed) {
-          initialState.cardAction(true, userHand[1], setUserPosition);
+          initialState.cardAction(true, userHand[1], setUserPosition, setUser);
           setTimeout(
             () =>
-              initialState.cardAction(false, enemeHand[1], setEnemePosition),
+              initialState.cardAction(
+                false,
+                enemeHand[1],
+                setEnemePosition,
+                setUser,
+              ),
             500,
           );
           middleTurn = !middleTurn;
           setTimeout(() => (lastTurn = !lastTurn), 1000);
         } else {
-          initialState.cardAction(false, enemeHand[1], setEnemePosition);
+          initialState.cardAction(
+            false,
+            enemeHand[1],
+            setEnemePosition,
+            setUser,
+          );
           setTimeout(
-            () => initialState.cardAction(true, userHand[1], setUserPosition),
+            () =>
+              initialState.cardAction(
+                true,
+                userHand[1],
+                setUserPosition,
+                setUser,
+              ),
             500,
           );
           middleTurn = !middleTurn;
@@ -149,17 +178,33 @@ const initialState = {
     setTimeout(() => {
       if (lastTurn) {
         if (userHand[2].speed <= enemeHand[2].speed) {
-          initialState.cardAction(true, userHand[2], setUserPosition);
+          initialState.cardAction(true, userHand[2], setUserPosition, setUser);
           setTimeout(
             () =>
-              initialState.cardAction(false, enemeHand[2], setEnemePosition),
+              initialState.cardAction(
+                false,
+                enemeHand[2],
+                setEnemePosition,
+                setUser,
+              ),
             500,
           );
           lastTurn = !lastTurn;
         } else {
-          initialState.cardAction(false, enemeHand[2], setEnemePosition);
+          initialState.cardAction(
+            false,
+            enemeHand[2],
+            setEnemePosition,
+            setUser,
+          );
           setTimeout(
-            () => initialState.cardAction(true, userHand[2], setUserPosition),
+            () =>
+              initialState.cardAction(
+                true,
+                userHand[2],
+                setUserPosition,
+                setUser,
+              ),
             500,
           );
           lastTurn = !lastTurn;
@@ -168,7 +213,12 @@ const initialState = {
       }
     }, 3000);
   },
-  cardAction(user: boolean, card: Card, setPosition: Dispatch<Position>) {
+  cardAction(
+    user: boolean,
+    card: Card,
+    setPosition: Dispatch<Position>,
+    setUser: Dispatch<object>,
+  ) {
     if (user) {
       switch (card.type) {
         case CARD_DICTIONARY.UP.type:
@@ -225,12 +275,12 @@ const initialState = {
         case CARD_DICTIONARY.MANA_UP.type:
           let mp = store.getState().Battle.userCharacter.mp + 15;
           if (mp >= 100) mp = 100;
+          setUser({ ...store.getState().Battle.userCharacter, mp: mp });
           store.dispatch(
             set_user_mp({
               mp,
             }),
           );
-          // store.dispatch();
           break;
       }
     } else {
@@ -297,7 +347,7 @@ export default function Battle(state: any = initialState, action: any) {
     case SET_ENEME_HP:
       return {
         ...state,
-        eneme: { ...state.userCharacter, hp: action.payload.hp },
+        eneme: { ...state.eneme, hp: action.payload.hp },
       };
     case MOVE_USER_X_POSITION:
       return {
