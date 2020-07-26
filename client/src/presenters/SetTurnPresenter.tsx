@@ -14,6 +14,8 @@ interface Props {
   setUser: Dispatch<Object>;
   userPosition: Position;
   enemePosition: Position;
+  mana: number;
+  setMana: Dispatch<number>;
 }
 
 const SetTurnPresenter: React.FunctionComponent<Props> = ({
@@ -24,6 +26,8 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
   setUser,
   userPosition,
   enemePosition,
+  mana,
+  setMana,
 }: Props) => (
   <div className="Main">
     {user ? (
@@ -32,7 +36,9 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
           <div>
             <div>NAME: {user.name}</div>
             <div>HP: {user.hp}</div>
-            <div>MP: {user.mp}</div>
+            <div>
+              MP: {mana}/{user.mp}
+            </div>
           </div>
         </div>
         <div className="enemeStatus">
@@ -67,7 +73,8 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                     }),
                   );
                   setHand(hand.slice(0, hand.length));
-                  setUser({ ...user, mp: user.mp - card.cost });
+                  setMana(mana - card.cost);
+                  // setUser({ ...user, mp: user.mp - card.cost });
                   break;
                 }
               }
@@ -88,7 +95,7 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
           <span
             key={id}
             className={`card ${card.position} ${
-              user.mp < card.cost ? 'lackedMana' : null
+              mana < card.cost ? 'lackedMana' : null
             }`}
             onClick={() => {
               let el = document.querySelector(
@@ -113,7 +120,8 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                     store.dispatch(
                       battleActions.set_user_mp({ mp: user.mp - card.cost }),
                     );
-                    setUser({ ...user, mp: user.mp - card.cost });
+                    setMana(mana - card.cost);
+                    // setUser({ ...user, mp: user.mp - card.cost });
                   }
                   break;
                 }
@@ -153,14 +161,13 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                             mp: user.mp + card.cost,
                           }),
                         );
-                        setUser({ ...user, mp: user.mp + card.cost });
+                        setMana(mana + card.cost);
+                        // setUser({ ...user, mp: user.mp + card.cost });
                       }
                       let el = document.querySelector(
                         `.${card.position}`,
                       ) as HTMLElement;
-                      el.className = `card ${card.position} ${
-                        user.mp < card.cost ? 'lackedMana' : null
-                      }`;
+                      el.className = `card ${card.position}`;
                     }
                   }}
                 >

@@ -94,6 +94,13 @@ const initialState = {
   ],
   userPosition: { x: 0, y: 1 },
   enemePosition: { x: 3, y: 1 },
+  // checkHand: function (hand: any, position: string) {
+  //   for (let i = 0; i < hand.length; i++) {
+  //     if (hand.position === position) {
+  //       return true;
+  //     }
+  //   }
+  // },
   nextTurn: function (
     userHand: Array<Card>,
     enemeHand: Array<Card>,
