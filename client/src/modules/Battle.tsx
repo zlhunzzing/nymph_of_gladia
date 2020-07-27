@@ -7,7 +7,9 @@ import { Dispatch } from 'react';
 const SELECT_CHARACTER = 'App/Battle/SELECT_CHARACTER';
 const SET_IS_TURN = 'App/Battle/SET_IS_TURN';
 const SET_USER_HAND = 'App/Battle/SET_USER_HAND';
+const SET_USER_HP = 'App/Battle/SET_USER_HP';
 const SET_USER_MP = 'App/Battle/SET_USER_MP';
+const SET_USER_DEF = 'App/Battle/SET_USER_DEF';
 const SET_ENEME_HP = 'App/Battle/SET_ENEME_HP';
 const MOVE_USER_X_POSITION = 'App/Battle/MOVE_USER_X_POSITION';
 const MOVE_USER_Y_POSITION = 'App/Battle/MOVE_USER_Y_POSITION';
@@ -19,8 +21,12 @@ export const select_character = createAction(SELECT_CHARACTER);
 export const set_is_turn = createAction(SET_IS_TURN);
 export const set_user_hand = createAction(SET_USER_HAND);
 // payload: {hand: [{},{},{}] Array<Card> }
+export const set_user_hp = createAction(SET_USER_HP);
+// payload: {hp: 75 <number> }
 export const set_user_mp = createAction(SET_USER_MP);
 // payload: {mp: 50 <mumber> }
+export const set_user_def = createAction(SET_USER_DEF);
+// payload: {defence: 10 <number> }
 export const set_eneme_hp = createAction(SET_ENEME_HP);
 // payload: {hp: 75 <number> }
 export const move_user_x_position = createAction(MOVE_USER_X_POSITION);
@@ -37,6 +43,7 @@ const initialState = {
     name: string;
     hp: number;
     mp: number;
+    def: number;
     basicCards: Array<object>;
     uniqueCards: Array<object>;
 
@@ -44,6 +51,7 @@ const initialState = {
       this.name = name;
       this.hp = 100;
       this.mp = 100;
+      this.def = 0;
       this.basicCards = [
         CARD_DICTIONARY.UP,
         CARD_DICTIONARY.DOWN,
@@ -71,7 +79,7 @@ const initialState = {
   eneme: {},
   isTurn: false,
   hand: [{}, {}, {}],
-  enemeHand: [CARD_DICTIONARY.LEFT, CARD_DICTIONARY.LEFT, CARD_DICTIONARY.LEFT],
+  enemeHand: [CARD_DICTIONARY.LEFT, CARD_DICTIONARY.LEFT, CARD_DICTIONARY.ATT1],
   field: [
     [
       { effect: false },
@@ -273,7 +281,7 @@ const initialState = {
             ) {
               store.dispatch(
                 set_eneme_hp({
-                  hp: store.getState().Battle.eneme.hp - card.damage,
+                  hp: store.getState().Battle.eneme.hp - card.power,
                 }),
               );
             }
@@ -286,6 +294,13 @@ const initialState = {
           store.dispatch(
             set_user_mp({
               mp,
+            }),
+          );
+          break;
+        case CARD_DICTIONARY.GUARD.type:
+          store.dispatch(
+            set_user_def({
+              def: 10,
             }),
           );
           break;
@@ -315,6 +330,40 @@ const initialState = {
           if (rightX > 3) rightX = 3;
           store.dispatch(move_eneme_x_position({ x: rightX }));
           setPosition(store.getState().Battle.enemePosition);
+          break;
+        case 'ATT':
+          let effectiveRangeX = null;
+          let effectiveRangeY = null;
+          let userPosition = store.getState().Battle.userPosition;
+          let enemePosition = store.getState().Battle.enemePosition;
+          for (let i = 0; i < card.range.length; i++) {
+            effectiveRangeX = enemePosition.x + card.range[i][0];
+            effectiveRangeY = enemePosition.y + card.range[i][1];
+            if (
+              effectiveRangeX <= 3 &&
+              effectiveRangeX >= 0 &&
+              effectiveRangeY >= 2 &&
+              effectiveRangeY >= -1
+            ) {
+            }
+            if (
+              effectiveRangeX === userPosition.x &&
+              effectiveRangeY === userPosition.y
+            ) {
+              store.dispatch(
+                set_user_hp({
+                  hp:
+                    store.getState().Battle.userCharacter.hp -
+                    (card.power - store.getState().Battle.userCharacter.def),
+                }),
+              );
+              store.dispatch(
+                set_user_def({
+                  def: 0,
+                }),
+              );
+            }
+          }
           break;
       }
     }
@@ -346,10 +395,20 @@ export default function Battle(state: any = initialState, action: any) {
         ...state,
         hand: action.payload.hand,
       };
+    case SET_USER_HP:
+      return {
+        ...state,
+        userCharacter: { ...state.userCharacter, hp: action.payload.hp },
+      };
     case SET_USER_MP:
       return {
         ...state,
         userCharacter: { ...state.userCharacter, mp: action.payload.mp },
+      };
+    case SET_USER_DEF:
+      return {
+        ...state,
+        userCharacter: { ...state.userCharacter, def: action.payload.def },
       };
     case SET_ENEME_HP:
       return {
