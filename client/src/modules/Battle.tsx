@@ -135,6 +135,7 @@ const initialState = {
           500,
         );
         firstTurn = !firstTurn;
+        initialState.turnCheck();
         setTimeout(() => (middleTurn = !middleTurn), 1000);
       } else {
         initialState.cardAction(false, enemeHand[0], setEnemePosition, setUser);
@@ -149,6 +150,7 @@ const initialState = {
           500,
         );
         firstTurn = !firstTurn;
+        initialState.turnCheck();
         setTimeout(() => (middleTurn = !middleTurn), 1000);
       }
     }
@@ -167,6 +169,7 @@ const initialState = {
             500,
           );
           middleTurn = !middleTurn;
+          initialState.turnCheck();
           setTimeout(() => (lastTurn = !lastTurn), 1000);
         } else {
           initialState.cardAction(
@@ -186,6 +189,7 @@ const initialState = {
             500,
           );
           middleTurn = !middleTurn;
+          initialState.turnCheck();
           setTimeout(() => (lastTurn = !lastTurn), 1000);
         }
       }
@@ -205,6 +209,7 @@ const initialState = {
             500,
           );
           lastTurn = !lastTurn;
+          initialState.turnCheck();
         } else {
           initialState.cardAction(
             false,
@@ -223,6 +228,7 @@ const initialState = {
             500,
           );
           lastTurn = !lastTurn;
+          initialState.turnCheck();
         }
         setTimeout(() => store.dispatch(set_is_turn()), 2000);
       }
@@ -366,6 +372,21 @@ const initialState = {
           }
           break;
       }
+    }
+  },
+  turnCheck: function () {
+    let userHp = store.getState().Battle.userCharacter.hp;
+    let enemeHp = store.getState().Battle.eneme.hp;
+    if (userHp <= 0) {
+      if (enemeHp <= 0) {
+        console.log('Draw');
+      } else {
+        console.log('Lose');
+      }
+    } else if (enemeHp <= 0) {
+      console.log('Win');
+    } else {
+      console.log('Continue...');
     }
   },
   clearHand: function () {
