@@ -117,9 +117,6 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                   );
                   setHand(hand.slice(0, hand.length));
                   if (card.cost) {
-                    store.dispatch(
-                      battleActions.set_user_mp({ mp: user.mp - card.cost }),
-                    );
                     setMana(mana - card.cost);
                     // setUser({ ...user, mp: user.mp - card.cost });
                   }

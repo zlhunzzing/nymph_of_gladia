@@ -14,6 +14,7 @@ export default function FieldContainer() {
   const [enemePosition, setEnemePosition] = useState(
     store.getState().Battle.enemePosition,
   );
+  const [mana, setMana] = useState(user.mp);
 
   useEffect(() => {
     if (isTurn) {
@@ -25,6 +26,7 @@ export default function FieldContainer() {
           setUserPostion,
           setEnemePosition,
           setUser,
+          setMana,
         );
     }
   }, [isTurn]);
@@ -37,6 +39,7 @@ export default function FieldContainer() {
       enemeHand={enemeHand}
       userPosition={userPosition}
       enemePosition={enemePosition}
+      mana={mana}
     />
   );
 }

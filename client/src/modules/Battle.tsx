@@ -115,6 +115,7 @@ const initialState = {
     setUserPosition: Dispatch<Position>,
     setEnemePosition: Dispatch<Position>,
     setUser: Dispatch<object>,
+    setMana: Dispatch<number>,
   ) {
     let firstTurn = false;
     let middleTurn = false;
@@ -123,7 +124,13 @@ const initialState = {
     firstTurn = !firstTurn;
     if (firstTurn) {
       if (userHand[0].speed <= enemeHand[0].speed) {
-        initialState.cardAction(true, userHand[0], setUserPosition, setUser);
+        initialState.cardAction(
+          true,
+          userHand[0],
+          setUserPosition,
+          setUser,
+          setMana,
+        );
         setTimeout(
           () =>
             initialState.cardAction(
@@ -131,6 +138,7 @@ const initialState = {
               enemeHand[0],
               setEnemePosition,
               setUser,
+              setMana,
             ),
           500,
         );
@@ -138,7 +146,13 @@ const initialState = {
         initialState.turnCheck();
         setTimeout(() => (middleTurn = !middleTurn), 1000);
       } else {
-        initialState.cardAction(false, enemeHand[0], setEnemePosition, setUser);
+        initialState.cardAction(
+          false,
+          enemeHand[0],
+          setEnemePosition,
+          setUser,
+          setMana,
+        );
         setTimeout(
           () =>
             initialState.cardAction(
@@ -146,6 +160,7 @@ const initialState = {
               userHand[0],
               setUserPosition,
               setUser,
+              setMana,
             ),
           500,
         );
@@ -157,7 +172,13 @@ const initialState = {
     setTimeout(() => {
       if (middleTurn) {
         if (userHand[1].speed >= enemeHand[1].speed) {
-          initialState.cardAction(true, userHand[1], setUserPosition, setUser);
+          initialState.cardAction(
+            true,
+            userHand[1],
+            setUserPosition,
+            setUser,
+            setMana,
+          );
           setTimeout(
             () =>
               initialState.cardAction(
@@ -165,6 +186,7 @@ const initialState = {
                 enemeHand[1],
                 setEnemePosition,
                 setUser,
+                setMana,
               ),
             500,
           );
@@ -177,6 +199,7 @@ const initialState = {
             enemeHand[1],
             setEnemePosition,
             setUser,
+            setMana,
           );
           setTimeout(
             () =>
@@ -185,6 +208,7 @@ const initialState = {
                 userHand[1],
                 setUserPosition,
                 setUser,
+                setMana,
               ),
             500,
           );
@@ -197,7 +221,13 @@ const initialState = {
     setTimeout(() => {
       if (lastTurn) {
         if (userHand[2].speed <= enemeHand[2].speed) {
-          initialState.cardAction(true, userHand[2], setUserPosition, setUser);
+          initialState.cardAction(
+            true,
+            userHand[2],
+            setUserPosition,
+            setUser,
+            setMana,
+          );
           setTimeout(
             () =>
               initialState.cardAction(
@@ -205,6 +235,7 @@ const initialState = {
                 enemeHand[2],
                 setEnemePosition,
                 setUser,
+                setMana,
               ),
             500,
           );
@@ -216,6 +247,7 @@ const initialState = {
             enemeHand[2],
             setEnemePosition,
             setUser,
+            setMana,
           );
           setTimeout(
             () =>
@@ -224,6 +256,7 @@ const initialState = {
                 userHand[2],
                 setUserPosition,
                 setUser,
+                setMana,
               ),
             500,
           );
@@ -239,6 +272,7 @@ const initialState = {
     card: Card,
     setPosition: Dispatch<Position>,
     setUser: Dispatch<object>,
+    setMana: Dispatch<number>,
   ) {
     if (user) {
       switch (card.type) {
@@ -267,6 +301,10 @@ const initialState = {
           setPosition(store.getState().Battle.userPosition);
           break;
         case 'ATT':
+          let mana = store.getState().Battle.userCharacter.mp - card.cost;
+          store.dispatch(set_user_mp({ mp: mana }));
+          setMana(mana);
+
           let effectiveRangeX = null;
           let effectiveRangeY = null;
           let userPosition = store.getState().Battle.userPosition;

@@ -11,6 +11,7 @@ interface Props {
   enemeHand: Array<object>;
   userPosition: Position;
   enemePosition: Position;
+  mana: number;
 }
 
 const FieldPresenter: React.FunctionComponent<Props> = ({
@@ -20,6 +21,7 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
   enemeHand,
   userPosition,
   enemePosition,
+  mana,
 }: Props) => (
   <div className="Main">
     {user ? (
@@ -28,7 +30,7 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
           <div>
             <div>NAME: {user.name}</div>
             <div>HP: {user.hp}</div>
-            <div>MP: {user.mp}</div>
+            <div>MP: {mana}</div>
           </div>
         </div>
         <div className="enemeStatus">
