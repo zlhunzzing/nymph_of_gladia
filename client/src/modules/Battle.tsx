@@ -115,6 +115,7 @@ const initialState = {
     setUserPosition: Dispatch<Position>,
     setEnemePosition: Dispatch<Position>,
     setUser: Dispatch<object>,
+    setEneme: Dispatch<object>,
     setMana: Dispatch<number>,
   ) {
     let firstTurn = false;
@@ -129,6 +130,7 @@ const initialState = {
           userHand[0],
           setUserPosition,
           setUser,
+          setEneme,
           setMana,
         );
         setTimeout(
@@ -138,6 +140,7 @@ const initialState = {
               enemeHand[0],
               setEnemePosition,
               setUser,
+              setEneme,
               setMana,
             ),
           500,
@@ -151,6 +154,7 @@ const initialState = {
           enemeHand[0],
           setEnemePosition,
           setUser,
+          setEneme,
           setMana,
         );
         setTimeout(
@@ -160,6 +164,7 @@ const initialState = {
               userHand[0],
               setUserPosition,
               setUser,
+              setEneme,
               setMana,
             ),
           500,
@@ -177,6 +182,7 @@ const initialState = {
             userHand[1],
             setUserPosition,
             setUser,
+            setEneme,
             setMana,
           );
           setTimeout(
@@ -186,6 +192,7 @@ const initialState = {
                 enemeHand[1],
                 setEnemePosition,
                 setUser,
+                setEneme,
                 setMana,
               ),
             500,
@@ -199,6 +206,7 @@ const initialState = {
             enemeHand[1],
             setEnemePosition,
             setUser,
+            setEneme,
             setMana,
           );
           setTimeout(
@@ -208,6 +216,7 @@ const initialState = {
                 userHand[1],
                 setUserPosition,
                 setUser,
+                setEneme,
                 setMana,
               ),
             500,
@@ -226,6 +235,7 @@ const initialState = {
             userHand[2],
             setUserPosition,
             setUser,
+            setEneme,
             setMana,
           );
           setTimeout(
@@ -235,6 +245,7 @@ const initialState = {
                 enemeHand[2],
                 setEnemePosition,
                 setUser,
+                setEneme,
                 setMana,
               ),
             500,
@@ -247,6 +258,7 @@ const initialState = {
             enemeHand[2],
             setEnemePosition,
             setUser,
+            setEneme,
             setMana,
           );
           setTimeout(
@@ -256,6 +268,7 @@ const initialState = {
                 userHand[2],
                 setUserPosition,
                 setUser,
+                setEneme,
                 setMana,
               ),
             500,
@@ -272,6 +285,7 @@ const initialState = {
     card: Card,
     setPosition: Dispatch<Position>,
     setUser: Dispatch<object>,
+    setEneme: Dispatch<object>,
     setMana: Dispatch<number>,
   ) {
     if (user) {
@@ -323,11 +337,13 @@ const initialState = {
               effectiveRangeX === enemePosition.x &&
               effectiveRangeY === enemePosition.y
             ) {
+              let hp = store.getState().Battle.eneme.hp - card.power;
               store.dispatch(
                 set_eneme_hp({
-                  hp: store.getState().Battle.eneme.hp - card.power,
+                  hp: hp,
                 }),
               );
+              setEneme({ ...store.getState().Battle.eneme, hp: hp });
             }
           }
           break;
@@ -394,13 +410,15 @@ const initialState = {
               effectiveRangeX === userPosition.x &&
               effectiveRangeY === userPosition.y
             ) {
+              const hp =
+                store.getState().Battle.userCharacter.hp -
+                (card.power - store.getState().Battle.userCharacter.def);
               store.dispatch(
                 set_user_hp({
-                  hp:
-                    store.getState().Battle.userCharacter.hp -
-                    (card.power - store.getState().Battle.userCharacter.def),
+                  hp: hp,
                 }),
               );
+              setUser({ ...store.getState().Battle.userCharacter, hp: hp });
               store.dispatch(
                 set_user_def({
                   def: 0,
