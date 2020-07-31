@@ -7,7 +7,7 @@ export default function FieldContainer() {
   const [user, setUser] = useState(store.getState().Battle.userCharacter);
   const [eneme, setEneme] = useState(store.getState().Battle.eneme);
   const hand = useState(store.getState().Battle.hand)[0];
-  const enemeHand = useState(store.getState().Battle.enemeHand)[0];
+  const enemeHand = useState(store.getState().Battle.eneme.hand)[0];
   const [userPosition, setUserPostion] = useState(
     store.getState().Battle.userPosition,
   );
@@ -22,7 +22,7 @@ export default function FieldContainer() {
         .getState()
         .Battle.nextTurn(
           store.getState().Battle.hand,
-          store.getState().Battle.enemeHand,
+          store.getState().Battle.eneme.hand,
           setUserPostion,
           setEnemePosition,
           setUser,

@@ -46,6 +46,7 @@ const initialState = {
     def: number;
     basicCards: Array<object>;
     uniqueCards: Array<object>;
+    hand: Array<Card>;
 
     constructor(name: string) {
       this.name = name;
@@ -60,6 +61,11 @@ const initialState = {
         CARD_DICTIONARY.MANA_UP,
       ];
       this.uniqueCards = [];
+      this.hand = [
+        CARD_DICTIONARY.LEFT,
+        CARD_DICTIONARY.LEFT,
+        CARD_DICTIONARY.ATT1,
+      ];
     }
   },
   getCharacter: function (name: string) {
@@ -79,7 +85,6 @@ const initialState = {
   eneme: {},
   isTurn: false,
   hand: [{}, {}, {}],
-  enemeHand: [CARD_DICTIONARY.LEFT, CARD_DICTIONARY.LEFT, CARD_DICTIONARY.ATT1],
   field: [
     [
       { effect: false },
@@ -251,7 +256,7 @@ const initialState = {
             500,
           );
           lastTurn = !lastTurn;
-          initialState.turnCheck();
+          initialState.turnCheck(true);
         } else {
           initialState.cardAction(
             false,
@@ -274,7 +279,7 @@ const initialState = {
             500,
           );
           lastTurn = !lastTurn;
-          initialState.turnCheck();
+          initialState.turnCheck(true);
         }
         setTimeout(() => store.dispatch(set_is_turn()), 2000);
       }
@@ -430,7 +435,7 @@ const initialState = {
       }
     }
   },
-  turnCheck: function () {
+  turnCheck: function (lastTurn: boolean = false) {
     let userHp = store.getState().Battle.userCharacter.hp;
     let enemeHp = store.getState().Battle.eneme.hp;
     if (userHp <= 0) {
@@ -443,6 +448,11 @@ const initialState = {
       console.log('Win');
     } else {
       console.log('Continue...');
+    }
+    if (lastTurn) {
+      let userMp = store.getState().Battle.userCharacter.mp + 15;
+      if (userMp > 100) userMp = 100;
+      store.dispatch(set_user_mp({ mp: userMp }));
     }
   },
   clearHand: function () {

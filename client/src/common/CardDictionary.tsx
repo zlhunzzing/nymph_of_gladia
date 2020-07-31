@@ -1,4 +1,5 @@
 const cardRanges = {
+  noneRange: [],
   middleRow: [
     [-1, 0],
     [0, 0],
@@ -12,11 +13,53 @@ const cardRanges = {
 };
 
 const CARD_DICTIONARY = {
-  UP: { type: 'UP', speed: 0, cost: 0, position: 'card0' },
-  DOWN: { type: 'DOWN', speed: 0, cost: 0, position: 'card1' },
-  LEFT: { type: 'LEFT', speed: 0, cost: 0, position: 'card2' },
-  RIGHT: { type: 'RIGHT', speed: 0, cost: 0, position: 'card3' },
-  MANA_UP: { type: 'MANA UP', speed: 0, cost: 0, position: 'card4' },
+  NONE: {
+    type: 'NONE',
+    speed: 0,
+    cost: 0,
+    power: 0,
+    range: cardRanges.noneRange,
+  },
+  UP: {
+    type: 'UP',
+    speed: 0,
+    cost: 0,
+    power: 0,
+    range: cardRanges.noneRange,
+    position: 'card0',
+  },
+  DOWN: {
+    type: 'DOWN',
+    speed: 0,
+    cost: 0,
+    power: 0,
+    range: cardRanges.noneRange,
+    position: 'card1',
+  },
+  LEFT: {
+    type: 'LEFT',
+    speed: 0,
+    cost: 0,
+    power: 0,
+    range: cardRanges.noneRange,
+    position: 'card2',
+  },
+  RIGHT: {
+    type: 'RIGHT',
+    speed: 0,
+    cost: 0,
+    power: 0,
+    range: cardRanges.noneRange,
+    position: 'card3',
+  },
+  MANA_UP: {
+    type: 'MANA UP',
+    speed: 0,
+    cost: 0,
+    power: 0,
+    range: cardRanges.noneRange,
+    position: 'card4',
+  },
   ATT1: {
     type: 'ATT',
     speed: 1,
