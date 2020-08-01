@@ -1,7 +1,7 @@
-.userStatus {
+.player1Status {
   float: left;
 }
-.enemeStatus {
+.player2Status {
   float: right;
 }
 

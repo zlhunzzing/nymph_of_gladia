@@ -7,15 +7,15 @@ import * as battleActions from '../modules/Battle';
 import * as handleModalActions from '../modules/HandleModal';
 
 interface Props {
-  userCharacter: string;
-  setUserCharacter: Dispatch<string>;
+  player: string;
+  setPlayer: Dispatch<string>;
   isSelect: boolean;
   setIsSelect: Dispatch<boolean>;
 }
 
 const SelectCharacterPresenter: React.FunctionComponent<Props> = ({
-  userCharacter,
-  setUserCharacter,
+  player,
+  setPlayer,
   isSelect,
   setIsSelect,
 }: Props) => (
@@ -23,11 +23,7 @@ const SelectCharacterPresenter: React.FunctionComponent<Props> = ({
     <h1 className="MainTitle">Nymph of Gladia</h1>
     <h2>- 캐릭터 선택 -</h2>
 
-    {isSelect ? (
-      <div className="userCharacter">{userCharacter}</div>
-    ) : (
-      <div className="userCharacter">{ERROR_MESSAGES.UNSELECT}</div>
-    )}
+    {isSelect ? <div>{player}</div> : <div>{ERROR_MESSAGES.UNSELECT}</div>}
     <ul className="select">
       <li>
         <a
@@ -35,8 +31,8 @@ const SelectCharacterPresenter: React.FunctionComponent<Props> = ({
           onClick={(e) => {
             e.preventDefault();
             setIsSelect(true);
-            setUserCharacter('세키');
-            store.dispatch(battleActions.select_character({ name: '세키' }));
+            setPlayer('세키');
+            store.dispatch(battleActions.select_player({ name: '세키' }));
           }}
         >
           세키
@@ -46,8 +42,8 @@ const SelectCharacterPresenter: React.FunctionComponent<Props> = ({
           onClick={(e) => {
             e.preventDefault();
             setIsSelect(true);
-            setUserCharacter('레티');
-            store.dispatch(battleActions.select_character({ name: '레티' }));
+            setPlayer('레티');
+            store.dispatch(battleActions.select_player({ name: '레티' }));
           }}
         >
           레티

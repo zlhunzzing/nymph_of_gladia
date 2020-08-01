@@ -1,4 +1,4 @@
-export interface User {
+export interface Player {
   name: string;
   hp: number;
   mp: number;
@@ -17,4 +17,5 @@ export interface Card {
   cost: number;
   power: number;
   range: Array<Array<number>>;
+  position: string;
 }

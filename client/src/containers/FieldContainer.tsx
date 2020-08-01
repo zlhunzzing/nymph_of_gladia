@@ -4,29 +4,29 @@ import store from '../index';
 
 export default function FieldContainer() {
   const isTurn = useState(store.getState().Battle.isTurn)[0];
-  const [user, setUser] = useState(store.getState().Battle.userCharacter);
-  const [eneme, setEneme] = useState(store.getState().Battle.eneme);
-  const hand = useState(store.getState().Battle.hand)[0];
-  const enemeHand = useState(store.getState().Battle.eneme.hand)[0];
-  const [userPosition, setUserPostion] = useState(
-    store.getState().Battle.userPosition,
+  const [player1, setPlayer1] = useState(store.getState().Battle.player1);
+  const [player2, setPlayer2] = useState(store.getState().Battle.player2);
+  const hand = useState(store.getState().Battle.player1.hand)[0];
+  const player2Hand = useState(store.getState().Battle.player2.hand)[0];
+  const [player1Position, setPlayer1Postion] = useState(
+    store.getState().Battle.player1Position,
   );
-  const [enemePosition, setEnemePosition] = useState(
-    store.getState().Battle.enemePosition,
+  const [player2Position, setPlayer2Position] = useState(
+    store.getState().Battle.player2Position,
   );
-  const [mana, setMana] = useState(user.mp);
+  const [mana, setMana] = useState(player1.mp);
 
   useEffect(() => {
     if (isTurn) {
       store
         .getState()
         .Battle.nextTurn(
-          store.getState().Battle.hand,
-          store.getState().Battle.eneme.hand,
-          setUserPostion,
-          setEnemePosition,
-          setUser,
-          setEneme,
+          store.getState().Battle.player1.hand,
+          store.getState().Battle.player2.hand,
+          setPlayer1Postion,
+          setPlayer2Position,
+          setPlayer1,
+          setPlayer2,
           setMana,
         );
     }
@@ -34,12 +34,12 @@ export default function FieldContainer() {
 
   return (
     <FieldPresenter
-      user={user}
-      eneme={eneme}
+      player1={player1}
+      player2={player2}
       hand={hand}
-      enemeHand={enemeHand}
-      userPosition={userPosition}
-      enemePosition={enemePosition}
+      player2Hand={player2Hand}
+      player1Position={player1Position}
+      player2Position={player2Position}
       mana={mana}
     />
   );

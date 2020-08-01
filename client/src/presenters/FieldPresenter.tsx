@@ -1,42 +1,42 @@
 import React from 'react';
 import '../presenterStyles/FieldPresenter.css';
 import store from '..';
-import { User, Position } from '../common/interface/BattleInterface';
+import { Player, Position } from '../common/interface/BattleInterface';
 import * as battleActions from '../modules/Battle';
 
 interface Props {
-  user: User;
-  eneme: User;
+  player1: Player;
+  player2: Player;
   hand: Array<object>;
-  enemeHand: Array<object>;
-  userPosition: Position;
-  enemePosition: Position;
+  player2Hand: Array<object>;
+  player1Position: Position;
+  player2Position: Position;
   mana: number;
 }
 
 const FieldPresenter: React.FunctionComponent<Props> = ({
-  user,
-  eneme,
+  player1,
+  player2,
   hand,
-  enemeHand,
-  userPosition,
-  enemePosition,
+  player2Hand,
+  player1Position,
+  player2Position,
   mana,
 }: Props) => (
   <div className="Main">
-    {user ? (
+    {player1 ? (
       <div className="status">
-        <div className="userStatus">
+        <div className="player1Status">
           <div>
-            <div>NAME: {user.name}</div>
-            <div>HP: {user.hp}</div>
+            <div>NAME: {player1.name}</div>
+            <div>HP: {player1.hp}</div>
             <div>MP: {mana}</div>
           </div>
         </div>
-        <div className="enemeStatus">
-          <div>NAME: {eneme.name}</div>
-          <div>HP: {eneme.hp}</div>
-          <div>MP: {eneme.mp}</div>
+        <div className="player2Status">
+          <div>NAME: {player2.name}</div>
+          <div>HP: {player2.hp}</div>
+          <div>MP: {player2.mp}</div>
         </div>
       </div>
     ) : null}
@@ -53,11 +53,11 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
         <div key={floorId} className="floor">
           {floor.map((room: any, roomId: number) => (
             <div key={roomId} className="room">
-              {userPosition.x === roomId && userPosition.y === floorId
-                ? user.name
+              {player1Position.x === roomId && player1Position.y === floorId
+                ? player1.name
                 : null}
-              {enemePosition.x === roomId && enemePosition.y === floorId
-                ? eneme.name
+              {player2Position.x === roomId && player2Position.y === floorId
+                ? player2.name
                 : null}
             </div>
           ))}
@@ -75,9 +75,9 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
             ))
           : null}
       </span>
-      <span className="enemeHand">
-        {enemeHand
-          ? enemeHand.map((card: any, id: number) => (
+      <span className="player2Hand">
+        {player2Hand
+          ? player2Hand.map((card: any, id: number) => (
               <span key={id} className="card">
                 {card.type ? card.type : '비었다'}
               </span>

@@ -19,6 +19,7 @@ const CARD_DICTIONARY = {
     cost: 0,
     power: 0,
     range: cardRanges.noneRange,
+    position: 'none',
   },
   UP: {
     type: 'UP',

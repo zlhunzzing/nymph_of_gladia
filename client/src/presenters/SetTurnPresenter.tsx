@@ -1,57 +1,57 @@
 import React, { Dispatch } from 'react';
 import '../presenterStyles/SetTurnPresenter.css';
-// import store from '../index';
-// import * as handleModalActions from '../modules/HandleModal';
-import { User, Position } from '../common/interface/BattleInterface';
-import store from '..';
+import store from '../index';
+import * as handleModalActions from '../modules/HandleModal';
+import { Player, Position, Card } from '../common/interface/BattleInterface';
 import * as battleActions from '../modules/Battle';
+import CARD_DICTIONARY from '../common/CardDictionary';
 
 interface Props {
-  user: User;
-  eneme: User;
-  hand: Array<object>;
+  player1: Player;
+  player2: Player;
+  hand: Array<Card>;
   setHand: Dispatch<Array<object>>;
-  setUser: Dispatch<Object>;
-  userPosition: Position;
-  enemePosition: Position;
+  setPlayer1: Dispatch<Object>;
+  player1Position: Position;
+  player2Position: Position;
   mana: number;
   setMana: Dispatch<number>;
 }
 
 const SetTurnPresenter: React.FunctionComponent<Props> = ({
-  user,
-  eneme,
+  player1,
+  player2,
   hand,
   setHand,
-  setUser,
-  userPosition,
-  enemePosition,
+  setPlayer1,
+  player1Position,
+  player2Position,
   mana,
   setMana,
 }: Props) => (
   <div className="Main">
-    {user ? (
+    {player1 ? (
       <div className="status">
-        <div className="userStatus">
+        <div className="player1Status">
           <div>
-            <div>NAME: {user.name}</div>
-            <div>HP: {user.hp}</div>
+            <div>NAME: {player1.name}</div>
+            <div>HP: {player1.hp}</div>
             <div>
-              MP: {mana}/{user.mp}
+              MP: {mana}/{player1.mp}
             </div>
           </div>
         </div>
-        <div className="enemeStatus">
-          <div>NAME: {eneme.name}</div>
-          <div>HP: {eneme.hp}</div>
-          <div>MP: {eneme.mp}</div>
+        <div className="player2Status">
+          <div>NAME: {player2.name}</div>
+          <div>HP: {player2.hp}</div>
+          <div>MP: {player2.mp}</div>
         </div>
       </div>
     ) : null}
 
     <div className="basicCards">
-      {user.basicCards ? (
-        user.basicCards.map((card: any, id: number) => (
+      {player1.basicCards ? (
+        player1.basicCards.map((card: any, id: number) => (
           <span
             key={id}
             className={`card ${card.position}`}
@@ -61,20 +61,19 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
               ) as HTMLElement;
               for (let value in hand) {
                 if (
-                  Object.keys(hand[value]).length === 0 &&
-                  hand[value].constructor === Object &&
+                  hand[value].type === 'NONE' &&
                   el.className !== `card ${card.position} selectedCard`
                 ) {
                   el.className = `card ${card.position} selectedCard`;
                   hand[value] = card;
                   store.dispatch(
-                    battleActions.set_user_hand({
+                    battleActions.set_player1_hand({
                       hand: hand.slice(0, hand.length),
                     }),
                   );
                   setHand(hand.slice(0, hand.length));
                   setMana(mana - card.cost);
-                  // setUser({ ...user, mp: user.mp - card.cost });
+                  // setplayer({ ...player, mp: player.mp - card.cost });
                   break;
                 }
               }
@@ -90,8 +89,8 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
       )}
     </div>
     <div className="uniqueCards">
-      {user.uniqueCards ? (
-        user.uniqueCards.map((card: any, id: number) => (
+      {player1.uniqueCards ? (
+        player1.uniqueCards.map((card: any, id: number) => (
           <span
             key={id}
             className={`card ${card.position} ${
@@ -103,22 +102,21 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
               ) as HTMLElement;
               for (let value in hand) {
                 if (
-                  Object.keys(hand[value]).length === 0 &&
-                  hand[value].constructor === Object &&
+                  hand[value].type === 'NONE' &&
                   el.className !== `card ${card.position} selectedCard` &&
                   el.className !== `card ${card.position} lackedMana`
                 ) {
                   el.className = `card ${card.position} selectedCard`;
                   hand[value] = card;
                   store.dispatch(
-                    battleActions.set_user_hand({
+                    battleActions.set_player1_hand({
                       hand: hand.slice(0, hand.length),
                     }),
                   );
                   setHand(hand.slice(0, hand.length));
                   if (card.cost) {
                     setMana(mana - card.cost);
-                    // setUser({ ...user, mp: user.mp - card.cost });
+                    // setplayer({ ...player, mp: player.mp - card.cost });
                   }
                   break;
                 }
@@ -139,27 +137,27 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
       <span className="setHand">
         <span>
           {hand
-            ? hand.map((card: any, id: number) => (
+            ? hand.map((card: Card, id: number) => (
                 <span
                   key={id}
                   className="card"
                   onClick={() => {
-                    if (Object.keys(card).length !== 0) {
-                      hand[id] = {};
+                    if (card.type !== 'NONE') {
+                      hand[id] = CARD_DICTIONARY.NONE;
                       store.dispatch(
-                        battleActions.set_user_hand({
+                        battleActions.set_player1_hand({
                           hand: hand.slice(0, hand.length),
                         }),
                       );
                       setHand(hand.slice(0, hand.length));
                       if (card.cost) {
                         store.dispatch(
-                          battleActions.set_user_mp({
-                            mp: user.mp + card.cost,
+                          battleActions.set_player1_mp({
+                            mp: player1.mp + card.cost,
                           }),
                         );
                         setMana(mana + card.cost);
-                        // setUser({ ...user, mp: user.mp + card.cost });
+                        // setplayer({ ...player, mp: player.mp + card.cost });
                       }
                       let el = document.querySelector(
                         `.${card.position}`,
@@ -168,7 +166,7 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                     }
                   }}
                 >
-                  {card.type ? card.type : '비었다'}
+                  {card.type === 'NONE' ? '비었다' : card.type}
                 </span>
               ))
             : null}
@@ -178,23 +176,19 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
       <button
         className="continueButton"
         onClick={() => {
-          // for (let value in hand) {
-          //   if (
-          //     Object.keys(hand[value]).length === 0 &&
-          //     hand[value].constructor === Object
-          //   ) {
-          //     store.dispatch(
-          //       handleModalActions.setModalContent({
-          //         content: '카드를 세장 선택해주세요.',
-          //       }),
-          //     );
-          //     store.dispatch(
-          //       handleModalActions.setModalIsOpen({ isOpen: true }),
-          //     );
-          //     return;
-          //   }
-          // }
-          // setIsTurn(true);
+          for (let value in hand) {
+            if (hand[value].type === 'NONE') {
+              store.dispatch(
+                handleModalActions.setModalContent({
+                  content: '카드를 세장 선택해주세요.',
+                }),
+              );
+              store.dispatch(
+                handleModalActions.setModalIsOpen({ isOpen: true }),
+              );
+              return;
+            }
+          }
           store.dispatch(battleActions.set_is_turn());
         }}
       >
@@ -206,11 +200,11 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
           <div key={floorId} className="miniFloor">
             {floor.map((room: any, roomId: number) => (
               <div key={roomId} className="miniRoom">
-                {userPosition.x === roomId && userPosition.y === floorId
-                  ? user.name
+                {player1Position.x === roomId && player1Position.y === floorId
+                  ? player1.name
                   : null}
-                {enemePosition.x === roomId && enemePosition.y === floorId
-                  ? eneme.name
+                {player2Position.x === roomId && player2Position.y === floorId
+                  ? player2.name
                   : null}
               </div>
             ))}

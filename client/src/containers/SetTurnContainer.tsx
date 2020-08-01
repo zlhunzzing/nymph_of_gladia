@@ -5,21 +5,21 @@ import * as handleModalActions from '../modules/HandleModal';
 
 export default function SetTurnContainer() {
   const entryModal = useState(store.getState().Battle.entryModal)[0];
-  const [user, setUser] = useState(store.getState().Battle.userCharacter);
-  const eneme = useState(store.getState().Battle.eneme)[0];
-  const [hand, setHand] = useState(store.getState().Battle.hand);
-  const userPosition = useState(store.getState().Battle.userPosition)[0];
-  const enemePosition = useState(store.getState().Battle.enemePosition)[0];
-  const [mana, setMana] = useState(user.mp);
+  const [player1, setPlayer1] = useState(store.getState().Battle.player1);
+  const player2 = useState(store.getState().Battle.player2)[0];
+  const [hand, setHand] = useState(store.getState().Battle.player1.hand);
+  const player1Position = useState(store.getState().Battle.player1Position)[0];
+  const player2Position = useState(store.getState().Battle.player2Position)[0];
+  const [mana, setMana] = useState(player1.mp);
 
   useEffect(() => {
-    if (entryModal && store.getState().Battle.userCharacter) {
+    if (entryModal && store.getState().Battle.player1) {
       store.dispatch(
         handleModalActions.setModalContent({
           content:
-            store.getState().Battle.userCharacter.name +
+            store.getState().Battle.player1.name +
             'VS' +
-            store.getState().Battle.eneme.name,
+            store.getState().Battle.player2.name,
         }),
       );
       store.dispatch(handleModalActions.setModalIsOpen({ isOpen: true }));
@@ -31,18 +31,18 @@ export default function SetTurnContainer() {
       store.dispatch(handleModalActions.set_entry_modal());
     }
     store.getState().Battle.clearHand();
-    setHand(store.getState().Battle.hand);
+    setHand(store.getState().Battle.player1.hand);
   }, [entryModal]);
 
   return (
     <SetTurnPresenter
-      user={user}
-      eneme={eneme}
+      player1={player1}
+      player2={player2}
       hand={hand}
       setHand={setHand}
-      setUser={setUser}
-      userPosition={userPosition}
-      enemePosition={enemePosition}
+      setPlayer1={setPlayer1}
+      player1Position={player1Position}
+      player2Position={player2Position}
       mana={mana}
       setMana={setMana}
     />
