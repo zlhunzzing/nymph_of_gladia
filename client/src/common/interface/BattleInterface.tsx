@@ -4,11 +4,8 @@ export interface Player {
   mp: number;
   basicCards: Array<object>;
   uniqueCards: Array<object>;
-}
-
-export interface Position {
-  x: number;
-  y: number;
+  hand: Array<Card>;
+  position: Position;
 }
 
 export interface Card {
@@ -18,4 +15,9 @@ export interface Card {
   power: number;
   range: Array<Array<number>>;
   position: string;
+}
+
+export interface Position {
+  x: number;
+  y: number;
 }

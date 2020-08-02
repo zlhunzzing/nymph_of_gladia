@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { Card, Position } from '../common/interface/BattleInterface';
+import { Card } from '../common/interface/BattleInterface';
 import store from '..';
 import CARD_DICTIONARY from '../common/CardDictionary';
 import { Dispatch } from 'react';
@@ -47,7 +47,7 @@ const initialState = {
     basicCards: Array<object>;
     uniqueCards: Array<object>;
     hand: Array<Card>;
-    // position: object;
+    position: object;
 
     constructor(name: string) {
       this.name = name;
@@ -67,7 +67,7 @@ const initialState = {
         CARD_DICTIONARY.NONE,
         CARD_DICTIONARY.NONE,
       ];
-      // this.position = { x: 0, y: 1 };
+      this.position = { x: 0, y: 1 };
     }
   },
   createCharacter: function (name: string, isUser: boolean = false) {
@@ -87,7 +87,7 @@ const initialState = {
         CARD_DICTIONARY.LEFT,
         CARD_DICTIONARY.ATT1,
       ];
-      // character.position = { x: 3, y: 1 };
+      character.position = { x: 3, y: 1 };
     }
     return character;
   },
@@ -114,8 +114,6 @@ const initialState = {
       { effect: false },
     ],
   ],
-  player1Position: { x: 0, y: 1 },
-  player2Position: { x: 3, y: 1 },
   // checkHand: function (hand: any, position: string) {
   //   for (let i = 0; i < hand.length; i++) {
   //     if (hand.position === position) {
@@ -124,38 +122,26 @@ const initialState = {
   //   }
   // },
   nextTurn: function (
-    player1Hand: Array<Card>,
-    player2Hand: Array<Card>,
-    setPlayer1Position: Dispatch<Position>,
-    setPlayer2Position: Dispatch<Position>,
     setPlayer1: Dispatch<object>,
     setPlayer2: Dispatch<object>,
-    setMana: Dispatch<number>,
   ) {
     let firstTurn = false;
     let middleTurn = false;
     let lastTurn = false;
+    let player1Hand = store.getState().Battle.player1.hand;
+    let player2Hand = store.getState().Battle.player2.hand;
 
     firstTurn = !firstTurn;
     if (firstTurn) {
       if (player1Hand[0].speed <= player2Hand[0].speed) {
-        initialState.cardAction(
-          true,
-          player1Hand[0],
-          setPlayer1Position,
-          setPlayer1,
-          setPlayer2,
-          setMana,
-        );
+        initialState.cardAction(true, player1Hand[0], setPlayer1, setPlayer2);
         setTimeout(
           () =>
             initialState.cardAction(
               false,
               player2Hand[0],
-              setPlayer2Position,
               setPlayer1,
               setPlayer2,
-              setMana,
             ),
           500,
         );
@@ -163,23 +149,14 @@ const initialState = {
         initialState.turnCheck();
         setTimeout(() => (middleTurn = !middleTurn), 1000);
       } else {
-        initialState.cardAction(
-          false,
-          player2Hand[0],
-          setPlayer2Position,
-          setPlayer1,
-          setPlayer2,
-          setMana,
-        );
+        initialState.cardAction(false, player2Hand[0], setPlayer1, setPlayer2);
         setTimeout(
           () =>
             initialState.cardAction(
               true,
               player1Hand[0],
-              setPlayer1Position,
               setPlayer1,
               setPlayer2,
-              setMana,
             ),
           500,
         );
@@ -191,23 +168,14 @@ const initialState = {
     setTimeout(() => {
       if (middleTurn) {
         if (player1Hand[1].speed >= player2Hand[1].speed) {
-          initialState.cardAction(
-            true,
-            player1Hand[1],
-            setPlayer1Position,
-            setPlayer1,
-            setPlayer2,
-            setMana,
-          );
+          initialState.cardAction(true, player1Hand[1], setPlayer1, setPlayer2);
           setTimeout(
             () =>
               initialState.cardAction(
                 false,
                 player2Hand[1],
-                setPlayer2Position,
                 setPlayer1,
                 setPlayer2,
-                setMana,
               ),
             500,
           );
@@ -218,20 +186,16 @@ const initialState = {
           initialState.cardAction(
             false,
             player2Hand[1],
-            setPlayer2Position,
             setPlayer1,
             setPlayer2,
-            setMana,
           );
           setTimeout(
             () =>
               initialState.cardAction(
                 true,
                 player1Hand[1],
-                setPlayer1Position,
                 setPlayer1,
                 setPlayer2,
-                setMana,
               ),
             500,
           );
@@ -244,23 +208,14 @@ const initialState = {
     setTimeout(() => {
       if (lastTurn) {
         if (player1Hand[2].speed <= player2Hand[2].speed) {
-          initialState.cardAction(
-            true,
-            player1Hand[2],
-            setPlayer1Position,
-            setPlayer1,
-            setPlayer2,
-            setMana,
-          );
+          initialState.cardAction(true, player1Hand[2], setPlayer1, setPlayer2);
           setTimeout(
             () =>
               initialState.cardAction(
                 false,
                 player2Hand[2],
-                setPlayer2Position,
                 setPlayer1,
                 setPlayer2,
-                setMana,
               ),
             500,
           );
@@ -270,20 +225,16 @@ const initialState = {
           initialState.cardAction(
             false,
             player2Hand[2],
-            setPlayer2Position,
             setPlayer1,
             setPlayer2,
-            setMana,
           );
           setTimeout(
             () =>
               initialState.cardAction(
                 true,
                 player1Hand[2],
-                setPlayer1Position,
                 setPlayer1,
                 setPlayer2,
-                setMana,
               ),
             500,
           );
@@ -297,46 +248,44 @@ const initialState = {
   cardAction(
     isUser: boolean,
     card: Card,
-    setPosition: Dispatch<Position>,
     setPlayer1: Dispatch<object>,
     setPlayer2: Dispatch<object>,
-    setMana: Dispatch<number>,
   ) {
     if (isUser) {
       switch (card.type) {
         case CARD_DICTIONARY.UP.type:
-          let upY = store.getState().Battle.PLAYER1Position.y - 1;
+          let upY = store.getState().Battle.player1.position.y - 1;
           if (upY < 0) upY = 0;
           store.dispatch(move_player1_y_position({ y: upY }));
-          setPosition(store.getState().Battle.player1Position);
+          setPlayer1({ ...store.getState().Battle.player1 });
           break;
         case CARD_DICTIONARY.DOWN.type:
-          let downY = store.getState().Battle.player1Position.y + 1;
+          let downY = store.getState().Battle.player1.position.y + 1;
           if (downY > 2) downY = 2;
           store.dispatch(move_player1_y_position({ y: downY }));
-          setPosition(store.getState().Battle.player1Position);
+          setPlayer1({ ...store.getState().Battle.player1 });
           break;
         case CARD_DICTIONARY.LEFT.type:
-          let leftX = store.getState().Battle.player1Position.x - 1;
+          let leftX = store.getState().Battle.player1.position.x - 1;
           if (leftX < 0) leftX = 0;
           store.dispatch(move_player1_x_position({ x: leftX }));
-          setPosition(store.getState().Battle.player1Position);
+          setPlayer1({ ...store.getState().Battle.player1 });
           break;
         case CARD_DICTIONARY.RIGHT.type:
-          let rightX = store.getState().Battle.player1Position.x + 1;
+          let rightX = store.getState().Battle.player1.position.x + 1;
           if (rightX > 3) rightX = 3;
           store.dispatch(move_player1_x_position({ x: rightX }));
-          setPosition(store.getState().Battle.player1Position);
+          setPlayer1({ ...store.getState().Battle.player1 });
           break;
         case 'ATT':
           let mana = store.getState().Battle.player1.mp - card.cost;
           store.dispatch(set_player1_mp({ mp: mana }));
-          setMana(mana);
+          setPlayer1({ ...store.getState().Battle.player1 });
 
           let effectiveRangeX = null;
           let effectiveRangeY = null;
-          let player1Position = store.getState().Battle.player1Position;
-          let player2Position = store.getState().Battle.player2Position;
+          let player1Position = store.getState().Battle.player1.position;
+          let player2Position = store.getState().Battle.player2.position;
           for (let i = 0; i < card.range.length; i++) {
             effectiveRangeX = player1Position.x + card.range[i][0];
             effectiveRangeY = player1Position.y + card.range[i][1];
@@ -382,34 +331,34 @@ const initialState = {
     } else {
       switch (card.type) {
         case CARD_DICTIONARY.UP.type:
-          let upY = store.getState().Battle.PLAYER1Position.y - 1;
+          let upY = store.getState().Battle.player1.position.y - 1;
           if (upY < 0) upY = 0;
           store.dispatch(move_player2_y_position({ y: upY }));
-          setPosition(store.getState().Battle.player2Position);
+          setPlayer2({ ...store.getState().Battle.player2 });
           break;
         case CARD_DICTIONARY.DOWN.type:
-          let downY = store.getState().Battle.player2Position.y + 1;
+          let downY = store.getState().Battle.player2.position.y + 1;
           if (downY > 2) downY = 2;
           store.dispatch(move_player2_y_position({ y: downY }));
-          setPosition(store.getState().Battle.player2Position);
+          setPlayer2({ ...store.getState().Battle.player2 });
           break;
         case CARD_DICTIONARY.LEFT.type:
-          let leftX = store.getState().Battle.player2Position.x - 1;
+          let leftX = store.getState().Battle.player2.position.x - 1;
           if (leftX < 0) leftX = 0;
           store.dispatch(move_player2_position({ x: leftX }));
-          setPosition(store.getState().Battle.player2Position);
+          setPlayer2({ ...store.getState().Battle.player2 });
           break;
         case CARD_DICTIONARY.RIGHT.type:
-          let rightX = store.getState().Battle.player2Position.x + 1;
+          let rightX = store.getState().Battle.player2.position.x + 1;
           if (rightX > 3) rightX = 3;
           store.dispatch(move_player2_position({ x: rightX }));
-          setPosition(store.getState().Battle.player2Position);
+          setPlayer2({ ...store.getState().Battle.player2 });
           break;
         case 'ATT':
           let effectiveRangeX = null;
           let effectiveRangeY = null;
-          let player1Position = store.getState().Battle.player1Position;
-          let player2Position = store.getState().Battle.player2Position;
+          let player1Position = store.getState().Battle.player1.position;
+          let player2Position = store.getState().Battle.player2.position;
           for (let i = 0; i < card.range.length; i++) {
             effectiveRangeX = player2Position.x + card.range[i][0];
             effectiveRangeY = player2Position.y + card.range[i][1];
@@ -494,6 +443,7 @@ export default function Battle(state: any = initialState, action: any) {
         isTurn: !state.isTurn,
       };
     case SET_PLAYER1_HAND:
+      console.log(action.payload.hand);
       return {
         ...state,
         player1: {
@@ -527,33 +477,33 @@ export default function Battle(state: any = initialState, action: any) {
     case MOVE_PLAYER1_X_POSITION:
       return {
         ...state,
-        player1Position: {
-          ...state.player1Position,
-          x: action.payload.x,
+        player1: {
+          ...state.player1,
+          position: { ...state.player1.position, x: action.payload.x },
         },
       };
     case MOVE_PLAYER1_Y_POSITION:
       return {
         ...state,
-        player1Position: {
-          ...state.player1Position,
-          y: action.payload.y,
+        player1: {
+          ...state.player1,
+          position: { ...state.player1.position, y: action.payload.y },
         },
       };
     case MOVE_PLAYER2_X_POSITION:
       return {
         ...state,
-        player2Position: {
-          ...state.player2Position,
-          x: action.payload.x,
+        player2: {
+          ...state.player2,
+          position: { ...state.player2.position, x: action.payload.x },
         },
       };
     case MOVE_PLAYER2_Y_POSITION:
       return {
         ...state,
-        player2Position: {
-          ...state.player2Position,
-          y: action.payload.y,
+        player2: {
+          ...state.player2,
+          position: { ...state.player2.position, y: action.payload.y },
         },
       };
     default:
