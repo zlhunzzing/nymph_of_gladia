@@ -17,6 +17,12 @@ export interface Card {
   position: string;
 }
 
+export enum PhaseNumber {
+  FIRST = 0,
+  MIDDLE = 1,
+  LAST = 2,
+}
+
 export interface Position {
   x: number;
   y: number;

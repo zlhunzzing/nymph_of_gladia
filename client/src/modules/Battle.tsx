@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { Card } from '../common/interface/BattleInterface';
+import { Card, PhaseNumber } from '../common/interface/BattleInterface';
 import store from '..';
 import CARD_DICTIONARY from '../common/CardDictionary';
 import { Dispatch } from 'react';
@@ -46,6 +46,7 @@ const initialState = {
     def: number;
     basicCards: Array<object>;
     uniqueCards: Array<object>;
+    // player: number;
     hand: Array<Card>;
     position: object;
 
@@ -62,6 +63,7 @@ const initialState = {
         CARD_DICTIONARY.MANA_UP,
       ];
       this.uniqueCards = [];
+      // this.player = 1;
       this.hand = [
         CARD_DICTIONARY.NONE,
         CARD_DICTIONARY.NONE,
@@ -87,6 +89,7 @@ const initialState = {
         CARD_DICTIONARY.LEFT,
         CARD_DICTIONARY.ATT1,
       ];
+      // character.player = 2;
       character.position = { x: 3, y: 1 };
     }
     return character;
@@ -114,136 +117,96 @@ const initialState = {
       { effect: false },
     ],
   ],
-  // checkHand: function (hand: any, position: string) {
-  //   for (let i = 0; i < hand.length; i++) {
-  //     if (hand.position === position) {
-  //       return true;
-  //     }
-  //   }
-  // },
   nextTurn: function (
     setPlayer1: Dispatch<object>,
     setPlayer2: Dispatch<object>,
   ) {
-    let firstTurn = false;
-    let middleTurn = false;
-    let lastTurn = false;
+    let firstPhase = false;
+    let middlePhase = false;
+    let lastPhase = false;
     let player1Hand = store.getState().Battle.player1.hand;
     let player2Hand = store.getState().Battle.player2.hand;
 
-    firstTurn = !firstTurn;
-    if (firstTurn) {
-      if (player1Hand[0].speed <= player2Hand[0].speed) {
-        initialState.cardAction(true, player1Hand[0], setPlayer1, setPlayer2);
-        setTimeout(
-          () =>
-            initialState.cardAction(
-              false,
-              player2Hand[0],
-              setPlayer1,
-              setPlayer2,
-            ),
-          500,
-        );
-        firstTurn = !firstTurn;
-        initialState.turnCheck();
-        setTimeout(() => (middleTurn = !middleTurn), 1000);
-      } else {
-        initialState.cardAction(false, player2Hand[0], setPlayer1, setPlayer2);
-        setTimeout(
-          () =>
-            initialState.cardAction(
-              true,
-              player1Hand[0],
-              setPlayer1,
-              setPlayer2,
-            ),
-          500,
-        );
-        firstTurn = !firstTurn;
-        initialState.turnCheck();
-        setTimeout(() => (middleTurn = !middleTurn), 1000);
-      }
+    firstPhase = !firstPhase;
+    if (firstPhase) {
+      middlePhase = initialState.phase(
+        PhaseNumber.FIRST,
+        player1Hand,
+        player2Hand,
+        setPlayer1,
+        setPlayer2,
+      );
     }
     setTimeout(() => {
-      if (middleTurn) {
-        if (player1Hand[1].speed >= player2Hand[1].speed) {
-          initialState.cardAction(true, player1Hand[1], setPlayer1, setPlayer2);
-          setTimeout(
-            () =>
-              initialState.cardAction(
-                false,
-                player2Hand[1],
-                setPlayer1,
-                setPlayer2,
-              ),
-            500,
-          );
-          middleTurn = !middleTurn;
-          initialState.turnCheck();
-          setTimeout(() => (lastTurn = !lastTurn), 1000);
-        } else {
-          initialState.cardAction(
-            false,
-            player2Hand[1],
-            setPlayer1,
-            setPlayer2,
-          );
-          setTimeout(
-            () =>
-              initialState.cardAction(
-                true,
-                player1Hand[1],
-                setPlayer1,
-                setPlayer2,
-              ),
-            500,
-          );
-          middleTurn = !middleTurn;
-          initialState.turnCheck();
-          setTimeout(() => (lastTurn = !lastTurn), 1000);
-        }
+      if (middlePhase) {
+        lastPhase = initialState.phase(
+          PhaseNumber.MIDDLE,
+          player1Hand,
+          player2Hand,
+          setPlayer1,
+          setPlayer2,
+        );
       }
     }, 1500);
     setTimeout(() => {
-      if (lastTurn) {
-        if (player1Hand[2].speed <= player2Hand[2].speed) {
-          initialState.cardAction(true, player1Hand[2], setPlayer1, setPlayer2);
-          setTimeout(
-            () =>
-              initialState.cardAction(
-                false,
-                player2Hand[2],
-                setPlayer1,
-                setPlayer2,
-              ),
-            500,
-          );
-          lastTurn = !lastTurn;
-          initialState.turnCheck(true);
-        } else {
-          initialState.cardAction(
-            false,
-            player2Hand[2],
-            setPlayer1,
-            setPlayer2,
-          );
-          setTimeout(
-            () =>
-              initialState.cardAction(
-                true,
-                player1Hand[2],
-                setPlayer1,
-                setPlayer2,
-              ),
-            500,
-          );
-          lastTurn = !lastTurn;
-          initialState.turnCheck(true);
-        }
+      if (lastPhase) {
+        initialState.phase(
+          PhaseNumber.LAST,
+          player1Hand,
+          player2Hand,
+          setPlayer1,
+          setPlayer2,
+        );
         setTimeout(() => store.dispatch(set_is_turn()), 2000);
       }
     }, 3000);
+  },
+  phase(
+    phaseNumber: PhaseNumber,
+    player1Hand: Array<Card>,
+    player2Hand: Array<Card>,
+    setPlayer1: Dispatch<object>,
+    setPlayer2: Dispatch<object>,
+  ) {
+    if (player1Hand[phaseNumber].speed <= player2Hand[phaseNumber].speed) {
+      initialState.cardAction(
+        true,
+        player1Hand[phaseNumber],
+        setPlayer1,
+        setPlayer2,
+      );
+      setTimeout(
+        () =>
+          initialState.cardAction(
+            false,
+            player2Hand[phaseNumber],
+            setPlayer1,
+            setPlayer2,
+          ),
+        500,
+      );
+      initialState.turnCheck();
+      return true;
+    } else {
+      initialState.cardAction(
+        false,
+        player2Hand[phaseNumber],
+        setPlayer1,
+        setPlayer2,
+      );
+      setTimeout(
+        () =>
+          initialState.cardAction(
+            true,
+            player1Hand[phaseNumber],
+            setPlayer1,
+            setPlayer2,
+          ),
+        500,
+      );
+      initialState.turnCheck();
+      return true;
+    }
   },
   cardAction(
     isUser: boolean,
@@ -396,7 +359,7 @@ const initialState = {
       }
     }
   },
-  turnCheck: function (lastTurn: boolean = false) {
+  turnCheck: function (lastPhase: boolean = false) {
     let player1Hp = store.getState().Battle.player1.hp;
     let player2Hp = store.getState().Battle.player2.hp;
     if (player1Hp <= 0) {
@@ -410,7 +373,7 @@ const initialState = {
     } else {
       console.log('Continue...');
     }
-    if (lastTurn) {
+    if (lastPhase) {
       let player1Mp = store.getState().Battle.player1.mp + 15;
       if (player1Mp > 100) player1Mp = 100;
       store.dispatch(set_player1_mp({ mp: player1Mp }));
@@ -443,7 +406,6 @@ export default function Battle(state: any = initialState, action: any) {
         isTurn: !state.isTurn,
       };
     case SET_PLAYER1_HAND:
-      console.log(action.payload.hand);
       return {
         ...state,
         player1: {
