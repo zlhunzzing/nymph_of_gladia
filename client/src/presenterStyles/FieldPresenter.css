@@ -12,6 +12,9 @@
   height: 100%;
   float: left;
 }
+.activeRoom {
+  background-color: coral;
+}
 .playerHand {
   margin: 20px;
 }

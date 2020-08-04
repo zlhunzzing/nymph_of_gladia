@@ -7,10 +7,16 @@ export default function FieldContainer() {
   const [player1, setPlayer1] = useState(store.getState().Battle.player1);
   const [player2, setPlayer2] = useState(store.getState().Battle.player2);
   const player2Hand = useState(store.getState().Battle.player2.hand)[0];
+  const [field, setField] = useState(store.getState().Battle.field);
+
+  // console.log(field);
+  // store.subscribe(() => {
+  //   setField(store.getState().Battle.field);
+  // });
 
   useEffect(() => {
     if (isTurn) {
-      store.getState().Battle.nextTurn(setPlayer1, setPlayer2);
+      store.getState().Battle.nextTurn(setPlayer1, setPlayer2, setField);
     }
   }, [isTurn]);
 
@@ -19,6 +25,7 @@ export default function FieldContainer() {
       player1={player1}
       player2={player2}
       player2Hand={player2Hand}
+      field={field}
     />
   );
 }

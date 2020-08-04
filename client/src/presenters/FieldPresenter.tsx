@@ -8,12 +8,14 @@ interface Props {
   player1: Player;
   player2: Player;
   player2Hand: Array<object>;
+  field: Array<object>;
 }
 
 const FieldPresenter: React.FunctionComponent<Props> = ({
   player1,
   player2,
   player2Hand,
+  field,
 }: Props) => (
   <div className="Main">
     {player1 ? (
@@ -41,20 +43,27 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
     </button>
 
     <div className="field">
-      {store.getState().Battle.field.map((floor: any, floorId: number) => (
-        <div key={floorId} className="floor">
-          {floor.map((room: any, roomId: number) => (
-            <div key={roomId} className="room">
-              {player1.position.x === roomId && player1.position.y === floorId
-                ? player1.name
-                : null}
-              {player2.position.x === roomId && player2.position.y === floorId
-                ? player2.name
-                : null}
+      {field
+        ? field.map((floor: any, floorId: number) => (
+            <div key={floorId} className="floor">
+              {floor.map((room: any, roomId: number) => (
+                <div
+                  key={roomId}
+                  className={`room ${room.effect ? 'activeRoom' : ''}`}
+                >
+                  {player1.position.x === roomId &&
+                  player1.position.y === floorId
+                    ? player1.name
+                    : null}
+                  {player2.position.x === roomId &&
+                  player2.position.y === floorId
+                    ? player2.name
+                    : null}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      ))}
+          ))
+        : null}
     </div>
 
     <div className="control">

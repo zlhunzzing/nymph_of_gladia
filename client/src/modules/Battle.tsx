@@ -15,6 +15,7 @@ const MOVE_PLAYER1_X_POSITION = 'App/Battle/MOVE_PLAYER1_X_POSITION';
 const MOVE_PLAYER1_Y_POSITION = 'App/Battle/MOVE_PLAYER1_Y_POSITION';
 const MOVE_PLAYER2_X_POSITION = 'App/Battle/MOVE_PLAYER2_X_POSITION';
 const MOVE_PLAYER2_Y_POSITION = 'App/Battle/MOVE_PLAYER2_Y_POSITION';
+const FIELD_ACTIVATION = 'App/Battle/FIELD_ACTIVATION';
 
 export const select_player = createAction(SELECT_PLAYER);
 // payload: {CharacterName: Seki <string> }
@@ -37,6 +38,8 @@ export const move_player2_position = createAction(MOVE_PLAYER2_X_POSITION);
 // payload: {x: 1 <number> }
 export const move_player2_y_position = createAction(MOVE_PLAYER2_Y_POSITION);
 // payload: {y: 1 <number> }
+export const field_activation = createAction(FIELD_ACTIVATION);
+// payload: {activeField: ...[[{effect:true},{},{},{}],[],[]] Array<Array<object>> }
 
 const initialState = {
   Instance: class Character {
@@ -120,6 +123,7 @@ const initialState = {
   nextTurn: function (
     setPlayer1: Dispatch<object>,
     setPlayer2: Dispatch<object>,
+    setField: Dispatch<Array<object>>,
   ) {
     let firstPhase = false;
     let middlePhase = false;
@@ -135,6 +139,7 @@ const initialState = {
         player2Hand,
         setPlayer1,
         setPlayer2,
+        setField,
       );
     }
     setTimeout(() => {
@@ -145,9 +150,10 @@ const initialState = {
           player2Hand,
           setPlayer1,
           setPlayer2,
+          setField,
         );
       }
-    }, 1500);
+    }, 2000);
     setTimeout(() => {
       if (lastPhase) {
         initialState.phase(
@@ -156,10 +162,11 @@ const initialState = {
           player2Hand,
           setPlayer1,
           setPlayer2,
+          setField,
         );
         setTimeout(() => store.dispatch(set_is_turn()), 2000);
       }
-    }, 3000);
+    }, 4000);
   },
   phase(
     phaseNumber: PhaseNumber,
@@ -167,6 +174,7 @@ const initialState = {
     player2Hand: Array<Card>,
     setPlayer1: Dispatch<object>,
     setPlayer2: Dispatch<object>,
+    setField: Dispatch<Array<Array<object>>>,
   ) {
     if (player1Hand[phaseNumber].speed <= player2Hand[phaseNumber].speed) {
       initialState.cardAction(
@@ -174,6 +182,7 @@ const initialState = {
         player1Hand[phaseNumber],
         setPlayer1,
         setPlayer2,
+        setField,
       );
       setTimeout(
         () =>
@@ -182,8 +191,9 @@ const initialState = {
             player2Hand[phaseNumber],
             setPlayer1,
             setPlayer2,
+            setField,
           ),
-        500,
+        1000,
       );
       initialState.turnCheck();
       return true;
@@ -193,6 +203,7 @@ const initialState = {
         player2Hand[phaseNumber],
         setPlayer1,
         setPlayer2,
+        setField,
       );
       setTimeout(
         () =>
@@ -201,8 +212,9 @@ const initialState = {
             player1Hand[phaseNumber],
             setPlayer1,
             setPlayer2,
+            setField,
           ),
-        500,
+        1000,
       );
       initialState.turnCheck();
       return true;
@@ -213,7 +225,30 @@ const initialState = {
     card: Card,
     setPlayer1: Dispatch<object>,
     setPlayer2: Dispatch<object>,
+    setField: Dispatch<Array<Array<object>>>,
   ) {
+    let field = [
+      [
+        { effect: false },
+        { effect: false },
+        { effect: false },
+        { effect: false },
+      ],
+      [
+        { effect: false },
+        { effect: false },
+        { effect: false },
+        { effect: false },
+      ],
+      [
+        { effect: false },
+        { effect: false },
+        { effect: false },
+        { effect: false },
+      ],
+    ];
+    store.dispatch(field_activation({ field: field.slice(0, 3) }));
+    setField(field.slice(0, 3));
     if (isUser) {
       switch (card.type) {
         case CARD_DICTIONARY.UP.type:
@@ -249,28 +284,32 @@ const initialState = {
           let effectiveRangeY = null;
           let player1Position = store.getState().Battle.player1.position;
           let player2Position = store.getState().Battle.player2.position;
+          let field = store.getState().Battle.field;
           for (let i = 0; i < card.range.length; i++) {
             effectiveRangeX = player1Position.x + card.range[i][0];
             effectiveRangeY = player1Position.y + card.range[i][1];
             if (
               effectiveRangeX <= 3 &&
               effectiveRangeX >= 0 &&
-              effectiveRangeY >= 2 &&
+              effectiveRangeY <= 2 &&
               effectiveRangeY >= -1
             ) {
+              field[effectiveRangeY][effectiveRangeX].effect = true;
+              if (
+                effectiveRangeX === player2Position.x &&
+                effectiveRangeY === player2Position.y
+              ) {
+                let hp = store.getState().Battle.player2.hp - card.power;
+                store.dispatch(
+                  set_player2_hp({
+                    hp: hp,
+                  }),
+                );
+                setPlayer2({ ...store.getState().Battle.player2, hp: hp });
+              }
             }
-            if (
-              effectiveRangeX === player2Position.x &&
-              effectiveRangeY === player2Position.y
-            ) {
-              let hp = store.getState().Battle.player2.hp - card.power;
-              store.dispatch(
-                set_player2_hp({
-                  hp: hp,
-                }),
-              );
-              setPlayer2({ ...store.getState().Battle.player2, hp: hp });
-            }
+            store.dispatch(field_activation({ field: field.slice(0, 3) }));
+            setField(field.slice(0, 3));
           }
           break;
         case CARD_DICTIONARY.MANA_UP.type:
@@ -322,6 +361,7 @@ const initialState = {
           let effectiveRangeY = null;
           let player1Position = store.getState().Battle.player1.position;
           let player2Position = store.getState().Battle.player2.position;
+
           for (let i = 0; i < card.range.length; i++) {
             effectiveRangeX = player2Position.x + card.range[i][0];
             effectiveRangeY = player2Position.y + card.range[i][1];
@@ -467,6 +507,11 @@ export default function Battle(state: any = initialState, action: any) {
           ...state.player2,
           position: { ...state.player2.position, y: action.payload.y },
         },
+      };
+    case FIELD_ACTIVATION:
+      return {
+        ...state,
+        field: action.payload.field,
       };
     default:
       return state;
