@@ -14,6 +14,7 @@ const cardRanges = {
 
 const CARD_DICTIONARY = {
   NONE: {
+    id: 0,
     type: 'NONE',
     speed: 0,
     cost: 0,
@@ -22,6 +23,7 @@ const CARD_DICTIONARY = {
     position: 'none',
   },
   UP: {
+    id: 1,
     type: 'UP',
     speed: 0,
     cost: 0,
@@ -30,6 +32,7 @@ const CARD_DICTIONARY = {
     position: 'card0',
   },
   DOWN: {
+    id: 2,
     type: 'DOWN',
     speed: 0,
     cost: 0,
@@ -38,6 +41,7 @@ const CARD_DICTIONARY = {
     position: 'card1',
   },
   LEFT: {
+    id: 3,
     type: 'LEFT',
     speed: 0,
     cost: 0,
@@ -46,6 +50,7 @@ const CARD_DICTIONARY = {
     position: 'card2',
   },
   RIGHT: {
+    id: 4,
     type: 'RIGHT',
     speed: 0,
     cost: 0,
@@ -54,6 +59,7 @@ const CARD_DICTIONARY = {
     position: 'card3',
   },
   MANA_UP: {
+    id: 5,
     type: 'MANA UP',
     speed: 0,
     cost: 0,
@@ -62,6 +68,7 @@ const CARD_DICTIONARY = {
     position: 'card4',
   },
   ATT1: {
+    id: 6,
     type: 'ATT',
     speed: 1,
     cost: 15,
@@ -70,6 +77,7 @@ const CARD_DICTIONARY = {
     position: 'card5',
   },
   ATT2: {
+    id: 7,
     type: 'ATT',
     speed: 1,
     cost: 15,
@@ -78,6 +86,7 @@ const CARD_DICTIONARY = {
     position: 'card6',
   },
   ATT3: {
+    id: 8,
     type: 'ATT',
     speed: 1,
     cost: 15,
@@ -86,6 +95,7 @@ const CARD_DICTIONARY = {
     position: 'card7',
   },
   ATT4: {
+    id: 9,
     type: 'ATT',
     speed: 1,
     cost: 15,
@@ -93,7 +103,28 @@ const CARD_DICTIONARY = {
     range: cardRanges.middleRow,
     position: 'card8',
   },
-  GUARD: { type: 'GUARD', speed: 0, cost: 0, position: 'card9' },
+  GUARD: {
+    type: 'GUARD',
+    speed: 0,
+    cost: 0,
+    position: 'card9',
+    power: 0,
+    range: cardRanges.noneRange,
+    id: 10,
+  },
 };
+
+export const Deck1 = [
+  CARD_DICTIONARY.UP,
+  CARD_DICTIONARY.DOWN,
+  CARD_DICTIONARY.LEFT,
+  CARD_DICTIONARY.RIGHT,
+  CARD_DICTIONARY.MANA_UP,
+  CARD_DICTIONARY.ATT1,
+  CARD_DICTIONARY.ATT2,
+  CARD_DICTIONARY.ATT3,
+  CARD_DICTIONARY.ATT4,
+  CARD_DICTIONARY.GUARD,
+];
 
 export default CARD_DICTIONARY;

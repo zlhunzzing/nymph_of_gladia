@@ -41,78 +41,45 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
       </div>
     ) : null}
 
-    <div className="basicCards">
-      {player1.basicCards ? (
-        player1.basicCards.map((card: any, id: number) => (
-          <span
-            key={id}
-            className={`card ${card.position}`}
-            onClick={() => {
-              let el = document.querySelector(
-                `.${card.position}`,
-              ) as HTMLElement;
-              for (let e in player1.hand) {
-                if (
-                  player1.hand[e].type === 'NONE' &&
-                  el.className !== `card ${card.position} selectedCard`
-                ) {
-                  el.className = `card ${card.position} selectedCard`;
-                  player1.hand[e] = card;
-                  store.dispatch(
-                    battleActions.set_player1_hand({
-                      hand: player1.hand.slice(0, 3),
-                    }),
-                  );
-                  setPlayer1({ ...player1 });
-                  break;
-                }
-              }
-            }}
-          >
-            {card.type}
-          </span>
-        ))
-      ) : (
-        <div>
-          <span className="card"></span>
-        </div>
-      )}
-    </div>
-    <div className="uniqueCards">
-      {player1.uniqueCards ? (
-        player1.uniqueCards.map((card: any, id: number) => (
-          <span
-            key={id}
-            className={`card ${card.position} ${
-              mana < card.cost ? 'lackedMana' : null
-            }`}
-            onClick={() => {
-              let el = document.querySelector(
-                `.${card.position}`,
-              ) as HTMLElement;
-              for (let e in player1.hand) {
-                if (
-                  player1.hand[e].type === 'NONE' &&
-                  el.className !== `card ${card.position} selectedCard` &&
-                  el.className !== `card ${card.position} lackedMana`
-                ) {
-                  el.className = `card ${card.position} selectedCard`;
-                  player1.hand[e] = card;
-                  store.dispatch(
-                    battleActions.set_player1_hand({
-                      hand: player1.hand.slice(0, 3),
-                    }),
-                  );
-                  setPlayer1({ ...player1 });
-                  if (card.cost) {
-                    setMana(mana - card.cost);
+    <div className="deck">
+      {player1.deck ? (
+        player1.deck.map((card: Card, id: number) => (
+          <span key={id}>
+            <span
+              className={`card ${card.position} ${
+                mana < card.cost ? 'lackedMana' : null
+              } ${
+                store.getState().Battle.checkHand(card) ? 'selectedCard' : null
+              }`}
+              onClick={() => {
+                let el = document.querySelector(
+                  `.${card.position}`,
+                ) as HTMLElement;
+                for (let e in player1.hand) {
+                  if (
+                    player1.hand[e].type === 'NONE' &&
+                    el.className !== `card ${card.position} selectedCard` &&
+                    el.className !== `card ${card.position} lackedMana `
+                  ) {
+                    el.className = `card ${card.position} selectedCard`;
+                    player1.hand[e] = card;
+                    store.dispatch(
+                      battleActions.set_player1_hand({
+                        hand: player1.hand.slice(0, 3),
+                      }),
+                    );
+                    setPlayer1({ ...player1 });
+                    if (card.cost) {
+                      setMana(mana - card.cost);
+                    }
+                    break;
                   }
-                  break;
                 }
-              }
-            }}
-          >
-            {card.type}
+              }}
+            >
+              {card.type}
+            </span>
+            {id === 4 ? <br></br> : null}
           </span>
         ))
       ) : (

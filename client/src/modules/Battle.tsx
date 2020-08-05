@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions';
 import { Card, PhaseNumber } from '../common/interface/BattleInterface';
 import store from '..';
-import CARD_DICTIONARY from '../common/CardDictionary';
+import CARD_DICTIONARY, { Deck1 } from '../common/CardDictionary';
 import { Dispatch } from 'react';
 
 const SELECT_PLAYER = 'App/Battle/SELECT_PLAYER';
@@ -47,25 +47,17 @@ const initialState = {
     hp: number;
     mp: number;
     def: number;
-    basicCards: Array<object>;
-    uniqueCards: Array<object>;
+    deck: Array<object>;
     // player: number;
     hand: Array<Card>;
     position: object;
 
-    constructor(name: string) {
+    constructor(name: string, deck: Array<Card>) {
       this.name = name;
       this.hp = 100;
       this.mp = 100;
       this.def = 0;
-      this.basicCards = [
-        CARD_DICTIONARY.UP,
-        CARD_DICTIONARY.DOWN,
-        CARD_DICTIONARY.LEFT,
-        CARD_DICTIONARY.RIGHT,
-        CARD_DICTIONARY.MANA_UP,
-      ];
-      this.uniqueCards = [];
+      this.deck = deck;
       // this.player = 1;
       this.hand = [
         CARD_DICTIONARY.NONE,
@@ -76,15 +68,8 @@ const initialState = {
     }
   },
   createCharacter: function (name: string, isUser: boolean = false) {
-    const character = new initialState.Instance(name);
+    const character = new initialState.Instance(name, Deck1);
     if (name === '세키' || '레티') {
-      character.uniqueCards = [
-        CARD_DICTIONARY.ATT1,
-        CARD_DICTIONARY.ATT2,
-        CARD_DICTIONARY.ATT3,
-        CARD_DICTIONARY.ATT4,
-        CARD_DICTIONARY.GUARD,
-      ];
     }
     if (!isUser) {
       character.hand = [
@@ -120,6 +105,15 @@ const initialState = {
       { effect: false },
     ],
   ],
+  checkHand: function (card: Card) {
+    let hand = store.getState().Battle.player1.hand;
+    for (let i = 0; i < hand.length; i++) {
+      if (hand[i].id === card.id) {
+        return true;
+      }
+    }
+    return false;
+  },
   nextTurn: function (
     setPlayer1: Dispatch<object>,
     setPlayer2: Dispatch<object>,
@@ -419,7 +413,7 @@ const initialState = {
       store.dispatch(set_player1_mp({ mp: player1Mp }));
     }
   },
-  clearHand: function () {
+  clearHand: function (setPlayer: Dispatch<object>) {
     store.dispatch(
       set_player1_hand({
         hand: [
@@ -429,6 +423,7 @@ const initialState = {
         ].slice(0, 3),
       }),
     );
+    setPlayer({ ...store.getState().Battle.player1 });
   },
 };
 

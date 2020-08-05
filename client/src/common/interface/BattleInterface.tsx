@@ -2,13 +2,13 @@ export interface Player {
   name: string;
   hp: number;
   mp: number;
-  basicCards: Array<object>;
-  uniqueCards: Array<object>;
+  deck: Array<Card>;
   hand: Array<Card>;
   position: Position;
 }
 
 export interface Card {
+  id: number;
   type: string;
   speed: number;
   cost: number;

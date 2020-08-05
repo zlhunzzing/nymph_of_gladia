@@ -5,13 +5,24 @@
   float: right;
 }
 
+.basicCards {
+  margin-top: 110px;
+  /* display: none; */
+}
+.uniqueCards {
+  margin-top: 1px;
+  /* display: none; */
+}
+.deck {
+  margin-top: 110px;
+  /* display: none; */
+}
 .card {
   border: 1px solid black;
   width: 75px;
   height: 100px;
   display: inline-block;
-  margin-left: 1px;
-  margin-right: 1px;
+  margin: 1px;
 }
 .selectedCard {
   opacity: 0;
@@ -21,12 +32,6 @@
 }
 .card:hover {
   background-color: coral;
-}
-.basicCards {
-  margin-top: 110px;
-}
-.uniqueCards {
-  margin-top: 1px;
 }
 
 .control {
