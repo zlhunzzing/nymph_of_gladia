@@ -7,7 +7,8 @@ export default function SetTurnContainer() {
   const entryModal = useState(store.getState().Battle.entryModal)[0];
   const [player1, setPlayer1] = useState(store.getState().Battle.player1);
   const player2 = useState(store.getState().Battle.player2)[0];
-  const [mana, setMana] = useState(player1.mp);
+  const [usedMana, setUsedMana] = useState(player1.mp);
+  const [handMana, setHandMana] = useState(0);
 
   useEffect(() => {
     if (entryModal && store.getState().Battle.player1) {
@@ -36,8 +37,10 @@ export default function SetTurnContainer() {
       player1={player1}
       player2={player2}
       setPlayer1={setPlayer1}
-      mana={mana}
-      setMana={setMana}
+      usedMana={usedMana}
+      setUsedMana={setUsedMana}
+      handMana={handMana}
+      setHandMana={setHandMana}
     />
   );
 }

@@ -10,16 +10,20 @@ interface Props {
   player1: Player;
   setPlayer1: Dispatch<object>;
   player2: Player;
-  mana: number;
-  setMana: Dispatch<number>;
+  usedMana: number;
+  setUsedMana: Dispatch<number>;
+  handMana: number;
+  setHandMana: Dispatch<number>;
 }
 
 const SetTurnPresenter: React.FunctionComponent<Props> = ({
   player1,
   setPlayer1,
   player2,
-  mana,
-  setMana,
+  usedMana,
+  setUsedMana,
+  handMana,
+  setHandMana,
 }: Props) => (
   <div className="Main">
     {player1 ? (
@@ -29,7 +33,7 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
             <div>NAME: {player1.name}</div>
             <div>HP: {player1.hp}</div>
             <div>
-              MP: {mana}/{player1.mp}
+              MP: {usedMana}/{player1.mp}
             </div>
           </div>
         </div>
@@ -47,7 +51,7 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
           <span key={id}>
             <span
               className={`card ${card.position} ${
-                mana < card.cost ? 'lackedMana' : null
+                usedMana < card.cost ? 'lackedMana' : null
               } ${
                 store.getState().Battle.checkHand(card) ? 'selectedCard' : null
               }`}
@@ -59,7 +63,7 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                   if (
                     player1.hand[e].type === 'NONE' &&
                     el.className !== `card ${card.position} selectedCard` &&
-                    el.className !== `card ${card.position} lackedMana `
+                    el.className !== `card ${card.position} lackedMana null`
                   ) {
                     el.className = `card ${card.position} selectedCard`;
                     player1.hand[e] = card;
@@ -69,9 +73,8 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                       }),
                     );
                     setPlayer1({ ...player1 });
-                    if (card.cost) {
-                      setMana(mana - card.cost);
-                    }
+                    setUsedMana(usedMana - card.cost);
+                    setHandMana(handMana + card.cost);
                     break;
                   }
                 }
@@ -106,7 +109,8 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                         }),
                       );
                       setPlayer1({ ...player1 });
-                      setMana(mana + card.cost);
+                      setUsedMana(usedMana + card.cost);
+                      setHandMana(handMana - card.cost);
                       let el = document.querySelector(
                         `.${card.position}`,
                       ) as HTMLElement;

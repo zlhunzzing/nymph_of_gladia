@@ -62,7 +62,7 @@ const CARD_DICTIONARY = {
     id: 5,
     type: 'MANA UP',
     speed: 0,
-    cost: 0,
+    cost: -15,
     power: 0,
     range: cardRanges.noneRange,
     position: 'card4',
