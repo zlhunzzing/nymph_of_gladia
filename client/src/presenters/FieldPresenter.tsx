@@ -70,18 +70,14 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
       <span className="playerHand">
         {player1.hand
           ? player1.hand.map((card: any, id: number) => (
-              <span key={id} className="card">
-                {card.type ? card.type : '비었다'}
-              </span>
+              <img src={card.image} alt="" key={id} className="card"></img>
             ))
           : null}
       </span>
       <span className="player2Hand">
         {player2Hand
           ? player2Hand.map((card: any, id: number) => (
-              <span key={id} className="card">
-                {card.type ? card.type : '비었다'}
-              </span>
+              <img src={card.image} alt="" key={id} className="card"></img>
             ))
           : null}
       </span>

@@ -46,50 +46,48 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
     ) : null}
 
     <div className="deck">
-      {player1.deck ? (
-        player1.deck.map((card: Card, id: number) => (
-          <span key={id}>
-            <span
-              className={`card ${card.position} ${
-                usedMana < card.cost ? 'lackedMana' : null
-              } ${
-                store.getState().Battle.checkHand(card) ? 'selectedCard' : null
-              }`}
-              onClick={() => {
-                let el = document.querySelector(
-                  `.${card.position}`,
-                ) as HTMLElement;
-                for (let e in player1.hand) {
-                  if (
-                    player1.hand[e].type === 'NONE' &&
-                    el.className !== `card ${card.position} selectedCard` &&
-                    el.className !== `card ${card.position} lackedMana null`
-                  ) {
-                    el.className = `card ${card.position} selectedCard`;
-                    player1.hand[e] = card;
-                    store.dispatch(
-                      battleActions.set_player1_hand({
-                        hand: player1.hand.slice(0, 3),
-                      }),
-                    );
-                    setPlayer1({ ...player1 });
-                    setUsedMana(usedMana - card.cost);
-                    setHandMana(handMana + card.cost);
-                    break;
+      {player1.deck
+        ? player1.deck.map((card: Card, id: number) => (
+            <span key={id}>
+              <img
+                src={card.image}
+                alt=""
+                className={`card ${card.position} ${
+                  usedMana < card.cost ? 'lackedMana' : null
+                } ${
+                  store.getState().Battle.checkHand(card)
+                    ? 'selectedCard'
+                    : null
+                }`}
+                onClick={() => {
+                  let el = document.querySelector(
+                    `.${card.position}`,
+                  ) as HTMLElement;
+                  for (let e in player1.hand) {
+                    if (
+                      player1.hand[e].type === 'NONE' &&
+                      el.className !== `card ${card.position} selectedCard` &&
+                      el.className !== `card ${card.position} lackedMana null`
+                    ) {
+                      el.className = `card ${card.position} selectedCard`;
+                      player1.hand[e] = card;
+                      store.dispatch(
+                        battleActions.set_player1_hand({
+                          hand: player1.hand.slice(0, 3),
+                        }),
+                      );
+                      setPlayer1({ ...player1 });
+                      setUsedMana(usedMana - card.cost);
+                      setHandMana(handMana + card.cost);
+                      break;
+                    }
                   }
-                }
-              }}
-            >
-              {card.type}
+                }}
+              ></img>
+              {id === 4 ? <br></br> : null}
             </span>
-            {id === 4 ? <br></br> : null}
-          </span>
-        ))
-      ) : (
-        <div>
-          <span className="card"></span>
-        </div>
-      )}
+          ))
+        : null}
     </div>
 
     <div className="control">
@@ -97,7 +95,9 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
         <span>
           {player1.hand
             ? player1.hand.map((card: Card, id: number) => (
-                <span
+                <img
+                  src={card.image}
+                  alt=""
                   key={id}
                   className="card"
                   onClick={() => {
@@ -117,9 +117,7 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                       el.className = `card ${card.position}`;
                     }
                   }}
-                >
-                  {card.type === 'NONE' ? '비었다' : card.type}
-                </span>
+                ></img>
               ))
             : null}
         </span>

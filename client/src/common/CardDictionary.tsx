@@ -1,5 +1,20 @@
+const imageRequires = {
+  NONE: require('../images/cardImages/noneCard.png'),
+  UP: require('../images/cardImages/moveUpCard.png'),
+  DOWN: require('../images/cardImages/moveDownCard.png'),
+  LEFT: require('../images/cardImages/moveLeftCard.png'),
+  RIGHT: require('../images/cardImages/moveRightCard.png'),
+  MANA_UP: require('../images/cardImages/manaupCard.png'),
+  ATT1: require('../images/cardImages/ATT1punchCard.png'),
+  ATT2: require('../images/cardImages/ATT2windKickCard.png'),
+  ATT3: require('../images/cardImages/ATT3earthPunchCard.png'),
+  ATT4: require('../images/cardImages/ATT4fastFunchs.png'),
+  GUARD: require('../images/cardImages/guardCard.png'),
+};
+
 const cardRanges = {
   noneRange: [],
+  self: [[0, 0]],
   middleRow: [
     [-1, 0],
     [0, 0],
@@ -9,6 +24,20 @@ const cardRanges = {
     [0, 1],
     [0, 0],
     [0, -1],
+  ],
+  crossRange: [
+    [-1, 0],
+    [0, 1],
+    [0, 0],
+    [0, -1],
+    [1, 0],
+  ],
+  XcrossRange: [
+    [-1, 1],
+    [1, 1],
+    [0, 0],
+    [-1, -1],
+    [1, 1],
   ],
 };
 
@@ -21,6 +50,7 @@ const CARD_DICTIONARY = {
     power: 0,
     range: cardRanges.noneRange,
     position: 'none',
+    image: imageRequires.NONE,
   },
   UP: {
     id: 1,
@@ -30,6 +60,7 @@ const CARD_DICTIONARY = {
     power: 0,
     range: cardRanges.noneRange,
     position: 'card0',
+    image: imageRequires.UP,
   },
   DOWN: {
     id: 2,
@@ -39,6 +70,7 @@ const CARD_DICTIONARY = {
     power: 0,
     range: cardRanges.noneRange,
     position: 'card1',
+    image: imageRequires.DOWN,
   },
   LEFT: {
     id: 3,
@@ -48,6 +80,7 @@ const CARD_DICTIONARY = {
     power: 0,
     range: cardRanges.noneRange,
     position: 'card2',
+    image: imageRequires.LEFT,
   },
   RIGHT: {
     id: 4,
@@ -57,6 +90,7 @@ const CARD_DICTIONARY = {
     power: 0,
     range: cardRanges.noneRange,
     position: 'card3',
+    image: imageRequires.RIGHT,
   },
   MANA_UP: {
     id: 5,
@@ -66,42 +100,47 @@ const CARD_DICTIONARY = {
     power: 0,
     range: cardRanges.noneRange,
     position: 'card4',
+    image: imageRequires.MANA_UP,
   },
   ATT1: {
     id: 6,
     type: 'ATT',
     speed: 1,
-    cost: 15,
-    power: 20,
-    range: cardRanges.middleRow,
+    cost: 25,
+    power: 15,
+    range: cardRanges.self,
     position: 'card5',
+    image: imageRequires.ATT1,
   },
   ATT2: {
     id: 7,
     type: 'ATT',
     speed: 1,
-    cost: 15,
-    power: 20,
-    range: cardRanges.middleRow,
+    cost: 25,
+    power: 25,
+    range: cardRanges.crossRange,
     position: 'card6',
+    image: imageRequires.ATT2,
   },
   ATT3: {
     id: 8,
     type: 'ATT',
     speed: 1,
-    cost: 15,
-    power: 20,
-    range: cardRanges.middleRow,
+    cost: 25,
+    power: 25,
+    range: cardRanges.XcrossRange,
     position: 'card7',
+    image: imageRequires.ATT3,
   },
   ATT4: {
     id: 9,
     type: 'ATT',
     speed: 1,
-    cost: 15,
-    power: 20,
-    range: cardRanges.middleRow,
+    cost: 45,
+    power: 50,
+    range: cardRanges.self,
     position: 'card8',
+    image: imageRequires.ATT4,
   },
   GUARD: {
     type: 'GUARD',
@@ -111,6 +150,7 @@ const CARD_DICTIONARY = {
     power: 0,
     range: cardRanges.noneRange,
     id: 10,
+    image: imageRequires.GUARD,
   },
 };
 
@@ -126,5 +166,14 @@ export const Deck1 = [
   CARD_DICTIONARY.ATT4,
   CARD_DICTIONARY.GUARD,
 ];
+
+// const imageRequires = {
+//   UP: require('../images/cardImage/moveUpCard.png'),
+//   // 사막: require('../images/fielddesert.jpg'),
+//   // 사막2: require('../images/fielddesert2.jpg'),
+//   // 픽션: require('../images/fieldfiction.jpg'),
+//   // 밤: require('../images/fieldblue.jpg'),
+//   // 동굴: require('../images/fieldcave.jpg')
+// };
 
 export default CARD_DICTIONARY;

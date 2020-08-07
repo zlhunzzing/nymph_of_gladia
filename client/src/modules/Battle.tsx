@@ -286,7 +286,8 @@ const initialState = {
               effectiveRangeX <= 3 &&
               effectiveRangeX >= 0 &&
               effectiveRangeY <= 2 &&
-              effectiveRangeY >= -1
+              effectiveRangeY >= -1 &&
+              field[effectiveRangeY][effectiveRangeX]
             ) {
               field[effectiveRangeY][effectiveRangeX].effect = true;
               if (
