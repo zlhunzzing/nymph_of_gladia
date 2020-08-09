@@ -7,14 +7,12 @@ import * as battleActions from '../modules/Battle';
 interface Props {
   player1: Player;
   player2: Player;
-  player2Hand: Array<object>;
   field: Array<object>;
 }
 
 const FieldPresenter: React.FunctionComponent<Props> = ({
   player1,
   player2,
-  player2Hand,
   field,
 }: Props) => (
   <div className="Main">
@@ -75,8 +73,8 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
           : null}
       </span>
       <span className="player2Hand">
-        {player2Hand
-          ? player2Hand.map((card: any, id: number) => (
+        {player2.hand
+          ? player2.hand.map((card: any, id: number) => (
               <img src={card.image} alt="" key={id} className="card"></img>
             ))
           : null}

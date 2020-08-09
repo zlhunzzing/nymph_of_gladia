@@ -37,7 +37,7 @@ const cardRanges = {
     [1, 1],
     [0, 0],
     [-1, -1],
-    [1, 1],
+    [1, -1],
   ],
 };
 
@@ -108,7 +108,7 @@ const CARD_DICTIONARY = {
     speed: 1,
     cost: 25,
     power: 15,
-    range: cardRanges.self,
+    range: cardRanges.middleRow,
     position: 'card5',
     image: imageRequires.ATT1,
   },
@@ -166,14 +166,5 @@ export const Deck1 = [
   CARD_DICTIONARY.ATT4,
   CARD_DICTIONARY.GUARD,
 ];
-
-// const imageRequires = {
-//   UP: require('../images/cardImage/moveUpCard.png'),
-//   // 사막: require('../images/fielddesert.jpg'),
-//   // 사막2: require('../images/fielddesert2.jpg'),
-//   // 픽션: require('../images/fieldfiction.jpg'),
-//   // 밤: require('../images/fieldblue.jpg'),
-//   // 동굴: require('../images/fieldcave.jpg')
-// };
 
 export default CARD_DICTIONARY;
