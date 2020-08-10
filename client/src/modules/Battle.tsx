@@ -10,6 +10,7 @@ const SET_PLAYER1_HAND = 'App/Battle/SET_PLAYER1_HAND';
 const SET_PLAYER1_HP = 'App/Battle/SET_PLAYER1_HP';
 const SET_PLAYER1_MP = 'App/Battle/SET_PLAYER1_MP';
 const SET_PLAYER1_DEF = 'App/Battle/SET_PLAYER1_DEF';
+const SET_PLAYER2_HAND = 'App/Battle/SET_PLAYER2_HAND';
 const SET_PLAYER2_HP = 'App/Battle/SET_PLAYER2_HP';
 const SET_PLAYER2_MP = 'App/Battle/SET_PLAYER2_MP';
 const SET_PLAYER2_DEF = 'App/Battle/SET_PLAYER1_DEF';
@@ -31,6 +32,8 @@ export const set_player1_mp = createAction(SET_PLAYER1_MP);
 // payload: {mp: 50 <mumber> }
 export const set_player1_def = createAction(SET_PLAYER1_DEF);
 // payload: {defence: 10 <number> }
+export const set_player2_hand = createAction(SET_PLAYER2_HAND);
+// payload: {hand: [{},{},{}] Array<Card> }
 export const set_player2_hp = createAction(SET_PLAYER2_HP);
 // payload: {hp: 75 <number> }
 export const set_player2_mp = createAction(SET_PLAYER2_MP);
@@ -340,7 +343,7 @@ const initialState = {
         case 'ATT':
           let mana = store.getState().Battle.player2.mp - card.cost;
           store.dispatch(set_player2_mp({ mp: mana }));
-          setPlayer2({ ...store.getState().Battle.player2 });
+          setPlayer2({ ...store.getState().Battle.player2, mp: mana });
 
           let effectiveRangeX = null;
           let effectiveRangeY = null;
@@ -348,6 +351,7 @@ const initialState = {
           let player1Position = store.getState().Battle.player1.position;
           let field = store.getState().Battle.field;
           for (let i = 0; i < card.range.length; i++) {
+            console.log(card, card.range);
             effectiveRangeX = player2Position.x + card.range[i][0];
             effectiveRangeY = player2Position.y + card.range[i][1];
             if (
@@ -425,6 +429,118 @@ const initialState = {
       }),
     );
   },
+  autoCardSet: function () {
+    let cardSet: Array<Card> = [];
+    let player1 = store.getState().Battle.player1;
+    let player2 = store.getState().Battle.player2;
+    let mana = store.getState().Battle.player2.mp;
+
+    const checkHand = function (card: Card) {
+      for (let i = 0; i < cardSet.length; i++) {
+        if (cardSet[i].id === card.id) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    if (
+      player1.position.y < player2.position.y &&
+      checkHand(CARD_DICTIONARY.UP)
+    ) {
+      cardSet.push(CARD_DICTIONARY.UP);
+    }
+    if (
+      player1.position.y > player2.position.y &&
+      checkHand(CARD_DICTIONARY.DOWN)
+    ) {
+      cardSet.push(CARD_DICTIONARY.DOWN);
+    }
+    if (
+      player1.position.x < player2.position.x &&
+      checkHand(CARD_DICTIONARY.LEFT)
+    ) {
+      cardSet.push(CARD_DICTIONARY.LEFT);
+    }
+    if (
+      player1.position.x > player2.position.x &&
+      checkHand(CARD_DICTIONARY.RIGHT)
+    ) {
+      cardSet.push(CARD_DICTIONARY.RIGHT);
+    }
+    if (Math.abs(player1.position.x - player2.position.x) <= 1) {
+      if (mana >= 15) {
+        mana = mana - 15;
+        cardSet.push(CARD_DICTIONARY.ATT1);
+      }
+      if (mana < 15) {
+        cardSet.push(CARD_DICTIONARY.MANA_UP);
+      }
+    }
+    if (Math.abs(player1.position.x - player2.position.x) <= 1) {
+      if (mana >= 25) {
+        mana = mana - 25;
+        cardSet.push(CARD_DICTIONARY.ATT2);
+      }
+      if (mana < 25 && checkHand(CARD_DICTIONARY.MANA_UP)) {
+        cardSet.push(CARD_DICTIONARY.MANA_UP);
+      }
+    }
+    if (
+      Math.abs(player1.position.x - player2.position.x) <= 1 &&
+      Math.abs(player1.position.y - player2.position.y) <= 1
+    ) {
+      if (mana >= 25) {
+        mana = mana - 25;
+        cardSet.push(CARD_DICTIONARY.ATT3);
+      }
+      if (mana < 25 && checkHand(CARD_DICTIONARY.MANA_UP)) {
+        cardSet.push(CARD_DICTIONARY.MANA_UP);
+      }
+    }
+    if (player1.position === player2.position) {
+      if (mana >= 45) {
+        mana = mana - 45;
+        cardSet.push(CARD_DICTIONARY.ATT4);
+      }
+      if (mana < 45 && checkHand(CARD_DICTIONARY.MANA_UP)) {
+        cardSet.push(CARD_DICTIONARY.MANA_UP);
+      }
+    }
+    if (checkHand(CARD_DICTIONARY.GUARD)) {
+      cardSet.push(CARD_DICTIONARY.GUARD);
+    }
+    if (mana < 15) {
+      if (
+        player1.position.y < player2.position.y &&
+        checkHand(CARD_DICTIONARY.DOWN)
+      ) {
+        cardSet.push(CARD_DICTIONARY.DOWN);
+      }
+      if (
+        player1.position.y > player2.position.y &&
+        checkHand(CARD_DICTIONARY.UP)
+      ) {
+        cardSet.push(CARD_DICTIONARY.UP);
+      }
+      if (
+        player1.position.x <= player2.position.x &&
+        checkHand(CARD_DICTIONARY.RIGHT)
+      ) {
+        cardSet.push(CARD_DICTIONARY.RIGHT);
+      }
+      if (
+        player1.position.x >= player2.position.x &&
+        checkHand(CARD_DICTIONARY.LEFT)
+      ) {
+        cardSet.push(CARD_DICTIONARY.LEFT);
+      }
+    }
+    if (checkHand(CARD_DICTIONARY.MANA_UP)) {
+      cardSet.push(CARD_DICTIONARY.MANA_UP);
+    }
+    store.dispatch(set_player2_hand({ hand: cardSet.slice(0, 3) }));
+  },
 };
 
 export default function Battle(state: any = initialState, action: any) {
@@ -464,6 +580,14 @@ export default function Battle(state: any = initialState, action: any) {
         player1: {
           ...state.player1,
           defence: action.payload.defence,
+        },
+      };
+    case SET_PLAYER2_HAND:
+      return {
+        ...state,
+        player2: {
+          ...state.player2,
+          hand: action.payload.hand,
         },
       };
     case SET_PLAYER2_HP:

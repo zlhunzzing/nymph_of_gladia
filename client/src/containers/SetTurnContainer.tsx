@@ -30,6 +30,9 @@ export default function SetTurnContainer() {
     }
     store.getState().Battle.clearHand(setPlayer1);
     setPlayer1({ ...store.getState().Battle.player1 });
+    if (store.getState().Battle.player2.position) {
+      store.getState().Battle.autoCardSet();
+    }
   }, [entryModal]);
 
   return (
