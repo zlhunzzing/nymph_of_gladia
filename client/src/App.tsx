@@ -16,6 +16,7 @@ function App() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalContent, setIsModalContent] = useState('');
   const [modalIsButton, setModalIsButton] = useState(true);
+  const [isLink, setIsLink] = useState(false);
 
   store.subscribe(() => {
     if (modalIsOpen !== store.getState().HandleModal.modalIsOpen) {
@@ -26,6 +27,9 @@ function App() {
     }
     if (modalIsButton !== store.getState().HandleModal.modalIsButton) {
       setModalIsButton(store.getState().HandleModal.modalIsButton);
+    }
+    if (isLink !== store.getState().HandleModal.isLink) {
+      setIsLink(store.getState().HandleModal.isLink);
     }
   });
 
@@ -52,6 +56,21 @@ function App() {
           >
             확인
           </button>
+        ) : null}
+        {isLink ? (
+          <a
+            href={store.getState().HandleModal.linkTarget}
+            onClick={() => {
+              store.dispatch(
+                HandleModalActions.setModalIsOpen({ isOpen: false }),
+              );
+              store.dispatch(
+                HandleModalActions.setModalIsButton({ modalIsButton: true }),
+              );
+            }}
+          >
+            확인
+          </a>
         ) : null}
       </Modal>
     </div>

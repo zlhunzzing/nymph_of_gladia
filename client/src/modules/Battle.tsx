@@ -3,6 +3,7 @@ import { Card, PhaseNumber } from '../common/interface/BattleInterface';
 import store from '..';
 import CARD_DICTIONARY, { Deck1 } from '../common/CardDictionary';
 import { Dispatch } from 'react';
+import * as handleModalActions from '../modules/HandleModal';
 
 const SELECT_PLAYER = 'App/Battle/SELECT_PLAYER';
 const SET_IS_TURN = 'App/Battle/SET_IS_TURN';
@@ -126,16 +127,18 @@ const initialState = {
     setPlayer1: Dispatch<object>,
     setPlayer2: Dispatch<object>,
     setField: Dispatch<Array<object>>,
+    history: History,
   ) {
     let firstPhase = false;
     let middlePhase = false;
     let lastPhase = false;
+    let continueTurn = false;
     let player1Hand = store.getState().Battle.player1.hand;
     let player2Hand = store.getState().Battle.player2.hand;
 
     firstPhase = !firstPhase;
     if (firstPhase) {
-      middlePhase = initialState.phase(
+      initialState.phase(
         PhaseNumber.FIRST,
         player1Hand,
         player2Hand,
@@ -145,8 +148,9 @@ const initialState = {
       );
     }
     setTimeout(() => {
+      middlePhase = initialState.turnCheck(history, setField);
       if (middlePhase) {
-        lastPhase = initialState.phase(
+        initialState.phase(
           PhaseNumber.MIDDLE,
           player1Hand,
           player2Hand,
@@ -157,6 +161,9 @@ const initialState = {
       }
     }, 2000);
     setTimeout(() => {
+      if (middlePhase) {
+        lastPhase = initialState.turnCheck(history, setField);
+      }
       if (lastPhase) {
         initialState.phase(
           PhaseNumber.LAST,
@@ -166,9 +173,14 @@ const initialState = {
           setPlayer2,
           setField,
         );
-        setTimeout(() => store.dispatch(set_is_turn()), 2000);
       }
     }, 4000);
+    setTimeout(() => {
+      if (lastPhase) {
+        continueTurn = initialState.turnCheck(history, setField);
+        if (continueTurn) store.dispatch(set_is_turn());
+      }
+    }, 6000);
   },
   phase(
     phaseNumber: PhaseNumber,
@@ -197,8 +209,6 @@ const initialState = {
           ),
         1000,
       );
-      initialState.turnCheck();
-      return true;
     } else {
       initialState.cardAction(
         false,
@@ -218,8 +228,6 @@ const initialState = {
           ),
         1000,
       );
-      initialState.turnCheck();
-      return true;
     }
   },
   cardAction(
@@ -311,7 +319,6 @@ const initialState = {
               defence: 10,
             }),
           );
-          setPlayer1({ ...store.getState().Battle.player1 });
           break;
       }
     } else {
@@ -351,7 +358,6 @@ const initialState = {
           let player1Position = store.getState().Battle.player1.position;
           let field = store.getState().Battle.field;
           for (let i = 0; i < card.range.length; i++) {
-            console.log(card, card.range);
             effectiveRangeX = player2Position.x + card.range[i][0];
             effectiveRangeY = player2Position.y + card.range[i][1];
             if (
@@ -397,37 +403,6 @@ const initialState = {
           break;
       }
     }
-  },
-  turnCheck: function (lastPhase: boolean = false) {
-    let player1Hp = store.getState().Battle.player1.hp;
-    let player2Hp = store.getState().Battle.player2.hp;
-    if (player1Hp <= 0) {
-      if (player2Hp <= 0) {
-        console.log('Draw');
-      } else {
-        console.log('Lose');
-      }
-    } else if (player2Hp <= 0) {
-      console.log('Win');
-    } else {
-      console.log('Continue...');
-    }
-    if (lastPhase) {
-      let player1Mp = store.getState().Battle.player1.mp + 15;
-      if (player1Mp > 100) player1Mp = 100;
-      store.dispatch(set_player1_mp({ mp: player1Mp }));
-    }
-  },
-  clearHand: function () {
-    store.dispatch(
-      set_player1_hand({
-        hand: [
-          CARD_DICTIONARY.NONE,
-          CARD_DICTIONARY.NONE,
-          CARD_DICTIONARY.NONE,
-        ].slice(0, 3),
-      }),
-    );
   },
   autoCardSet: function () {
     let cardSet: Array<Card> = [];
@@ -540,6 +515,71 @@ const initialState = {
       cardSet.push(CARD_DICTIONARY.MANA_UP);
     }
     store.dispatch(set_player2_hand({ hand: cardSet.slice(0, 3) }));
+  },
+  turnCheck: function (history: any, setField: Dispatch<Array<Array<object>>>) {
+    let player1Hp = store.getState().Battle.player1.hp;
+    let player2Hp = store.getState().Battle.player2.hp;
+    if (player1Hp <= 0) {
+      if (player2Hp <= 0 && player1Hp <= 0) {
+        console.log('Draw');
+        store.dispatch(
+          handleModalActions.setModalContent({
+            content: '무승부 했다.',
+          }),
+        );
+        store.dispatch(handleModalActions.set_is_link());
+        store.dispatch(handleModalActions.setModalIsOpen({ isOpen: true }));
+        store.dispatch(
+          handleModalActions.set_link_target({ linkTarget: '/main' }),
+        );
+        store.dispatch(field_reset());
+        setField(store.getState().Battle.field);
+      } else {
+        console.log('Lose');
+        store.dispatch(
+          handleModalActions.setModalContent({
+            content: store.getState().Battle.player2.name + '에게 졌다.',
+          }),
+        );
+        store.dispatch(handleModalActions.set_is_link());
+        store.dispatch(handleModalActions.setModalIsOpen({ isOpen: true }));
+        store.dispatch(
+          handleModalActions.set_link_target({ linkTarget: '/main' }),
+        );
+        store.dispatch(field_reset());
+        setField(store.getState().Battle.field);
+        return false;
+      }
+    } else if (player2Hp <= 0) {
+      console.log('Win');
+      store.dispatch(
+        handleModalActions.setModalContent({
+          content: store.getState().Battle.player1.name + '에게 이겼다.',
+        }),
+      );
+      store.dispatch(handleModalActions.set_is_link());
+      store.dispatch(handleModalActions.setModalIsOpen({ isOpen: true }));
+      store.dispatch(
+        handleModalActions.set_link_target({ linkTarget: '/main' }),
+      );
+      store.dispatch(field_reset());
+      setField(store.getState().Battle.field);
+      return false;
+    } else {
+      console.log('Continue...');
+    }
+    return true;
+  },
+  clearHand: function () {
+    store.dispatch(
+      set_player1_hand({
+        hand: [
+          CARD_DICTIONARY.NONE,
+          CARD_DICTIONARY.NONE,
+          CARD_DICTIONARY.NONE,
+        ].slice(0, 3),
+      }),
+    );
   },
 };
 
