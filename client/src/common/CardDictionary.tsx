@@ -1,15 +1,24 @@
 const imageRequires = {
   NONE: require('../images/cardImages/noneCard.png'),
   UP: require('../images/cardImages/moveUpCard.png'),
+  UP_DARK: require('../images/cardImages/moveUpCard_dark.png'),
   DOWN: require('../images/cardImages/moveDownCard.png'),
+  DOWN_DARK: require('../images/cardImages/moveDownCard_dark.png'),
   LEFT: require('../images/cardImages/moveLeftCard.png'),
+  LEFT_DARK: require('../images/cardImages/moveLeftCard_dark.png'),
   RIGHT: require('../images/cardImages/moveRightCard.png'),
+  RIGHT_DARK: require('../images/cardImages/moveRightCard_dark.png'),
   MANA_UP: require('../images/cardImages/manaupCard.png'),
   ATT1: require('../images/cardImages/ATT1punchCard.png'),
+  ATT1_DARK: require('../images/cardImages/ATT1punchCard_dark.png'),
   ATT2: require('../images/cardImages/ATT2windKickCard.png'),
+  ATT2_DARK: require('../images/cardImages/ATT2windKickCard_dark.png'),
   ATT3: require('../images/cardImages/ATT3earthPunchCard.png'),
-  ATT4: require('../images/cardImages/ATT4fastFunchs.png'),
+  ATT3_DARK: require('../images/cardImages/ATT3earthPunchCard_dark.png'),
+  ATT4: require('../images/cardImages/ATT4fastPunchs.png'),
+  ATT4_DARK: require('../images/cardImages/ATT4fastPunchs_dark.png'),
   GUARD: require('../images/cardImages/guardCard.png'),
+  GUARD_DARK: require('../images/cardImages/guardCard_dark.png'),
 };
 
 const cardRanges = {
@@ -51,6 +60,7 @@ const CARD_DICTIONARY = {
     range: cardRanges.noneRange,
     position: 'none',
     image: imageRequires.NONE,
+    darkImage: imageRequires.NONE,
   },
   UP: {
     id: 1,
@@ -61,6 +71,7 @@ const CARD_DICTIONARY = {
     range: cardRanges.noneRange,
     position: 'card0',
     image: imageRequires.UP,
+    darkImage: imageRequires.UP_DARK,
   },
   DOWN: {
     id: 2,
@@ -71,6 +82,7 @@ const CARD_DICTIONARY = {
     range: cardRanges.noneRange,
     position: 'card1',
     image: imageRequires.DOWN,
+    darkImage: imageRequires.DOWN_DARK,
   },
   LEFT: {
     id: 3,
@@ -81,6 +93,7 @@ const CARD_DICTIONARY = {
     range: cardRanges.noneRange,
     position: 'card2',
     image: imageRequires.LEFT,
+    darkImage: imageRequires.LEFT_DARK,
   },
   RIGHT: {
     id: 4,
@@ -91,6 +104,7 @@ const CARD_DICTIONARY = {
     range: cardRanges.noneRange,
     position: 'card3',
     image: imageRequires.RIGHT,
+    darkImage: imageRequires.RIGHT_DARK,
   },
   MANA_UP: {
     id: 5,
@@ -101,6 +115,7 @@ const CARD_DICTIONARY = {
     range: cardRanges.noneRange,
     position: 'card4',
     image: imageRequires.MANA_UP,
+    darkImage: imageRequires.MANA_UP,
   },
   ATT1: {
     id: 6,
@@ -111,6 +126,7 @@ const CARD_DICTIONARY = {
     range: cardRanges.middleRow,
     position: 'card5',
     image: imageRequires.ATT1,
+    darkImage: imageRequires.ATT1_DARK,
   },
   ATT2: {
     id: 7,
@@ -121,6 +137,7 @@ const CARD_DICTIONARY = {
     range: cardRanges.crossRange,
     position: 'card6',
     image: imageRequires.ATT2,
+    darkImage: imageRequires.ATT2_DARK,
   },
   ATT3: {
     id: 8,
@@ -131,6 +148,7 @@ const CARD_DICTIONARY = {
     range: cardRanges.XcrossRange,
     position: 'card7',
     image: imageRequires.ATT3,
+    darkImage: imageRequires.ATT3_DARK,
   },
   ATT4: {
     id: 9,
@@ -141,6 +159,7 @@ const CARD_DICTIONARY = {
     range: cardRanges.self,
     position: 'card8',
     image: imageRequires.ATT4,
+    darkImage: imageRequires.ATT4_DARK,
   },
   GUARD: {
     type: 'GUARD',
@@ -151,6 +170,7 @@ const CARD_DICTIONARY = {
     range: cardRanges.noneRange,
     id: 10,
     image: imageRequires.GUARD,
+    darkImage: imageRequires.GUARD_DARK,
   },
 };
 

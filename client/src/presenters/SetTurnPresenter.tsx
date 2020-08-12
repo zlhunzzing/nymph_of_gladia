@@ -50,11 +50,10 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
         ? player1.deck.map((card: Card, id: number) => (
             <span key={id}>
               <img
-                src={card.image}
+                // src={card.image}
+                src={usedMana < card.cost ? card.darkImage : card.image}
                 alt=""
                 className={`card ${card.position} ${
-                  usedMana < card.cost ? 'lackedMana' : null
-                } ${
                   store.getState().Battle.checkHand(card)
                     ? 'selectedCard'
                     : null
@@ -67,9 +66,8 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                     if (
                       player1.hand[e].type === 'NONE' &&
                       el.className !== `card ${card.position} selectedCard` &&
-                      el.className !== `card ${card.position} lackedMana null`
+                      usedMana >= card.cost
                     ) {
-                      el.className = `card ${card.position} selectedCard`;
                       player1.hand[e] = card;
                       store.dispatch(
                         battleActions.set_player1_hand({

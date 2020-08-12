@@ -16,6 +16,7 @@ export interface Card {
   range: Array<Array<number>>;
   position: string;
   image: string;
+  darkImage: string;
 }
 
 export enum PhaseNumber {

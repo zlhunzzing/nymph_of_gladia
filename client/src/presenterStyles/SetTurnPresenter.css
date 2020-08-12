@@ -19,6 +19,7 @@
 }
 .lackedMana {
   color: gray;
+  opacity: 5;
 }
 .card:hover {
   background-color: coral;
