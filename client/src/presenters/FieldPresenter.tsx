@@ -3,17 +3,20 @@ import '../presenterStyles/FieldPresenter.css';
 import store from '..';
 import { Player } from '../common/interface/BattleInterface';
 import * as battleActions from '../modules/Battle';
+import CARD_DICTIONARY from '../common/CardDictionary';
 
 interface Props {
   player1: Player;
   player2: Player;
   field: Array<object>;
+  isUsing: Array<Array<boolean>>;
 }
 
 const FieldPresenter: React.FunctionComponent<Props> = ({
   player1,
   player2,
   field,
+  isUsing,
 }: Props) => (
   <div className="Main">
     {player1 ? (
@@ -67,15 +70,28 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
     <div className="control">
       <span className="playerHand">
         {player1.hand
-          ? player1.hand.map((card: any, id: number) => (
-              <img src={card.image} alt="" key={id} className="card"></img>
-            ))
+          ? player1.hand
+              .slice(0)
+              .reverse()
+              .map((card: any, id: number) => (
+                <img
+                  src={isUsing[id][0] ? card.image : CARD_DICTIONARY.NONE.image}
+                  alt=""
+                  key={id}
+                  className="card"
+                ></img>
+              ))
           : null}
       </span>
       <span className="player2Hand">
         {player2.hand
           ? player2.hand.map((card: any, id: number) => (
-              <img src={card.image} alt="" key={id} className="card"></img>
+              <img
+                src={isUsing[id][1] ? card.image : CARD_DICTIONARY.NONE.image}
+                alt=""
+                key={id}
+                className="card"
+              ></img>
             ))
           : null}
       </span>

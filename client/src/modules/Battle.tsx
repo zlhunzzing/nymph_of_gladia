@@ -127,7 +127,7 @@ const initialState = {
     setPlayer1: Dispatch<object>,
     setPlayer2: Dispatch<object>,
     setField: Dispatch<Array<object>>,
-    history: History,
+    setIsUsing: Dispatch<Array<Array<boolean>>>,
   ) {
     let firstPhase = false;
     let middlePhase = false;
@@ -145,10 +145,11 @@ const initialState = {
         setPlayer1,
         setPlayer2,
         setField,
+        setIsUsing,
       );
     }
     setTimeout(() => {
-      middlePhase = initialState.turnCheck(history, setField);
+      middlePhase = initialState.turnCheck(setField);
       if (middlePhase) {
         initialState.phase(
           PhaseNumber.MIDDLE,
@@ -157,12 +158,13 @@ const initialState = {
           setPlayer1,
           setPlayer2,
           setField,
+          setIsUsing,
         );
       }
     }, 2000);
     setTimeout(() => {
       if (middlePhase) {
-        lastPhase = initialState.turnCheck(history, setField);
+        lastPhase = initialState.turnCheck(setField);
       }
       if (lastPhase) {
         initialState.phase(
@@ -172,12 +174,13 @@ const initialState = {
           setPlayer1,
           setPlayer2,
           setField,
+          setIsUsing,
         );
       }
     }, 4000);
     setTimeout(() => {
       if (lastPhase) {
-        continueTurn = initialState.turnCheck(history, setField);
+        continueTurn = initialState.turnCheck(setField);
         if (continueTurn) store.dispatch(set_is_turn());
       }
     }, 6000);
@@ -189,7 +192,26 @@ const initialState = {
     setPlayer1: Dispatch<object>,
     setPlayer2: Dispatch<object>,
     setField: Dispatch<Array<Array<object>>>,
+    setIsUsing: Dispatch<Array<Array<boolean>>>,
   ) {
+    const isUsings = [
+      [
+        [false, true],
+        [false, false],
+        [true, false],
+      ],
+      [
+        [false, false],
+        [true, true],
+        [false, false],
+      ],
+      [
+        [true, false],
+        [false, false],
+        [false, true],
+      ],
+    ];
+    setIsUsing(isUsings[phaseNumber].slice(0));
     if (player1Hand[phaseNumber].speed <= player2Hand[phaseNumber].speed) {
       initialState.cardAction(
         true,
@@ -282,7 +304,7 @@ const initialState = {
               effectiveRangeX <= 3 &&
               effectiveRangeX >= 0 &&
               effectiveRangeY <= 2 &&
-              effectiveRangeY >= -1 &&
+              effectiveRangeY >= 0 &&
               field[effectiveRangeY][effectiveRangeX]
             ) {
               field[effectiveRangeY][effectiveRangeX].effect = true;
@@ -516,7 +538,7 @@ const initialState = {
     }
     store.dispatch(set_player2_hand({ hand: cardSet.slice(0, 3) }));
   },
-  turnCheck: function (history: any, setField: Dispatch<Array<Array<object>>>) {
+  turnCheck: function (setField: Dispatch<Array<Array<object>>>) {
     let player1Hp = store.getState().Battle.player1.hp;
     let player2Hp = store.getState().Battle.player2.hp;
     if (player1Hp <= 0) {

@@ -7,12 +7,26 @@ export default function FieldContainer() {
   const [player1, setPlayer1] = useState(store.getState().Battle.player1);
   const [player2, setPlayer2] = useState(store.getState().Battle.player2);
   const [field, setField] = useState(store.getState().Battle.field);
+  const [isUsing, setIsUsing] = useState([
+    [false, false],
+    [false, false],
+    [false, false],
+  ]);
 
   useEffect(() => {
     if (isTurn) {
-      store.getState().Battle.nextTurn(setPlayer1, setPlayer2, setField);
+      store
+        .getState()
+        .Battle.nextTurn(setPlayer1, setPlayer2, setField, setIsUsing);
     }
   }, [isTurn]);
 
-  return <FieldPresenter player1={player1} player2={player2} field={field} />;
+  return (
+    <FieldPresenter
+      player1={player1}
+      player2={player2}
+      field={field}
+      isUsing={isUsing}
+    />
+  );
 }
