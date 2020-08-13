@@ -4,6 +4,9 @@ import store from '..';
 import { Player } from '../common/interface/BattleInterface';
 import * as battleActions from '../modules/Battle';
 import CARD_DICTIONARY from '../common/CardDictionary';
+const imageRequires = {
+  PLAYER: require('../images/player.gif'),
+};
 
 interface Props {
   player1: Player;
@@ -53,13 +56,23 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
                   className={`room ${room.effect ? 'activeRoom' : ''}`}
                 >
                   {player1.position.x === roomId &&
-                  player1.position.y === floorId
-                    ? player1.name
-                    : null}
+                  player1.position.y === floorId ? (
+                    <img
+                      src={imageRequires.PLAYER}
+                      style={{
+                        width: '75px',
+                      }}
+                    />
+                  ) : null}
                   {player2.position.x === roomId &&
-                  player2.position.y === floorId
-                    ? player2.name
-                    : null}
+                  player2.position.y === floorId ? (
+                    <img
+                      src={imageRequires.PLAYER}
+                      style={{
+                        width: '75px',
+                      }}
+                    />
+                  ) : null}
                 </div>
               ))}
             </div>
