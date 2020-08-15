@@ -5,6 +5,7 @@ export interface Player {
   deck: Array<Card>;
   hand: Array<Card>;
   position: Position;
+  isAttack: boolean;
 }
 
 export interface Card {

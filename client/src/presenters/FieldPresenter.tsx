@@ -4,8 +4,10 @@ import store from '..';
 import { Player } from '../common/interface/BattleInterface';
 import * as battleActions from '../modules/Battle';
 import CARD_DICTIONARY from '../common/CardDictionary';
+
 const imageRequires = {
   PLAYER: require('../images/player.gif'),
+  PLAYER_ATTACK: require('../images/playerAttack.png'),
 };
 
 interface Props {
@@ -58,7 +60,12 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
                   {player1.position.x === roomId &&
                   player1.position.y === floorId ? (
                     <img
-                      src={imageRequires.PLAYER}
+                      alt=""
+                      src={
+                        player1.isAttack
+                          ? imageRequires.PLAYER_ATTACK
+                          : imageRequires.PLAYER
+                      }
                       style={{
                         width: '75px',
                       }}
@@ -67,7 +74,12 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
                   {player2.position.x === roomId &&
                   player2.position.y === floorId ? (
                     <img
-                      src={imageRequires.PLAYER}
+                      alt=""
+                      src={
+                        player2.isAttack
+                          ? imageRequires.PLAYER_ATTACK
+                          : imageRequires.PLAYER
+                      }
                       style={{
                         width: '75px',
                       }}

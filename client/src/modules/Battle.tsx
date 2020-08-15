@@ -62,6 +62,7 @@ const initialState = {
     deck: Array<object>;
     hand: Array<Card>;
     position: object;
+    isAttack: boolean;
 
     constructor(name: string, deck: Array<Card>) {
       this.name = name;
@@ -75,6 +76,7 @@ const initialState = {
         CARD_DICTIONARY.NONE,
       ];
       this.position = { x: 0, y: 1 };
+      this.isAttack = false;
     }
   },
   createCharacter: function (name: string, isUser: boolean = false) {
@@ -261,6 +263,8 @@ const initialState = {
   ) {
     store.dispatch(field_reset());
     setField(store.getState().Battle.field);
+    setPlayer1(store.getState().Battle.player1);
+    setPlayer2(store.getState().Battle.player2);
     if (isUser) {
       switch (card.type) {
         case CARD_DICTIONARY.UP.type:
@@ -290,7 +294,7 @@ const initialState = {
         case 'ATT':
           let mana = store.getState().Battle.player1.mp - card.cost;
           store.dispatch(set_player1_mp({ mp: mana }));
-          setPlayer1({ ...store.getState().Battle.player1 });
+          setPlayer1({ ...store.getState().Battle.player1, isAttack: true });
 
           let effectiveRangeX = null;
           let effectiveRangeY = null;
@@ -372,7 +376,7 @@ const initialState = {
         case 'ATT':
           let mana = store.getState().Battle.player2.mp - card.cost;
           store.dispatch(set_player2_mp({ mp: mana }));
-          setPlayer2({ ...store.getState().Battle.player2, mp: mana });
+          setPlayer2({ ...store.getState().Battle.player2, isAttack: true });
 
           let effectiveRangeX = null;
           let effectiveRangeY = null;
@@ -556,6 +560,7 @@ const initialState = {
         );
         store.dispatch(field_reset());
         setField(store.getState().Battle.field);
+        return false;
       } else {
         console.log('Lose');
         store.dispatch(
