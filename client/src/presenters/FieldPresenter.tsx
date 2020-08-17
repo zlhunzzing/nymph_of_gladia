@@ -66,9 +66,14 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
                           ? imageRequires.PLAYER_ATTACK
                           : imageRequires.PLAYER
                       }
-                      style={{
-                        width: '75px',
-                      }}
+                      style={
+                        player1.position.x > player2.position.x
+                          ? {
+                              width: '75px',
+                              transform: 'scaleX(-1)',
+                            }
+                          : { width: '75px' }
+                      }
                     />
                   ) : null}
                   {player2.position.x === roomId &&
@@ -80,9 +85,14 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
                           ? imageRequires.PLAYER_ATTACK
                           : imageRequires.PLAYER
                       }
-                      style={{
-                        width: '75px',
-                      }}
+                      style={
+                        player1.position.x < player2.position.x
+                          ? {
+                              width: '75px',
+                              transform: 'scaleX(-1)',
+                            }
+                          : { width: '75' }
+                      }
                     />
                   ) : null}
                 </div>
