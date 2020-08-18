@@ -7,9 +7,10 @@ import * as HandleModalActions from './modules/HandleModal';
 
 /* pages */
 import Main from './pages/Main';
+import Signup from './pages/Signup';
+import Greenroom from './pages/Greenroom';
 import SelectCharacter from './pages/SelectCharacter';
 import Battle from './pages/Battle';
-import Signup from './pages/Signup';
 
 Modal.setAppElement('#root');
 
@@ -38,12 +39,13 @@ function App() {
     <div className="App">
       <Switch>
         <Route path="/main" render={() => <Main></Main>}></Route>
+        <Route path="/signup" render={() => <Signup></Signup>}></Route>
+        <Route path="/greenroom" render={() => <Greenroom></Greenroom>}></Route>
         <Route
           path="/selectCharacter"
           render={() => <SelectCharacter></SelectCharacter>}
         ></Route>
         <Route path="/battle" render={() => <Battle></Battle>}></Route>
-        <Route path="/signup" render={() => <Signup></Signup>}></Route>
         <Route path="/" render={() => <Main></Main>}></Route>
       </Switch>
       <Modal isOpen={modalIsOpen} style={modalCustomStyles}>

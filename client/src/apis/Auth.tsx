@@ -28,7 +28,7 @@ export function signin(email: string, password: string, history: any) {
       password,
     })
     .then((res) => {
-      history.push('/selectCharacter');
+      history.push('/greenroom');
       console.log(res);
     })
     .catch((err) => console.log(err.response));

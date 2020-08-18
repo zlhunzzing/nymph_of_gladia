@@ -38,11 +38,13 @@ const MainPresenter: React.FunctionComponent<Props> = ({
               type="email"
               className="accountInput"
               placeholder="이메일을 입력 해주세요"
+              onChange={({ target: { value } }) => setEmail(value)}
             ></input>
             <input
               type="password"
               className="accountInput"
               placeholder="비밀번호를 입력 해주세요"
+              onChange={({ target: { value } }) => setPassword(value)}
             ></input>
           </div>
           <button className="accountButton" type="submit">
