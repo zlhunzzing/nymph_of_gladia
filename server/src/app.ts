@@ -1,29 +1,32 @@
-import * as express from 'express';
-import { createConnection, getRepository } from 'typeorm';
-import * as bodyParser from 'body-parser';
+import express from "express";
+import { createConnection } from "typeorm";
+import * as bodyParser from "body-parser";
+import cors from "cors";
+import userRouter from "./routes/user";
+import logger from "morgan";
 
-import { Request, Response } from 'express';
-
-import User from './entity/User';
-
-const PORT = 3000;
+const PORT = 3001;
 const app = express();
 
 createConnection()
   .then(async () => {
+    app.use(logger("dev"));
     app.use(bodyParser.json());
+    app.use(
+      cors({
+        origin: ["http://localhost:3000"],
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        credentials: true,
+      })
+    );
 
-    app.get('/', (req, res) => {
-      res.send('hello');
+    app.get("/", (req, res) => {
+      res.send("hello");
     });
 
-    app.get('/users', async (req: Request, res: Response) => {
-      const users = await getRepository(User).find();
-      res.json(users);
-    });
+    app.use("/user", userRouter);
 
     app.listen(PORT, () => {
-      // console.log(`Server listening on port ${PORT}`)
       console.log(`Server listening on port ${PORT}`);
     });
   })

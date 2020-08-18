@@ -9,6 +9,7 @@ import * as HandleModalActions from './modules/HandleModal';
 import Main from './pages/Main';
 import SelectCharacter from './pages/SelectCharacter';
 import Battle from './pages/Battle';
+import Signup from './pages/Signup';
 
 Modal.setAppElement('#root');
 
@@ -42,6 +43,7 @@ function App() {
           render={() => <SelectCharacter></SelectCharacter>}
         ></Route>
         <Route path="/battle" render={() => <Battle></Battle>}></Route>
+        <Route path="/signup" render={() => <Signup></Signup>}></Route>
         <Route path="/" render={() => <Main></Main>}></Route>
       </Switch>
       <Modal isOpen={modalIsOpen} style={modalCustomStyles}>
