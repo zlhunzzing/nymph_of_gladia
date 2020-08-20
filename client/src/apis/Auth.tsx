@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const serverIp = 'localhost:3001';
+const serverIp = 'localhost:3000';
 
 export function signup(
   email: string,
