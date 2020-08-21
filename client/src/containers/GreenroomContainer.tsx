@@ -10,27 +10,33 @@ export default function GreenroomContainer() {
     { id: 2, roomname: 'comeOn' },
   ])[0];
   const [isMount, setIsMount] = useState(true);
-  // const [rooms, setRooms] = useState(null);
-  // const [roomname, setRoomname] = useState('');
+  const [rooms, setRooms] = useState(null);
+  const [roomname, setRoomname] = useState('');
+  const [isModal, setIsModal] = useState(false);
 
   useEffect(() => {
     socketServer.on('connect', () => {
       console.log('connection server');
     });
 
-    // if (isMount) {
-    //   socketServer.on('createRoom', (data: any) => {
-    //     setRooms(data);
-    //   });
-    //   setIsMount(false);
-    // }
+    if (isMount) {
+      socketServer.on('createRoom', (data: any) => {
+        setRooms(data);
+      });
+      setIsMount(false);
+    }
   }, [isMount]);
 
-  // function createRoom() {
-  //   socketServer.emit('createRoom', roomname);
-  // }
+  function createRoom() {
+    socketServer.emit('createRoom', roomname);
+  }
 
   return (
-    <GreenroomPresenter dummyRoom={dummyRoom} /* setRoomname={setRoomname}*/ />
+    <GreenroomPresenter
+      dummyRoom={dummyRoom}
+      setRoomname={setRoomname}
+      isModal={isModal}
+      setIsModal={setIsModal}
+    />
   );
 }

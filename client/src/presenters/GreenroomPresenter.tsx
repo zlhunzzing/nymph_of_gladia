@@ -1,17 +1,19 @@
-import React /*, { Dispatch }*/ from 'react';
-// import store from '..';
-// import * as handleModalActions from '../modules/HandleModal';
+import React, { Dispatch } from 'react';
 import '../presenterStyles/GreenroomPresenter.css';
 
 interface Props {
   dummyRoom: Array<object>;
-  // setRoomname: Dispatch<string>;
+  setRoomname: Dispatch<string>;
+  isModal: boolean;
+  setIsModal: Dispatch<boolean>;
 }
 
 const GreenroomrPresenter: React.FunctionComponent<Props> = ({
   dummyRoom,
-}: // setRoomname,
-Props) => (
+  setRoomname,
+  isModal,
+  setIsModal,
+}: Props) => (
   <div className="Main">
     <br></br>
     <br></br>
@@ -51,38 +53,36 @@ Props) => (
     <br></br>
     <button
       onClick={() => {
-        // store.dispatch(handleModalActions.setModalIsOpen({ isOpen: true }));
+        setIsModal(true);
       }}
     >
       방만들기
     </button>
-    {/* <form
-      className="createRoom"
-      // style={{
-      //   display: 'absolute',
-      //   width: '300px',
-      //   height: '100px',
-      //   border: '1px solid black',
-      //   marginTop: '-300px',
-      //   marginLeft: '250px',
-      //   boxShadow: 'rgba(0,0,0,0.5) 0 0 0 9999px',
-      //   z-index
-      // }}
-      onSubmit={(e) => {
-        e.preventDefault();
-        // apis.signin(email, password, history);
+    <div
+      className="wrapper"
+      style={{
+        display: isModal ? 'block' : 'none',
       }}
     >
-      방 제목을 입력하시오.
-      <br></br>
-      <input
-        type="text"
-        className="accountInput"
-        onChange={({ target: { value } }) => setRoomname(value)}
-      ></input>
-      <br></br>
-      <button type="submit">확인</button>
-    </form> */}
+      <form
+        className="createRoom"
+        onSubmit={(e) => {
+          e.preventDefault();
+          setIsModal(false);
+          // apis.signin(email, password, history);
+        }}
+      >
+        방 제목을 입력하시오.
+        <br></br>
+        <input
+          type="text"
+          className="accountInput"
+          onChange={({ target: { value } }) => setRoomname(value)}
+        ></input>
+        <br></br>
+        <button type="submit">확인</button>
+      </form>
+    </div>
   </div>
 );
 
