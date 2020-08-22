@@ -5,12 +5,8 @@ import io from 'socket.io-client';
 const socketServer = io('http://localhost:3000');
 
 export default function GreenroomContainer() {
-  const dummyRoom = useState([
-    { id: 1, roomname: 'comeOn' },
-    { id: 2, roomname: 'comeOn' },
-  ])[0];
   const [isMount, setIsMount] = useState(true);
-  const [rooms, setRooms] = useState(null);
+  const [rooms, setRooms] = useState([{ id: 1, roomname: 'dummy' }]);
   const [roomname, setRoomname] = useState('');
   const [isModal, setIsModal] = useState(false);
 
@@ -21,11 +17,12 @@ export default function GreenroomContainer() {
 
     if (isMount) {
       socketServer.on('createRoom', (data: any) => {
+        console.log(data);
         setRooms(data);
       });
       setIsMount(false);
     }
-  }, [isMount]);
+  }, [isMount, rooms]);
 
   function createRoom() {
     socketServer.emit('createRoom', roomname);
@@ -33,10 +30,11 @@ export default function GreenroomContainer() {
 
   return (
     <GreenroomPresenter
-      dummyRoom={dummyRoom}
+      rooms={rooms}
       setRoomname={setRoomname}
       isModal={isModal}
       setIsModal={setIsModal}
+      createRoom={createRoom}
     />
   );
 }

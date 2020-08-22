@@ -2,17 +2,19 @@ import React, { Dispatch } from 'react';
 import '../presenterStyles/GreenroomPresenter.css';
 
 interface Props {
-  dummyRoom: Array<object>;
+  rooms: Array<object>;
   setRoomname: Dispatch<string>;
   isModal: boolean;
   setIsModal: Dispatch<boolean>;
+  createRoom: Function;
 }
 
 const GreenroomrPresenter: React.FunctionComponent<Props> = ({
-  dummyRoom,
+  rooms,
   setRoomname,
   isModal,
   setIsModal,
+  createRoom,
 }: Props) => (
   <div className="Main">
     <br></br>
@@ -27,7 +29,7 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
         border: '1px solid black',
       }}
     >
-      {dummyRoom.map((room: any) => (
+      {rooms.map((room: any) => (
         <div
           key={room.id}
           style={{
@@ -69,6 +71,7 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
         onSubmit={(e) => {
           e.preventDefault();
           setIsModal(false);
+          createRoom();
           // apis.signin(email, password, history);
         }}
       >
