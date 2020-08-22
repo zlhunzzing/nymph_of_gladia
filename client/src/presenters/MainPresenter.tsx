@@ -11,8 +11,6 @@ interface Props {
   history: any;
 }
 
-// export default function MainPresenter() {
-//   return (
 const MainPresenter: React.FunctionComponent<Props> = ({
   email,
   setEmail,

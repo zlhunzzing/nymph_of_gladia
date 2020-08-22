@@ -8,6 +8,7 @@ import * as HandleModalActions from './modules/HandleModal';
 /* pages */
 import Main from './pages/Main';
 import Signup from './pages/Signup';
+import Channel from './pages/Channel';
 import Greenroom from './pages/Greenroom';
 import SelectCharacter from './pages/SelectCharacter';
 import Battle from './pages/Battle';
@@ -40,6 +41,7 @@ function App() {
       <Switch>
         <Route path="/main" render={() => <Main></Main>}></Route>
         <Route path="/signup" render={() => <Signup></Signup>}></Route>
+        <Route path="/channel" render={() => <Channel></Channel>}></Route>
         <Route path="/greenroom" render={() => <Greenroom></Greenroom>}></Route>
         <Route
           path="/selectCharacter"
