@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ChannelPresenter from '../presenters/ChannelPresenter';
 import io from 'socket.io-client';
+import { useHistory } from 'react-router-dom';
 
 const socketServer = io('http://localhost:3000');
 
@@ -9,6 +10,8 @@ export default function ChannelContainer() {
   const [rooms, setRooms] = useState([{ id: 1, roomname: 'dummy' }]);
   const [roomname, setRoomname] = useState('');
   const [isModal, setIsModal] = useState(false);
+  const userId = useState(1)[0];
+  const history = useState(useHistory())[0];
 
   useEffect(() => {
     socketServer.on('connect', () => {
@@ -16,16 +19,17 @@ export default function ChannelContainer() {
     });
 
     if (isMount) {
-      socketServer.on('createRoom', (data: any) => {
-        console.log(data);
-        setRooms(data);
+      socketServer.on('createRoom', (rooms: any, userRoom: any) => {
+        setRooms(rooms);
+        if (userRoom && userRoom.player1 === userId)
+          history.push(`/greenroom/${userRoom.id}`);
       });
       setIsMount(false);
     }
-  }, [isMount, rooms]);
+  }, [isMount, rooms, history, userId]);
 
   function createRoom() {
-    socketServer.emit('createRoom', roomname);
+    socketServer.emit('createRoom', 1, roomname);
   }
 
   return (

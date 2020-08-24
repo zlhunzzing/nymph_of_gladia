@@ -7,4 +7,7 @@ export class RoomEntity {
 
   @Column()
   roomname: string;
+
+  @Column()
+  player1: number;
 }

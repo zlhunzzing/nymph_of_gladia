@@ -3,7 +3,8 @@ import { RoomEntity } from '../entity/RoomEntity';
 
 export class RoomModel {
   async save(insertData) {
-    await getRepository(RoomEntity).save(insertData);
+    const result = await getRepository(RoomEntity).save(insertData);
+    return result;
   }
 
   async findAll() {

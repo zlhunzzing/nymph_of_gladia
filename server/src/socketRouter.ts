@@ -7,9 +7,10 @@ export default function socketRouter(io) {
     console.log('user connected');
     io.emit('createRoom', await roomModel.findAll());
 
-    socket.on('createRoom', async (roomname) => {
-      await roomModel.save({ roomname });
-      io.emit('createRoom', await roomModel.findAll());
+    socket.on('createRoom', async (userId, roomname) => {
+      const insertData = { roomname, player1: userId };
+      const result = await roomModel.save(insertData);
+      io.emit('createRoom', await roomModel.findAll(), result);
     });
 
     socket.on('disconnect', () => {
