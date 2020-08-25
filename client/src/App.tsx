@@ -42,7 +42,10 @@ function App() {
         <Route path="/main" render={() => <Main></Main>}></Route>
         <Route path="/signup" render={() => <Signup></Signup>}></Route>
         <Route path="/channel" render={() => <Channel></Channel>}></Route>
-        <Route path="/greenroom" render={() => <Greenroom></Greenroom>}></Route>
+        <Route
+          path="/greenroom/:id"
+          render={() => <Greenroom></Greenroom>}
+        ></Route>
         <Route
           path="/selectCharacter"
           render={() => <SelectCharacter></SelectCharacter>}

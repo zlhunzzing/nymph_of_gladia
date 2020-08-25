@@ -1,5 +1,6 @@
 import { getRepository } from 'typeorm';
 import { RoomEntity } from '../entity/RoomEntity';
+import { ERROR_MESSAGE } from '../common/errorMessages';
 
 export class RoomModel {
   async save(insertData) {
@@ -10,5 +11,17 @@ export class RoomModel {
   async findAll() {
     const result = await getRepository(RoomEntity).find();
     return result;
+  }
+
+  async findWithId(id: number) {
+    const result = await getRepository(RoomEntity).findOne({
+      where: {
+        id,
+      },
+    });
+    if (result) {
+      return result;
+    }
+    throw new Error(ERROR_MESSAGE.WRONG_ROOM);
   }
 }

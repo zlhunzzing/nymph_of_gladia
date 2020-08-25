@@ -13,6 +13,11 @@ export default function socketRouter(io) {
       io.emit('createRoom', await roomModel.findAll(), result);
     });
 
+    socket.on('inRoom', async (roomNumber) => {
+      const roomInfo = await roomModel.findWithId(roomNumber);
+      io.emit('inRoom', roomInfo);
+    });
+
     socket.on('disconnect', () => {
       console.log('user disconnected');
     });
