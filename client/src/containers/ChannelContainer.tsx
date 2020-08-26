@@ -19,12 +19,15 @@ export default function ChannelContainer() {
     });
 
     if (isMount) {
+      setIsMount(false);
       socketServer.on('createRoom', (rooms: any, userRoom: any) => {
         setRooms(rooms);
         if (userRoom && userRoom.player1 === userId)
           history.push(`/greenroom/${userRoom.id}`);
       });
-      setIsMount(false);
+      socketServer.emit('inChannel', (rooms: any) => {
+        setRooms(rooms);
+      });
     }
   }, [isMount, rooms, history, userId]);
 
