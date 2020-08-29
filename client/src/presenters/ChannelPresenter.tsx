@@ -32,8 +32,10 @@ const ChannelPresenter: React.FunctionComponent<Props> = ({
         <div
           key={room.id}
           style={{
-            width: '25%',
-            height: '20%',
+            // width: '25%',
+            // height: '20%',
+            width: '100px',
+            height: '50px',
             border: '1px solid black',
             float: 'left',
             margin: '1px',

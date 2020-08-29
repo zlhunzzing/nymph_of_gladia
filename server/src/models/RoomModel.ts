@@ -24,4 +24,8 @@ export class RoomModel {
     }
     throw new Error(ERROR_MESSAGE.WRONG_ROOM);
   }
+
+  async delete(id) {
+    await getRepository(RoomEntity).delete(id);
+  }
 }

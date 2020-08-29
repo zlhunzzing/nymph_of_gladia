@@ -2,16 +2,12 @@ import React from 'react';
 
 interface Props {
   roomInfo: any;
+  outRoom: Function;
 }
-
-// interface Room {
-//   id: number;
-//   roomname: string;
-//   player1: number;
-// }
 
 const GreenroomrPresenter: React.FunctionComponent<Props> = ({
   roomInfo,
+  outRoom,
 }: Props) => (
   <div className="Main">
     <br></br>
@@ -107,6 +103,9 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
         게임시작
       </button>
       <button
+        onClick={() => {
+          outRoom();
+        }}
         style={{
           margin: '10px',
           border: '1px solid black',
