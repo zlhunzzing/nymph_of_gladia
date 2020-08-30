@@ -20,6 +20,7 @@ export default function socketRouter(io) {
     socket.on('inRoom', async (roomId) => {
       const roomInfo = await roomModel.findWithId(roomId);
       io.emit('inRoom', roomInfo);
+      io.emit('rooms', await roomModel.findAll());
     });
 
     socket.on('outRoom', async (roomId, userId) => {

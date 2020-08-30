@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import ChannelPresenter from '../presenters/ChannelPresenter';
 import io from 'socket.io-client';
 import { useHistory } from 'react-router-dom';
+import store from '..';
+import * as apis from '../apis/Auth';
 
 export default function ChannelContainer() {
   const socketServer = useState(io('http://localhost:3000'))[0];
@@ -11,6 +13,7 @@ export default function ChannelContainer() {
   const [isModal, setIsModal] = useState(false);
   const userId = useState(1)[0];
   const history = useState(useHistory())[0];
+  const isUser = useState(store.getState().Auth.isUser)[0];
 
   useEffect(() => {
     if (isMount) {
@@ -27,7 +30,7 @@ export default function ChannelContainer() {
   }, [socketServer, isMount, rooms, history, userId]);
 
   function createRoom() {
-    socketServer.emit('createRoom', 1, roomname);
+    apis.createRoom(roomname, history);
   }
 
   return (
@@ -37,6 +40,7 @@ export default function ChannelContainer() {
       isModal={isModal}
       setIsModal={setIsModal}
       createRoom={createRoom}
+      isUser={isUser}
     />
   );
 }

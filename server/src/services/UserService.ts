@@ -1,8 +1,10 @@
-import { UserModel } from "../models";
-import crypto from "crypto";
-import jwt from "jsonwebtoken";
+import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
+import { UserModel } from '../models/UserModel';
+import { RoomModel } from '../models/RoomModel';
 
 const userModel = new UserModel();
+const roomModel = new RoomModel();
 
 interface signupData {
   email;
@@ -16,27 +18,29 @@ interface signinData {
 
 export class UserService {
   async signupService(userInfo: signupData): Promise<void> {
-    const shasum = crypto.createHmac("sha512", process.env.CRYPTO_SECRET_KEY);
+    const shasum = crypto.createHmac('sha512', process.env.CRYPTO_SECRET_KEY);
     shasum.update(userInfo.password);
-    userInfo.password = shasum.digest("hex");
+    const insertData = userInfo;
+    insertData.password = shasum.digest('hex');
 
     try {
-      await userModel.findOneWithEmail(userInfo.email);
-      await userModel.save(userInfo);
+      await userModel.findOneWithEmail(insertData.email);
+      await userModel.save(insertData);
     } catch (err) {
       throw new Error(err);
     }
   }
 
   async signinService(userInfo: signinData): Promise<object> {
-    const shasum = crypto.createHmac("sha512", process.env.CRYPTO_SECRET_KEY);
+    const shasum = crypto.createHmac('sha512', process.env.CRYPTO_SECRET_KEY);
     shasum.update(userInfo.password);
-    userInfo.password = shasum.digest("hex");
+    const insertData = userInfo;
+    insertData.password = shasum.digest('hex');
 
     try {
       const result = await userModel.findOneAccount(
-        userInfo.email,
-        userInfo.password
+        insertData.email,
+        insertData.password,
       );
 
       const token = jwt.sign(
@@ -47,12 +51,21 @@ export class UserService {
         },
         process.env.JWT_SECRET_KEY,
         {
-          expiresIn: "1h",
-        }
+          expiresIn: '1h',
+        },
       );
-      return { token: token, id: result.id };
+      return { token, id: result.id };
     } catch (err) {
       throw new Error(err);
     }
+  }
+
+  async createRoomService(roomInfo, tokenData): Promise<object> {
+    const insertData = {
+      roomname: roomInfo.roomname,
+      player1: tokenData.id,
+    };
+
+    return roomModel.save(insertData);
   }
 }

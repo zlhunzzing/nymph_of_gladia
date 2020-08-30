@@ -7,6 +7,7 @@ interface Props {
   isModal: boolean;
   setIsModal: Dispatch<boolean>;
   createRoom: Function;
+  isUser: boolean;
 }
 
 const ChannelPresenter: React.FunctionComponent<Props> = ({
@@ -15,6 +16,7 @@ const ChannelPresenter: React.FunctionComponent<Props> = ({
   isModal,
   setIsModal,
   createRoom,
+  isUser,
 }: Props) => (
   <div className="Main">
     <br></br>
@@ -72,17 +74,19 @@ const ChannelPresenter: React.FunctionComponent<Props> = ({
         onSubmit={(e) => {
           e.preventDefault();
           setIsModal(false);
-          createRoom();
+          if (isUser) createRoom();
           // apis.signin(email, password, history);
         }}
       >
-        방 제목을 입력하시오.
+        {isUser ? '방 제목을 입력하시오.' : '방을 만들려면 로그인 해야합니다'}
         <br></br>
-        <input
-          type="text"
-          className="accountInput"
-          onChange={({ target: { value } }) => setRoomname(value)}
-        ></input>
+        {isUser ? (
+          <input
+            type="text"
+            className="accountInput"
+            onChange={({ target: { value } }) => setRoomname(value)}
+          ></input>
+        ) : null}
         <br></br>
         <button type="submit">확인</button>
       </form>

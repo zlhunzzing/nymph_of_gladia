@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { Request } from 'express';
 
 export interface UserInterface {
   id: number;
@@ -10,7 +10,7 @@ export interface UserInterface {
 }
 
 interface TokenData {
-  email: string;
+  id: number;
   iat: number;
   exp: number;
 }
