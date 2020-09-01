@@ -32,4 +32,13 @@ export class UserController {
       res.status(409).send(err.message);
     }
   }
+
+  async inRoomController(req: TokenReq, res: Response): Promise<void> {
+    try {
+      await service.inRoomService(req.params.id, req.tokenData);
+      res.status(201).end();
+    } catch (err) {
+      res.status(409).send(err.message);
+    }
+  }
 }

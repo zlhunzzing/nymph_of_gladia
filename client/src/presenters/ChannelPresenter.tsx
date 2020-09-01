@@ -6,8 +6,9 @@ interface Props {
   setRoomname: Dispatch<string>;
   isModal: boolean;
   setIsModal: Dispatch<boolean>;
-  createRoom: Function;
   isUser: boolean;
+  createRoom: Function;
+  inRoom: Function;
 }
 
 const ChannelPresenter: React.FunctionComponent<Props> = ({
@@ -15,8 +16,9 @@ const ChannelPresenter: React.FunctionComponent<Props> = ({
   setRoomname,
   isModal,
   setIsModal,
-  createRoom,
   isUser,
+  createRoom,
+  inRoom,
 }: Props) => (
   <div className="Main">
     <br></br>
@@ -43,11 +45,16 @@ const ChannelPresenter: React.FunctionComponent<Props> = ({
             margin: '1px',
           }}
         >
-          {room.id} ㅣ {room.roomname}
+          {room.id} ㅣ {room.roomname} ㅣ ({room.headcount}/{room.maxHeadcount})
           <br></br>
           <button
             onClick={() => {
-              console.log('방에 입장했다.');
+              if (room.headcount < room.maxHeadcount) {
+                inRoom(room.id);
+                console.log('방에 입장했다.');
+              } else {
+                alert('방의 자리가 부족합니다.');
+              }
             }}
           >
             입장
@@ -75,7 +82,6 @@ const ChannelPresenter: React.FunctionComponent<Props> = ({
           e.preventDefault();
           setIsModal(false);
           if (isUser) createRoom();
-          // apis.signin(email, password, history);
         }}
       >
         {isUser ? '방 제목을 입력하시오.' : '방을 만들려면 로그인 해야합니다'}

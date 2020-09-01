@@ -15,10 +15,10 @@ export default function GreenroomContainer() {
   useEffect(() => {
     if (isMount) {
       setIsMount(false);
-      socketServer.on('inRoom', (roomInfo: any) => {
+      socketServer.on('getRoomInfo', (roomInfo: any) => {
         setRoomInfo(roomInfo);
       });
-      socketServer.emit('inRoom', params.id);
+      socketServer.emit('getRoomInfo', params.id);
     }
   }, [socketServer, isMount, params]);
 

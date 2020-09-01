@@ -24,4 +24,6 @@ router.post('/signin', controller.signinController);
 
 router.post('/channel', jwtCheck, controller.createRoomController);
 
+router.post('/greenroom/:id', jwtCheck, controller.inRoomController);
+
 export default router;

@@ -13,6 +13,7 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
     <br></br>
     <br></br>
     <br></br>
+    {console.log(roomInfo)}
     <div
       style={{
         border: '1px solid black',
@@ -45,7 +46,7 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
               textAlign: 'center',
             }}
           >
-            {roomInfo ? '안녕' : null}
+            {roomInfo && roomInfo.player1 ? '안녕' : null}
           </span>
           <span
             style={{
@@ -59,6 +60,7 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
             준비완료
           </span>
         </span>
+
         <span
           style={{
             position: 'relative',
@@ -69,6 +71,16 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
             height: '200px',
           }}
         >
+          <span
+            style={{
+              position: 'absolute',
+              display: 'inline-block',
+              transform: 'translate(-50%)',
+              textAlign: 'center',
+            }}
+          >
+            {roomInfo && roomInfo.player2 ? '안녕' : null}
+          </span>
           <span
             style={{
               position: 'absolute',

@@ -15,6 +15,14 @@ export default function ChannelContainer() {
   const history = useState(useHistory())[0];
   const isUser = useState(store.getState().Auth.isUser)[0];
 
+  async function createRoom() {
+    await apis.createRoom(roomname, history);
+    socketServer.emit('rooms');
+  }
+  async function inRoom(roomId: number) {
+    await apis.inRoom(roomId, history);
+  }
+
   useEffect(() => {
     if (isMount) {
       setIsMount(false);
@@ -22,16 +30,8 @@ export default function ChannelContainer() {
         setRooms(rooms);
       });
       socketServer.emit('rooms');
-      socketServer.on('createRoom', (userRoom: any) => {
-        if (userRoom && userRoom.player1 === userId)
-          history.push(`/greenroom/${userRoom.id}`);
-      });
     }
   }, [socketServer, isMount, rooms, history, userId]);
-
-  function createRoom() {
-    apis.createRoom(roomname, history);
-  }
 
   return (
     <ChannelPresenter
@@ -39,8 +39,9 @@ export default function ChannelContainer() {
       setRoomname={setRoomname}
       isModal={isModal}
       setIsModal={setIsModal}
-      createRoom={createRoom}
       isUser={isUser}
+      createRoom={createRoom}
+      inRoom={inRoom}
     />
   );
 }

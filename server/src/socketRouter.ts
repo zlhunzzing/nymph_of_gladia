@@ -10,17 +10,14 @@ export default function socketRouter(io) {
       io.emit('rooms', await roomModel.findAll());
     });
 
-    socket.on('createRoom', async (userId, roomname) => {
-      const insertData = { roomname, player1: userId };
-      const result = await roomModel.save(insertData);
-      io.emit('rooms', await roomModel.findAll());
-      io.emit('createRoom', result);
-    });
-
     socket.on('inRoom', async (roomId) => {
       const roomInfo = await roomModel.findWithId(roomId);
       io.emit('inRoom', roomInfo);
-      io.emit('rooms', await roomModel.findAll());
+    });
+
+    socket.on('getRoomInfo', async (roomId) => {
+      const roomInfo = await roomModel.findWithId(roomId);
+      io.emit('getRoomInfo', roomInfo);
     });
 
     socket.on('outRoom', async (roomId, userId) => {

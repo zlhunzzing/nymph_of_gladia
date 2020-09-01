@@ -1,10 +1,8 @@
 import axios from 'axios';
 import * as authActions from '../modules/Auth';
 import store from '..';
-import io from 'socket.io-client';
 
 const serverIp = 'localhost:3000';
-const socketServer = io(`http://${serverIp}`);
 
 export function signup(
   email: string,
@@ -54,7 +52,24 @@ export function createRoom(roomname: string, history: any) {
     )
     .then((res) => {
       history.push(`/greenroom/${res.data.id}`);
-      // socketServer.emit('rooms');
+    })
+    .catch((err) => console.log(err.response));
+}
+
+export function inRoom(roomId: number, history: any) {
+  console.log(store.getState().Auth.token);
+  return axios
+    .post(
+      `http://${serverIp}/user/greenroom/${roomId}`,
+      {},
+      {
+        headers: {
+          Authorization: store.getState().Auth.token,
+        },
+      },
+    )
+    .then((res) => {
+      history.push(`/greenroom/${roomId}`);
     })
     .catch((err) => console.log(err.response));
 }

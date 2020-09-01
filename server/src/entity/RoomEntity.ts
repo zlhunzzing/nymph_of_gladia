@@ -10,4 +10,19 @@ export class RoomEntity {
 
   @Column()
   player1: number;
+
+  @Column({
+    default: null,
+  })
+  player2: number;
+
+  @Column({
+    default: 0,
+  })
+  headcount: number;
+
+  @Column({
+    default: 2,
+  })
+  maxHeadcount: number;
 }
