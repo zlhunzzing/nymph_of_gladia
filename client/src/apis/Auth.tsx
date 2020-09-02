@@ -1,6 +1,6 @@
 import axios from 'axios';
-import * as authActions from '../modules/Auth';
 import store from '..';
+import * as authActions from '../modules/Auth';
 
 const serverIp = 'localhost:3000';
 

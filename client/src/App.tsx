@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
+import io from 'socket.io-client';
 import Modal from 'react-modal';
 import store from './index';
 import modalCustomStyles from './common/ModalCustomStyles';
 import * as HandleModalActions from './modules/HandleModal';
+import * as socketActions from './modules/Socket';
 
 /* pages */
 import Main from './pages/Main';
@@ -20,6 +22,16 @@ function App() {
   const [modalContent, setIsModalContent] = useState('');
   const [modalIsButton, setModalIsButton] = useState(true);
   const [isLink, setIsLink] = useState(false);
+  const socketServer = useState(io('http://localhost:3000'))[0];
+
+  useEffect(() => {
+    socketServer.on('rooms', (rooms: any) => {
+      store.dispatch(socketActions.set_rooms({ rooms }));
+    });
+    socketServer.on('getRoomInfo', (roomInfo: any) => {
+      store.dispatch(socketActions.set_room_info({ roomInfo }));
+    });
+  });
 
   store.subscribe(() => {
     if (modalIsOpen !== store.getState().HandleModal.modalIsOpen) {

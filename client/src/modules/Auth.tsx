@@ -12,7 +12,7 @@ const initialState = {
   isUser: false,
 };
 
-export default function HandleModal(state: any = initialState, action: any) {
+export default function Auth(state: any = initialState, action: any) {
   switch (action.type) {
     case SET_TOKEN:
       return {
