@@ -9,6 +9,9 @@ export class RoomEntity {
   roomname: string;
 
   @Column()
+  host: number;
+
+  @Column()
   player1: number;
 
   @Column({
@@ -25,4 +28,9 @@ export class RoomEntity {
     default: 2,
   })
   maxHeadcount: number;
+
+  @Column({
+    default: false,
+  })
+  player2Ready: boolean;
 }

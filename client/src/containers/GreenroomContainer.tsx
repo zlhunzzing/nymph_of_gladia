@@ -9,17 +9,32 @@ export default function GreenroomContainer() {
   const socketServer = useState(io('http://localhost:3000'))[0];
   const params: any = useState(useRouteMatch().params)[0];
   const roomInfo = useSelector((state: any) => state.Socket.roomInfo);
-  const userId = useState(1)[0];
+  const userId = useSelector((state: any) => state.Auth.userId);
   const history = useState(useHistory())[0];
+
+  console.log(roomInfo, userId);
 
   async function outRoom() {
     await socketServer.emit('outRoom', params.id, userId);
     history.push('/channel');
   }
+  function ready() {
+    socketServer.emit('ready', params.id, userId);
+  }
+  // function gamestart() {
+  //   socketServer.emit
+  // }
 
   useEffect(() => {
     socketServer.emit('getRoomInfo', params.id);
   }, [socketServer, params]);
 
-  return <GreenroomPresenter roomInfo={roomInfo} outRoom={outRoom} />;
+  return (
+    <GreenroomPresenter
+      roomInfo={roomInfo}
+      outRoom={outRoom}
+      userId={userId}
+      ready={ready}
+    />
+  );
 }

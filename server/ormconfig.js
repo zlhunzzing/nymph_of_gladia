@@ -11,5 +11,5 @@ module.exports = {
   database: process.env.TYPEORM_DATABASE,
   entities: ['src/entity/**/*.ts'],
   logging: false,
-  synchronize: false,
+  synchronize: true,
 };

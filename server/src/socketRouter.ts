@@ -20,6 +20,15 @@ export default function socketRouter(io) {
       io.emit('getRoomInfo', roomInfo);
     });
 
+    socket.on('ready', async (roomId, userId) => {
+      const roomInfo = await roomModel.findWithId(roomId);
+      if (roomInfo.player2 === userId) {
+        roomInfo.player2Ready = !roomInfo.player2Ready;
+      }
+      await roomModel.save(roomInfo);
+      io.emit('getRoomInfo', roomInfo);
+    });
+
     socket.on('outRoom', async (roomId, userId) => {
       const roomInfo = await roomModel.findWithId(roomId);
       if (roomInfo.player1 === userId) roomInfo.player1 = 0;

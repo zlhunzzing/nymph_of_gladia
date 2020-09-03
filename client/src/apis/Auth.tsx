@@ -30,8 +30,10 @@ export function signin(email: string, password: string, history: any) {
       password,
     })
     .then((res) => {
+      console.log(res);
       store.dispatch(authActions.setToken({ token: res.data.token }));
       store.dispatch(authActions.user_sign_in());
+      store.dispatch(authActions.set_user_id({ userId: res.data.id }));
       history.push('/channel');
     })
     .catch((err) => console.log(err.response));
@@ -57,7 +59,6 @@ export function createRoom(roomname: string, history: any) {
 }
 
 export function inRoom(roomId: number, history: any) {
-  console.log(store.getState().Auth.token);
   return axios
     .post(
       `http://${serverIp}/user/greenroom/${roomId}`,

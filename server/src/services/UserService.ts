@@ -63,6 +63,7 @@ export class UserService {
   async createRoomService(roomInfo, tokenData): Promise<object> {
     const insertData = {
       roomname: roomInfo.roomname,
+      host: tokenData.id,
       player1: tokenData.id,
       headcount: 1,
     };
