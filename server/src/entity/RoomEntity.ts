@@ -30,6 +30,16 @@ export class RoomEntity {
   maxHeadcount: number;
 
   @Column({
+    default: null,
+  })
+  player1Character: string;
+
+  @Column({
+    default: null,
+  })
+  player2Character: string;
+
+  @Column({
     default: false,
   })
   player2Ready: boolean;

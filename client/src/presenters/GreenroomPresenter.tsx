@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
+import '../presenterStyles/GreenroomPresenter.css';
 
 interface Props {
   roomInfo: any;
   outRoom: Function;
   userId: number;
+  select: Function;
+  character: string;
   ready: Function;
 }
 
@@ -11,6 +14,8 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
   roomInfo,
   outRoom,
   userId,
+  select,
+  character,
   ready,
 }: Props) => (
   <div className="Main">
@@ -19,46 +24,15 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
     <br></br>
     {roomInfo ? (
       <div>
-        <div
-          style={{
-            border: '1px solid black',
-            margin: '0 auto',
-            width: '600px',
-            height: '450px',
-          }}
-        >
-          <div
-            style={{
-              width: '100%',
-              height: '50%',
-            }}
-          >
-            <span
-              style={{
-                position: 'relative',
-                border: '1px solid black',
-                float: 'left',
-                margin: '10px',
-                width: '150px',
-                height: '200px',
-              }}
-            >
-              <span
-                style={{
-                  position: 'absolute',
-                  display: 'inline-block',
-                  transform: 'translate(-50%)',
-                  textAlign: 'center',
-                }}
-              >
+        <div className="inners">
+          <div className="innerTop">
+            <span className="seat">
+              <span className="seatUser">
                 {roomInfo.player1 ? '있음' : null}
               </span>
               <span
+                className="seatUser"
                 style={{
-                  position: 'absolute',
-                  display: 'inline-block',
-                  transform: 'translate(-50%)',
-                  textAlign: 'center',
                   bottom: '0%',
                 }}
               >
@@ -66,32 +40,13 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
               </span>
             </span>
 
-            <span
-              style={{
-                position: 'relative',
-                border: '1px solid black',
-                float: 'left',
-                margin: '10px',
-                width: '150px',
-                height: '200px',
-              }}
-            >
-              <span
-                style={{
-                  position: 'absolute',
-                  display: 'inline-block',
-                  transform: 'translate(-50%)',
-                  textAlign: 'center',
-                }}
-              >
+            <span className="seat">
+              <span className="seatUser">
                 {roomInfo.player2 ? '있음' : null}
               </span>
               <span
+                className="seatUser"
                 style={{
-                  position: 'absolute',
-                  display: 'inline-block',
-                  transform: 'translate(-50%)',
-                  textAlign: 'center',
                   bottom: '0%',
                 }}
               >
@@ -102,6 +57,28 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
                   : ''}
               </span>
             </span>
+            <ul>
+              <li>
+                <a
+                  href="#1"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    select('세키');
+                  }}
+                >
+                  세키
+                </a>
+                <a
+                  href="#2"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    select('레티');
+                  }}
+                >
+                  레티
+                </a>
+              </li>
+            </ul>
           </div>
           <span
             style={{
@@ -121,10 +98,14 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
               float: 'right',
             }}
             onClick={() => {
-              if (roomInfo.host === userId) {
-                console.log('게임시작');
+              if (character) {
+                if (roomInfo.host === userId) {
+                  console.log('게임시작');
+                } else {
+                  ready();
+                }
               } else {
-                ready();
+                alert('캐릭터를 선택해주세요.');
               }
             }}
           >

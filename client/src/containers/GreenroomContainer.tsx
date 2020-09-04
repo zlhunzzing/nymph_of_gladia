@@ -10,6 +10,7 @@ export default function GreenroomContainer() {
   const params: any = useState(useRouteMatch().params)[0];
   const roomInfo = useSelector((state: any) => state.Socket.roomInfo);
   const userId = useSelector((state: any) => state.Auth.userId);
+  const [character, setCharacter] = useState('');
   const history = useState(useHistory())[0];
 
   console.log(roomInfo, userId);
@@ -17,6 +18,10 @@ export default function GreenroomContainer() {
   async function outRoom() {
     await socketServer.emit('outRoom', params.id, userId);
     history.push('/channel');
+  }
+  function select(name: string) {
+    setCharacter(name);
+    socketServer.emit('select', params.id, userId, name);
   }
   function ready() {
     socketServer.emit('ready', params.id, userId);
@@ -34,6 +39,8 @@ export default function GreenroomContainer() {
       roomInfo={roomInfo}
       outRoom={outRoom}
       userId={userId}
+      select={select}
+      character={character}
       ready={ready}
     />
   );
