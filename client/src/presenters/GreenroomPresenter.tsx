@@ -1,4 +1,4 @@
-import React, { Dispatch } from 'react';
+import React from 'react';
 import '../presenterStyles/GreenroomPresenter.css';
 
 interface Props {
@@ -109,8 +109,11 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
               }
             }}
           >
-            {roomInfo.host === userId ? '게임시작' : ''}
-            {roomInfo.player2Ready ? '준비완료' : '준비중'}
+            {roomInfo.host === userId
+              ? '게임시작'
+              : roomInfo.player2Ready
+              ? '준비완료'
+              : '준비중'}
           </button>
           <button
             onClick={() => {
