@@ -1,4 +1,7 @@
 import { createAction } from 'redux-actions';
+import io from 'socket.io-client';
+
+export const socketServer = io('http://localhost:3000');
 
 const SET_ROOMS = 'App/Socket/SET_ROOMS';
 const SET_ROOM_INFO = 'App/Socket/SET_ROOM_INFO';

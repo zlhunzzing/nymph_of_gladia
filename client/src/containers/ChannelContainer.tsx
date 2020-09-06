@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
+// import socketServer from '../socket';
+import { socketServer } from '../modules/Socket';
 import ChannelPresenter from '../presenters/ChannelPresenter';
 import { useHistory } from 'react-router-dom';
 import store from '..';
 import * as apis from '../apis/Auth';
 
 export default function ChannelContainer() {
-  const socketServer = useState(io('http://localhost:3000'))[0];
+  // const socketServer = useState(io('http://localhost:3000/nsp'))[0];
   const rooms = useSelector((state: any) => state.Socket.rooms);
   const [roomname, setRoomname] = useState('');
   const [isModal, setIsModal] = useState(false);
@@ -20,12 +22,12 @@ export default function ChannelContainer() {
   }
   async function inRoom(roomId: number) {
     await apis.inRoom(roomId, history);
-    socketServer.emit('rooms');
+    socketServer.emit('room');
   }
 
   useEffect(() => {
     socketServer.emit('rooms');
-  }, [socketServer]);
+  }, []);
 
   return (
     <ChannelPresenter
