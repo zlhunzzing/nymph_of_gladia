@@ -27,11 +27,12 @@ function App() {
     socketServer.on('rooms', (rooms: any) => {
       store.dispatch(socketActions.set_rooms({ rooms }));
     });
-    socketServer.on('inRoom', (rooms: any) => {
-      store.dispatch(socketActions.set_rooms({ rooms }));
-    });
     socketServer.on('getRoomInfo', (roomInfo: any) => {
-      store.dispatch(socketActions.set_room_info({ roomInfo }));
+      if (
+        document.location.pathname === `/greenroom/${roomInfo.id.toString()}`
+      ) {
+        store.dispatch(socketActions.set_room_info({ roomInfo }));
+      }
     });
   });
 
