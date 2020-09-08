@@ -3,7 +3,7 @@ import '../presenterStyles/SelectCharacterPresenter.css';
 import { Link } from 'react-router-dom';
 import ERROR_MESSAGES from '../common/ErrorMessages';
 import store from '../index';
-import * as battleActions from '../modules/Battle';
+// import * as battleActions from '../modules/Battle';
 import * as handleModalActions from '../modules/HandleModal';
 
 interface Props {
@@ -32,7 +32,7 @@ const SelectCharacterPresenter: React.FunctionComponent<Props> = ({
             e.preventDefault();
             setIsSelect(true);
             setPlayer('세키');
-            store.dispatch(battleActions.select_player({ name: '세키' }));
+            // store.dispatch(battleActions.select_player({ name: '세키' }));
           }}
         >
           세키
@@ -43,7 +43,7 @@ const SelectCharacterPresenter: React.FunctionComponent<Props> = ({
             e.preventDefault();
             setIsSelect(true);
             setPlayer('레티');
-            store.dispatch(battleActions.select_player({ name: '레티' }));
+            // store.dispatch(battleActions.select_player({ name: '레티' }));
           }}
         >
           레티

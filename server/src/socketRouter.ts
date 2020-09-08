@@ -10,11 +10,6 @@ export default function socketRouter(io) {
       io.emit('rooms', await roomModel.findAll());
     });
 
-    socket.on('inRoom', async (roomId) => {
-      const roomInfo = await roomModel.findWithId(roomId);
-      io.emit('inRoom', roomInfo);
-    });
-
     socket.on('getRoomInfo', async (roomId) => {
       const roomInfo = await roomModel.findWithId(roomId);
       io.emit('getRoomInfo', roomInfo);
@@ -38,6 +33,13 @@ export default function socketRouter(io) {
       }
       await roomModel.save(roomInfo);
       io.emit('getRoomInfo', roomInfo);
+    });
+
+    socket.on('gamestart', async (roomId) => {
+      const roomInfo = await roomModel.findWithId(roomId);
+      if (roomInfo.player2Ready && roomInfo.player1Character) {
+        io.emit('gamestart', roomInfo);
+      }
     });
 
     socket.on('outRoom', async (roomId, userId) => {

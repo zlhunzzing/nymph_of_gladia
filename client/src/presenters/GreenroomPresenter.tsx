@@ -8,6 +8,7 @@ interface Props {
   select: Function;
   character: string;
   ready: Function;
+  gamestart: Function;
 }
 
 const GreenroomrPresenter: React.FunctionComponent<Props> = ({
@@ -17,6 +18,7 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
   select,
   character,
   ready,
+  gamestart,
 }: Props) => (
   <div className="Main">
     <br></br>
@@ -101,6 +103,7 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
               if (character) {
                 if (roomInfo.host === userId) {
                   console.log('게임시작');
+                  gamestart();
                 } else {
                   ready();
                 }

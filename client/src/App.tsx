@@ -6,6 +6,8 @@ import * as socketActions from './modules/Socket';
 import Modal from 'react-modal';
 import modalCustomStyles from './common/ModalCustomStyles';
 import * as HandleModalActions from './modules/HandleModal';
+import * as battleActions from './modules/Battle';
+import { useHistory } from 'react-router-dom';
 
 /* pages */
 import Main from './pages/Main';
@@ -22,6 +24,7 @@ function App() {
   const [modalContent, setIsModalContent] = useState('');
   const [modalIsButton, setModalIsButton] = useState(true);
   const [isLink, setIsLink] = useState(false);
+  const history = useState(useHistory())[0];
 
   useEffect(() => {
     socketServer.on('rooms', (rooms: any) => {
@@ -32,6 +35,20 @@ function App() {
         document.location.pathname === `/greenroom/${roomInfo.id.toString()}`
       ) {
         store.dispatch(socketActions.set_room_info({ roomInfo }));
+      }
+    });
+    socketServer.on('gamestart', (roomInfo: any) => {
+      if (roomInfo.player1 === store.getState().Auth.userId) {
+        store.dispatch(
+          battleActions.select_player2({ name: roomInfo.player2Character }),
+        );
+        history.push('/battle');
+      }
+      if (roomInfo.player2 === store.getState().Auth.userId) {
+        store.dispatch(
+          battleActions.select_player1({ name: roomInfo.player1Character }),
+        );
+        history.push('/battle');
       }
     });
   });

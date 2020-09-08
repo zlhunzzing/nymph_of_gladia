@@ -3,10 +3,9 @@ import { Card, PhaseNumber } from '../common/interface/BattleInterface';
 import store from '..';
 import CARD_DICTIONARY, { Deck1 } from '../common/CardDictionary';
 import { Dispatch } from 'react';
-import * as handleModalActions from '../modules/HandleModal';
+import * as handleModalActions from './HandleModal';
 
-const SELECT_PLAYER1 = 'App/Battle/SELECT_PLAYER1';
-const SELECT_PLAYER2 = 'App/Battle/SELECT_PLAYER2';
+const SELECT_PLAYER = 'App/Battle/SELECT_PLAYER';
 const SET_IS_TURN = 'App/Battle/SET_IS_TURN';
 const SET_PLAYER1_HAND = 'App/Battle/SET_PLAYER1_HAND';
 const SET_PLAYER1_HP = 'App/Battle/SET_PLAYER1_HP';
@@ -23,9 +22,7 @@ const MOVE_PLAYER2_Y_POSITION = 'App/Battle/MOVE_PLAYER2_Y_POSITION';
 const FIELD_RESET = 'App/Battle/FIELD_RESET';
 const FIELD_ACTIVATION = 'App/Battle/FIELD_ACTIVATION';
 
-export const select_player1 = createAction(SELECT_PLAYER1);
-// payload: {name: Seki <string> }
-export const select_player2 = createAction(SELECT_PLAYER2);
+export const select_player = createAction(SELECT_PLAYER);
 // payload: {name: Seki <string> }
 export const set_is_turn = createAction(SET_IS_TURN);
 export const set_player1_hand = createAction(SET_PLAYER1_HAND);
@@ -82,13 +79,16 @@ const initialState = {
       this.isAttack = false;
     }
   },
-  createCharacter: function (name: string, sequenceNum: number) {
+  createCharacter: function (name: string, isUser: boolean = false) {
     const character = new initialState.Instance(name, Deck1);
-    // if (name === '세키' || '레티') {
-    // }
-    if (sequenceNum === 1) {
-      character.position = { x: 0, y: 1 };
-    } else {
+    if (name === '세키' || '레티') {
+    }
+    if (!isUser) {
+      character.hand = [
+        CARD_DICTIONARY.LEFT,
+        CARD_DICTIONARY.LEFT,
+        CARD_DICTIONARY.ATT1,
+      ];
       character.position = { x: 3, y: 1 };
     }
     return character;
@@ -612,15 +612,11 @@ const initialState = {
 
 export default function Battle(state: any = initialState, action: any) {
   switch (action.type) {
-    case SELECT_PLAYER1:
+    case SELECT_PLAYER:
       return {
         ...state,
-        player1: initialState.createCharacter(action.payload.name, 1),
-      };
-    case SELECT_PLAYER2:
-      return {
-        ...state,
-        player2: initialState.createCharacter(action.payload.name, 2),
+        player1: initialState.createCharacter(action.payload.name, true),
+        player2: initialState.createCharacter('레티'),
       };
     case SET_IS_TURN:
       return {
