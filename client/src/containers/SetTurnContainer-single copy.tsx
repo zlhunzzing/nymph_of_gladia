@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import SetTurnPresenter from '../presenters/SetTurnPresenter';
 import store from '../index';
 import * as handleModalActions from '../modules/HandleModal';
-import { socketServer } from '../modules/Socket';
-import { useSelector } from 'react-redux';
 
 export default function SetTurnContainer() {
   const entryModal = useState(store.getState().HandleModal.entryModal)[0];
@@ -11,14 +9,6 @@ export default function SetTurnContainer() {
   const player2 = useState(store.getState().Battle.player2)[0];
   const [usedMana, setUsedMana] = useState(player1.mp);
   const [handMana, setHandMana] = useState(0);
-  const userhand = useSelector((state: any) => state.Battle.userhand);
-  const roomId = useSelector((state: any) => state.Socket.roomInfo.id);
-  const userId = useSelector((state: any) => state.Auth.userId);
-
-  function setHand(hand: any) {
-    console.log('?');
-    socketServer.emit('setHand', roomId, userId, hand);
-  }
 
   useEffect(() => {
     if (entryModal && store.getState().Battle.player1) {
@@ -40,22 +30,21 @@ export default function SetTurnContainer() {
     }
     store.getState().Battle.clearHand(setPlayer1);
     setPlayer1({ ...store.getState().Battle.player1 });
-    // if (store.getState().Battle.player2.position) {
-    //   store.getState().Battle.autoCardSet();
-    // }
+    if (store.getState().Battle.player2.position) {
+      store.getState().Battle.autoCardSet();
+    }
   }, [entryModal]);
 
   return (
-    <SetTurnPresenter
-      player1={player1}
-      player2={player2}
-      setPlayer1={setPlayer1}
-      usedMana={usedMana}
-      setUsedMana={setUsedMana}
-      handMana={handMana}
-      setHandMana={setHandMana}
-      userhand={userhand}
-      setHand={setHand}
-    />
+    <div></div>
+    // <SetTurnPresenter
+    //   player1={player1}
+    //   player2={player2}
+    //   setPlayer1={setPlayer1}
+    //   usedMana={usedMana}
+    //   setUsedMana={setUsedMana}
+    //   handMana={handMana}
+    //   setHandMana={setHandMana}
+    // />
   );
 }

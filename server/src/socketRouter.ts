@@ -48,6 +48,10 @@ export default function socketRouter(io) {
       if (roomInfo.player1 === 0) await roomModel.delete(roomInfo.id);
     });
 
+    socket.on('setHand', async (roomId, userId, hand) => {
+      io.emit('setHand', roomId, userId, hand);
+    });
+
     socket.on('disconnect', () => {
       console.log('user disconnected');
     });

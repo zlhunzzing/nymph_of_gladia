@@ -14,8 +14,6 @@ export default function GreenroomContainer() {
   const [character, setCharacter] = useState('');
   const history = useState(useHistory())[0];
 
-  console.log(roomInfo, userId);
-
   async function outRoom() {
     await socketServer.emit('outRoom', params.id, userId);
     history.push('/channel');

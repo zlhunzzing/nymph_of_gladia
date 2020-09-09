@@ -30,6 +30,7 @@ function App() {
     socketServer.on('rooms', (rooms: any) => {
       store.dispatch(socketActions.set_rooms({ rooms }));
     });
+
     socketServer.on('getRoomInfo', (roomInfo: any) => {
       if (
         document.location.pathname === `/greenroom/${roomInfo.id.toString()}`
@@ -37,6 +38,7 @@ function App() {
         store.dispatch(socketActions.set_room_info({ roomInfo }));
       }
     });
+
     socketServer.on('gamestart', (roomInfo: any) => {
       if (roomInfo.player1 === store.getState().Auth.userId) {
         store.dispatch(
@@ -44,11 +46,30 @@ function App() {
         );
         history.push('/battle');
       }
+
       if (roomInfo.player2 === store.getState().Auth.userId) {
         store.dispatch(
           battleActions.select_player1({ name: roomInfo.player1Character }),
         );
         history.push('/battle');
+      }
+    });
+
+    socketServer.on('setHand', (roomId: number, userId: number, hand: any) => {
+      if (roomId === store.getState().Socket.roomInfo.id) {
+        if (userId === store.getState().Socket.roomInfo.player1) {
+          store.dispatch(
+            battleActions.set_player1_hand({
+              hand: hand.slice(0, 3),
+            }),
+          );
+        } else {
+          store.dispatch(
+            battleActions.set_player2_hand({
+              hand: hand.slice(0, 3),
+            }),
+          );
+        }
       }
     });
   });

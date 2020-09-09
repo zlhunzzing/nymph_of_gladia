@@ -14,8 +14,6 @@ interface Props {
   setUsedMana: Dispatch<number>;
   handMana: number;
   setHandMana: Dispatch<number>;
-  setHand: Function;
-  userhand: any;
 }
 
 const SetTurnPresenter: React.FunctionComponent<Props> = ({
@@ -26,8 +24,6 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
   setUsedMana,
   handMana,
   setHandMana,
-  setHand,
-  userhand,
 }: Props) => (
   <div className="Main">
     {player1 ? (
@@ -66,19 +62,18 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                   let el = document.querySelector(
                     `.${card.position}`,
                   ) as HTMLElement;
-                  for (let e in userhand) {
+                  for (let e in player1.hand) {
                     if (
-                      userhand[e].type === 'NONE' &&
+                      player1.hand[e].type === 'NONE' &&
                       el.className !== `card ${card.position} selectedCard` &&
                       usedMana >= card.cost
                     ) {
-                      userhand[e] = card;
+                      player1.hand[e] = card;
                       store.dispatch(
-                        battleActions.set_user_hand({
-                          hand: userhand.slice(0, 3),
+                        battleActions.set_player1_hand({
+                          hand: player1.hand.slice(0, 3),
                         }),
                       );
-                      setHand(userhand);
                       setPlayer1({ ...player1 });
                       setUsedMana(usedMana - card.cost);
                       setHandMana(handMana + card.cost);
@@ -96,8 +91,8 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
     <div className="control">
       <span className="setHand">
         <span>
-          {userhand
-            ? userhand.map((card: Card, id: number) => (
+          {player1.hand
+            ? player1.hand.map((card: Card, id: number) => (
                 <img
                   src={card.image}
                   alt=""
@@ -105,13 +100,12 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                   className="card"
                   onClick={() => {
                     if (card.type !== 'NONE') {
-                      userhand[id] = CARD_DICTIONARY.NONE;
+                      player1.hand[id] = CARD_DICTIONARY.NONE;
                       store.dispatch(
-                        battleActions.set_user_hand({
-                          hand: userhand.slice(0, 3),
+                        battleActions.set_player1_hand({
+                          hand: player1.hand.slice(0, 3),
                         }),
                       );
-                      setHand(userhand);
                       setPlayer1({ ...player1 });
                       setUsedMana(usedMana + card.cost);
                       setHandMana(handMana - card.cost);
@@ -130,8 +124,8 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
       <button
         className="continueButton"
         onClick={() => {
-          for (let e in userhand) {
-            if (userhand[e].type === 'NONE') {
+          for (let e in player1.hand) {
+            if (player1.hand[e].type === 'NONE') {
               store.dispatch(
                 handleModalActions.setModalContent({
                   content: '카드를 세장 선택해주세요.',
