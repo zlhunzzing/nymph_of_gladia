@@ -7,6 +7,8 @@ import * as handleModalActions from '../modules/HandleModal';
 
 const SELECT_PLAYER1 = 'App/Battle/SELECT_PLAYER1';
 const SELECT_PLAYER2 = 'App/Battle/SELECT_PLAYER2';
+const SET_TURN_TRUE = 'App/Battle/SET_TURN_TRUE';
+const SET_TURN_FALSE = 'App/Battle/SET_TURN_FALSE';
 const SET_IS_TURN = 'App/Battle/SET_IS_TURN';
 const SET_USER_HAND = 'App/Battle/SET_USER_HAND';
 const SET_PLAYER1_HAND = 'App/Battle/SET_PLAYER1_HAND';
@@ -28,6 +30,8 @@ export const select_player1 = createAction(SELECT_PLAYER1);
 // payload: {name: Seki <string> }
 export const select_player2 = createAction(SELECT_PLAYER2);
 // payload: {name: Seki <string> }
+export const set_turn_true = createAction(SET_TURN_TRUE);
+export const set_turn_false = createAction(SET_TURN_FALSE);
 export const set_is_turn = createAction(SET_IS_TURN);
 export const set_user_hand = createAction(SET_USER_HAND);
 // payload: {hand: [{},{},{}] Array<Card> }
@@ -626,6 +630,16 @@ export default function Battle(state: any = initialState, action: any) {
       return {
         ...state,
         player2: initialState.createCharacter(action.payload.name, 2),
+      };
+    case SET_TURN_TRUE:
+      return {
+        ...state,
+        isTurn: true,
+      };
+    case SET_TURN_FALSE:
+      return {
+        ...state,
+        isTurn: false,
       };
     case SET_IS_TURN:
       return {

@@ -72,6 +72,14 @@ function App() {
         }
       }
     });
+
+    socketServer.on('setTurn', (roomId: number, roomInfo: any) => {
+      if (roomId === store.getState().Socket.roomInfo.id) {
+        if (roomInfo.player1set && roomInfo.player2set) {
+          store.dispatch(battleActions.set_turn_true());
+        }
+      }
+    });
   });
 
   store.subscribe(() => {

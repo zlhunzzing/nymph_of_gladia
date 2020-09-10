@@ -16,6 +16,9 @@ interface Props {
   setHandMana: Dispatch<number>;
   setHand: Function;
   userhand: any;
+  isTurn: boolean;
+  setIsTurn: Dispatch<boolean>;
+  setTurn: Function;
 }
 
 const SetTurnPresenter: React.FunctionComponent<Props> = ({
@@ -28,6 +31,9 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
   setHandMana,
   setHand,
   userhand,
+  isTurn,
+  setIsTurn,
+  setTurn,
 }: Props) => (
   <div className="Main">
     {player1 ? (
@@ -127,27 +133,33 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
         </span>
       </span>
 
-      <button
-        className="continueButton"
-        onClick={() => {
-          for (let e in userhand) {
-            if (userhand[e].type === 'NONE') {
-              store.dispatch(
-                handleModalActions.setModalContent({
-                  content: '카드를 세장 선택해주세요.',
-                }),
-              );
-              store.dispatch(
-                handleModalActions.setModalIsOpen({ isOpen: true }),
-              );
-              return;
+      {isTurn ? (
+        '상대가 준비중입니다'
+      ) : (
+        <button
+          className="continueButton"
+          onClick={() => {
+            for (let e in userhand) {
+              if (userhand[e].type === 'NONE') {
+                store.dispatch(
+                  handleModalActions.setModalContent({
+                    content: '카드를 세장 선택해주세요.',
+                  }),
+                );
+                store.dispatch(
+                  handleModalActions.setModalIsOpen({ isOpen: true }),
+                );
+                return;
+              }
             }
-          }
-          store.dispatch(battleActions.set_is_turn());
-        }}
-      >
-        확인
-      </button>
+            // store.dispatch(battleActions.set_is_turn());
+            setIsTurn(true);
+            setTurn();
+          }}
+        >
+          확인
+        </button>
+      )}
 
       <div className="miniField">
         {player1.position && player2.position

@@ -52,7 +52,6 @@ const ChannelPresenter: React.FunctionComponent<Props> = ({
                 onClick={() => {
                   if (room.headcount < room.maxHeadcount) {
                     inRoom(room.id);
-                    console.log('방에 입장했다.');
                   } else {
                     alert('방의 자리가 부족합니다.');
                   }

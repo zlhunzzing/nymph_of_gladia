@@ -4,6 +4,8 @@ import store from '../index';
 import * as handleModalActions from '../modules/HandleModal';
 import { socketServer } from '../modules/Socket';
 import { useSelector } from 'react-redux';
+import * as battleActions from '../modules/Battle';
+import CARD_DICTIONARY from '../common/CardDictionary';
 
 export default function SetTurnContainer() {
   const entryModal = useState(store.getState().HandleModal.entryModal)[0];
@@ -14,10 +16,13 @@ export default function SetTurnContainer() {
   const userhand = useSelector((state: any) => state.Battle.userhand);
   const roomId = useSelector((state: any) => state.Socket.roomInfo.id);
   const userId = useSelector((state: any) => state.Auth.userId);
+  const [isTurn, setIsTurn] = useState(false);
 
   function setHand(hand: any) {
-    console.log('?');
     socketServer.emit('setHand', roomId, userId, hand);
+  }
+  function setTurn() {
+    socketServer.emit('setTurn', roomId, userId);
   }
 
   useEffect(() => {
@@ -38,7 +43,16 @@ export default function SetTurnContainer() {
       }, 2000);
       store.dispatch(handleModalActions.set_entry_modal());
     }
-    store.getState().Battle.clearHand(setPlayer1);
+    store.dispatch(
+      battleActions.set_user_hand({
+        hand: [
+          CARD_DICTIONARY.NONE,
+          CARD_DICTIONARY.NONE,
+          CARD_DICTIONARY.NONE,
+        ],
+      }),
+    );
+    // store.getState().Battle.clearHand(setPlayer1);
     setPlayer1({ ...store.getState().Battle.player1 });
     // if (store.getState().Battle.player2.position) {
     //   store.getState().Battle.autoCardSet();
@@ -56,6 +70,9 @@ export default function SetTurnContainer() {
       setHandMana={setHandMana}
       userhand={userhand}
       setHand={setHand}
+      isTurn={isTurn}
+      setIsTurn={setIsTurn}
+      setTurn={setTurn}
     />
   );
 }

@@ -30,7 +30,6 @@ export function signin(email: string, password: string, history: any) {
       password,
     })
     .then((res) => {
-      console.log(res);
       store.dispatch(authActions.setToken({ token: res.data.token }));
       store.dispatch(authActions.user_sign_in());
       store.dispatch(authActions.set_user_id({ userId: res.data.id }));

@@ -52,6 +52,21 @@ export default function socketRouter(io) {
       io.emit('setHand', roomId, userId, hand);
     });
 
+    socket.on('setTurn', async (roomId, userId) => {
+      const roomInfo = await roomModel.findWithId(roomId);
+      if (roomInfo.player1 === userId) {
+        roomInfo.player1set = true;
+      } else if (roomInfo.player2 === userId) {
+        roomInfo.player2set = true;
+      }
+      io.emit('setTurn', roomId, roomInfo);
+      if (roomInfo.player1set && roomInfo.player2set) {
+        roomInfo.player1set = false;
+        roomInfo.player2set = false;
+      }
+      await roomModel.save(roomInfo);
+    });
+
     socket.on('disconnect', () => {
       console.log('user disconnected');
     });

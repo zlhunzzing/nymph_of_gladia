@@ -102,7 +102,6 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
             onClick={() => {
               if (character) {
                 if (roomInfo.host === userId) {
-                  console.log('게임시작');
                   gamestart();
                 } else {
                   ready();
