@@ -55,7 +55,7 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
                 {roomInfo.player2
                   ? roomInfo.host !== 'player2' && roomInfo.player2Ready
                     ? '준비완료'
-                    : '준비중'
+                    : '준비안됨'
                   : ''}
               </span>
             </span>
@@ -115,7 +115,7 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
               ? '게임시작'
               : roomInfo.player2Ready
               ? '준비완료'
-              : '준비중'}
+              : '준비하기'}
           </button>
           <button
             onClick={() => {

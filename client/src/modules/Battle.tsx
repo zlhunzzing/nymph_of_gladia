@@ -125,7 +125,6 @@ const initialState = {
     ],
   ],
   checkHand: function (card: Card) {
-    // let hand = store.getState().Battle.player1.hand;
     let hand = store.getState().Battle.userhand;
     for (let i = 0; i < hand.length; i++) {
       if (hand[i].id === card.id) {
@@ -556,7 +555,6 @@ const initialState = {
     let player2Hp = store.getState().Battle.player2.hp;
     if (player1Hp <= 0) {
       if (player2Hp <= 0 && player1Hp <= 0) {
-        console.log('Draw');
         store.dispatch(
           handleModalActions.setModalContent({
             content: '무승부 했다.',
@@ -564,45 +562,35 @@ const initialState = {
         );
         store.dispatch(handleModalActions.set_is_link());
         store.dispatch(handleModalActions.setModalIsOpen({ isOpen: true }));
-        store.dispatch(
-          handleModalActions.set_link_target({ linkTarget: '/main' }),
-        );
         store.dispatch(field_reset());
         setField(store.getState().Battle.field);
+        store.dispatch(set_turn_false());
         return false;
       } else {
-        console.log('Lose');
         store.dispatch(
           handleModalActions.setModalContent({
-            content: store.getState().Battle.player2.name + '에게 졌다.',
+            content: store.getState().Battle.player1.name + '가 이겼다.',
           }),
         );
         store.dispatch(handleModalActions.set_is_link());
         store.dispatch(handleModalActions.setModalIsOpen({ isOpen: true }));
-        store.dispatch(
-          handleModalActions.set_link_target({ linkTarget: '/main' }),
-        );
         store.dispatch(field_reset());
         setField(store.getState().Battle.field);
+        store.dispatch(set_turn_false());
         return false;
       }
     } else if (player2Hp <= 0) {
-      console.log('Win');
       store.dispatch(
         handleModalActions.setModalContent({
-          content: store.getState().Battle.player1.name + '에게 이겼다.',
+          content: store.getState().Battle.player2.name + '가 이겼다.',
         }),
       );
       store.dispatch(handleModalActions.set_is_link());
       store.dispatch(handleModalActions.setModalIsOpen({ isOpen: true }));
-      store.dispatch(
-        handleModalActions.set_link_target({ linkTarget: '/main' }),
-      );
       store.dispatch(field_reset());
       setField(store.getState().Battle.field);
+      store.dispatch(set_turn_false());
       return false;
-    } else {
-      console.log('Continue...');
     }
     return true;
   },

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 import store from './index';
 import { socketServer } from './modules/Socket';
 import * as socketActions from './modules/Socket';
@@ -128,8 +128,8 @@ function App() {
           </button>
         ) : null}
         {isLink ? (
-          <a
-            href={store.getState().HandleModal.linkTarget}
+          <Link
+            to={`/greenroom/${store.getState().Socket.roomInfo.id}`}
             onClick={() => {
               store.dispatch(
                 HandleModalActions.setModalIsOpen({ isOpen: false }),
@@ -140,7 +140,7 @@ function App() {
             }}
           >
             확인
-          </a>
+          </Link>
         ) : null}
       </Modal>
     </div>

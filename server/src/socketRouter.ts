@@ -39,6 +39,8 @@ export default function socketRouter(io) {
       const roomInfo = await roomModel.findWithId(roomId);
       if (roomInfo.player2Ready && roomInfo.player1Character) {
         io.emit('gamestart', roomInfo);
+        roomInfo.player2Ready = false;
+        await roomModel.save(roomInfo);
       }
     });
 
