@@ -15,6 +15,10 @@ export default function socketRouter(io) {
       io.emit('getRoomInfo', roomInfo);
     });
 
+    socket.on('sendMessage', (roomId, content) => {
+      io.emit('sendMessage', roomId, content);
+    });
+
     socket.on('select', async (roomId, userId, character) => {
       const roomInfo = await roomModel.findWithId(roomId);
       if (roomInfo.player1 === userId) {

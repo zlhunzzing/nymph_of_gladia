@@ -19,6 +19,8 @@ interface Props {
   isTurn: boolean;
   setIsTurn: Dispatch<boolean>;
   setTurn: Function;
+  setContent: Dispatch<string>;
+  sendMessage: Function;
 }
 
 const SetTurnPresenter: React.FunctionComponent<Props> = ({
@@ -34,6 +36,8 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
   isTurn,
   setIsTurn,
   setTurn,
+  setContent,
+  sendMessage,
 }: Props) => (
   <div className="Main">
     {player1 ? (
@@ -99,39 +103,59 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
         : null}
     </div>
 
-    <div className="control">
-      <span className="setHand">
-        <span>
-          {userhand
-            ? userhand.map((card: Card, id: number) => (
-                <img
-                  src={card.image}
-                  alt=""
-                  key={id}
-                  className="card"
-                  onClick={() => {
-                    if (card.type !== 'NONE') {
-                      userhand[id] = CARD_DICTIONARY.NONE;
-                      store.dispatch(
-                        battleActions.set_user_hand({
-                          hand: userhand.slice(0, 3),
-                        }),
-                      );
-                      setHand(userhand);
-                      setPlayer1({ ...player1 });
-                      setUsedMana(usedMana + card.cost);
-                      setHandMana(handMana - card.cost);
-                      let el = document.querySelector(
-                        `.${card.position}`,
-                      ) as HTMLElement;
-                      el.className = `card ${card.position}`;
-                    }
-                  }}
-                ></img>
-              ))
-            : null}
-        </span>
+    <span className="setHand">
+      <span>
+        {userhand
+          ? userhand.map((card: Card, id: number) => (
+              <img
+                src={card.image}
+                alt=""
+                key={id}
+                className="card"
+                onClick={() => {
+                  if (card.type !== 'NONE') {
+                    userhand[id] = CARD_DICTIONARY.NONE;
+                    store.dispatch(
+                      battleActions.set_user_hand({
+                        hand: userhand.slice(0, 3),
+                      }),
+                    );
+                    setHand(userhand);
+                    setPlayer1({ ...player1 });
+                    setUsedMana(usedMana + card.cost);
+                    setHandMana(handMana - card.cost);
+                    let el = document.querySelector(
+                      `.${card.position}`,
+                    ) as HTMLElement;
+                    el.className = `card ${card.position}`;
+                  }
+                }}
+              ></img>
+            ))
+          : null}
       </span>
+    </span>
+
+    <div className="control">
+      <form
+        className="battleForm"
+        onSubmit={(e) => {
+          e.preventDefault();
+          sendMessage();
+        }}
+      >
+        <span className="battleChatBox"></span>
+        <input
+          type="text"
+          className="battleChatInput"
+          onChange={({ target: { value } }) => setContent(value)}
+        ></input>
+        <input
+          type="reset"
+          className="inputReset"
+          style={{ display: 'none' }}
+        ></input>
+      </form>
 
       {isTurn ? (
         '상대가 준비중입니다'
@@ -152,7 +176,6 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                 return;
               }
             }
-            // store.dispatch(battleActions.set_is_turn());
             setIsTurn(true);
             setTurn();
           }}

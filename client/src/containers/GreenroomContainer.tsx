@@ -10,12 +10,14 @@ import * as battleActions from '../modules/Battle';
 export default function GreenroomContainer() {
   const params: any = useState(useRouteMatch().params)[0];
   const roomInfo = useSelector((state: any) => state.Socket.roomInfo);
+  const roomId = useState(params.id)[0];
   const userId = useSelector((state: any) => state.Auth.userId);
   const [character, setCharacter] = useState('');
   const history = useState(useHistory())[0];
+  const [content, setContent] = useState('');
 
   async function outRoom() {
-    await socketServer.emit('outRoom', params.id, userId);
+    await socketServer.emit('outRoom', roomId, userId);
     history.push('/channel');
   }
   function select(name: string) {
@@ -25,18 +27,24 @@ export default function GreenroomContainer() {
     } else {
       store.dispatch(battleActions.select_player2({ name }));
     }
-    socketServer.emit('select', params.id, userId, name);
+    socketServer.emit('select', roomId, userId, name);
   }
   function ready() {
-    socketServer.emit('ready', params.id, userId);
+    socketServer.emit('ready', roomId, userId);
   }
   function gamestart() {
-    socketServer.emit('gamestart', params.id);
+    socketServer.emit('gamestart', roomId);
+  }
+  function sendMessage() {
+    socketServer.emit('sendMessage', roomId, content);
+    setContent('');
+    const el = document.querySelector('.inputReset') as HTMLElement;
+    el.click();
   }
 
   useEffect(() => {
-    socketServer.emit('getRoomInfo', params.id);
-  }, [params]);
+    socketServer.emit('getRoomInfo', roomId);
+  }, [roomId]);
 
   return (
     <GreenroomPresenter
@@ -47,6 +55,8 @@ export default function GreenroomContainer() {
       character={character}
       ready={ready}
       gamestart={gamestart}
+      setContent={setContent}
+      sendMessage={sendMessage}
     />
   );
 }

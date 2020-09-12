@@ -6,7 +6,7 @@
 }
 
 .deck {
-  margin-top: 110px;
+  margin-top: 90px;
 }
 .card {
   width: 75px;
@@ -24,6 +24,10 @@
 .card:hover {
   background-color: coral;
 }
+.setHand {
+  display: inline-block;
+  margin: 20px;
+}
 
 .control {
   border-top: 1px solid black;
@@ -31,15 +35,29 @@
   bottom: 0%;
   width: 100%;
 }
-.setHand {
-  float: left;
-  margin: 20px;
-}
 .continueButton {
   float: left;
   margin: 20px;
 }
 
+.battleForm {
+  margin: 10px;
+  float: left;
+}
+.battleChatBox {
+  border: 1px solid black;
+  width: 250px;
+  height: 98px;
+  padding-bottom: 2px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column-reverse;
+}
+.battleChatInput {
+  width: 248px;
+  height: 20px;
+  float: left;
+}
 .miniField {
   margin: 20px;
   float: right;

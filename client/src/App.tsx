@@ -16,6 +16,7 @@ import Channel from './pages/Channel';
 import Greenroom from './pages/Greenroom';
 import SelectCharacter from './pages/SelectCharacter';
 import Battle from './pages/Battle';
+import { useSelector } from 'react-redux';
 
 Modal.setAppElement('#root');
 
@@ -25,6 +26,7 @@ function App() {
   const [modalIsButton, setModalIsButton] = useState(true);
   const [isLink, setIsLink] = useState(false);
   const history = useState(useHistory())[0];
+  const isChat = useSelector((state: any) => state.Socket.isChat);
 
   useEffect(() => {
     socketServer.on('rooms', (rooms: any) => {
@@ -32,12 +34,29 @@ function App() {
     });
 
     socketServer.on('getRoomInfo', (roomInfo: any) => {
-      if (
-        document.location.pathname === `/greenroom/${roomInfo.id.toString()}`
-      ) {
+      if (document.location.pathname === `/greenroom/${roomInfo.id}`) {
         store.dispatch(socketActions.set_room_info({ roomInfo }));
       }
     });
+
+    if (isChat) {
+      store.dispatch(socketActions.set_is_chat());
+      socketServer.on('sendMessage', (roomId: number, content: string) => {
+        console.log('?');
+        console.log(store.getState().Socket.roomInfo.id, roomId);
+        if (store.getState().Socket.roomInfo.id === Number(roomId)) {
+          const message = document.createElement('div');
+          message.innerHTML = content;
+          message.style.textAlign = 'left';
+          message.style.paddingLeft = '5px';
+
+          const chatBox = document.querySelector('.chatBox');
+          chatBox?.prepend(message);
+          const battleChatBox = document.querySelector('.battleChatBox');
+          battleChatBox?.prepend(message);
+        }
+      });
+    }
 
     socketServer.on('gamestart', (roomInfo: any) => {
       if (roomInfo.player1 === store.getState().Auth.userId) {

@@ -17,12 +17,19 @@ export default function SetTurnContainer() {
   const roomId = useSelector((state: any) => state.Socket.roomInfo.id);
   const userId = useSelector((state: any) => state.Auth.userId);
   const [isTurn, setIsTurn] = useState(false);
+  const [content, setContent] = useState('');
 
   function setHand(hand: any) {
     socketServer.emit('setHand', roomId, userId, hand);
   }
   function setTurn() {
     socketServer.emit('setTurn', roomId, userId);
+  }
+  function sendMessage() {
+    socketServer.emit('sendMessage', roomId, content);
+    setContent('');
+    const el = document.querySelector('.inputReset') as HTMLElement;
+    el.click();
   }
 
   useEffect(() => {
@@ -73,6 +80,8 @@ export default function SetTurnContainer() {
       isTurn={isTurn}
       setIsTurn={setIsTurn}
       setTurn={setTurn}
+      setContent={setContent}
+      sendMessage={sendMessage}
     />
   );
 }

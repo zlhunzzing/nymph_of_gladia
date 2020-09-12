@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 import '../presenterStyles/GreenroomPresenter.css';
 
 interface Props {
@@ -9,6 +9,8 @@ interface Props {
   character: string;
   ready: Function;
   gamestart: Function;
+  setContent: Dispatch<string>;
+  sendMessage: Function;
 }
 
 const GreenroomrPresenter: React.FunctionComponent<Props> = ({
@@ -19,6 +21,8 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
   character,
   ready,
   gamestart,
+  setContent,
+  sendMessage,
 }: Props) => (
   <div className="Main">
     <br></br>
@@ -82,55 +86,68 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
               </li>
             </ul>
           </div>
-          <span
-            style={{
-              margin: '10px',
-              border: '1px solid black',
-              width: '400px',
-              height: '200px',
-              float: 'left',
-            }}
-          ></span>
-          <button
-            style={{
-              margin: '10px',
-              border: '1px solid black',
-              width: '150px',
-              height: '89px',
-              float: 'right',
-            }}
-            onClick={() => {
-              if (character) {
-                if (roomInfo.host === userId) {
-                  gamestart();
-                } else {
-                  ready();
-                }
-              } else {
-                alert('캐릭터를 선택해주세요.');
-              }
-            }}
-          >
-            {roomInfo.host === userId
-              ? '게임시작'
-              : roomInfo.player2Ready
-              ? '준비완료'
-              : '준비하기'}
-          </button>
-          <button
-            onClick={() => {
-              outRoom();
-            }}
-            style={{
-              margin: '10px',
-              border: '1px solid black',
-              width: '150px',
-              height: '89px',
-              float: 'right',
-            }}
-          >
-            나가기
-          </button>
+          <div>
+            <form
+              style={{
+                margin: '15px',
+              }}
+              onSubmit={(e) => {
+                e.preventDefault();
+                sendMessage();
+              }}
+            >
+              <span className="chatBox"></span>
+              <input
+                type="text"
+                className="chatInput"
+                onChange={({ target: { value } }) => setContent(value)}
+              ></input>
+              <input
+                type="reset"
+                className="inputReset"
+                style={{ display: 'none' }}
+              ></input>
+            </form>
+            <span>
+              <button
+                style={{
+                  border: '1px solid black',
+                  width: '150px',
+                  height: '89px',
+                }}
+                onClick={() => {
+                  if (character) {
+                    if (roomInfo.host === userId) {
+                      gamestart();
+                    } else {
+                      ready();
+                    }
+                  } else {
+                    alert('캐릭터를 선택해주세요.');
+                  }
+                }}
+              >
+                {roomInfo.host === userId
+                  ? '게임시작'
+                  : roomInfo.player2Ready
+                  ? '준비완료'
+                  : '준비하기'}
+              </button>
+              <button
+                onClick={() => {
+                  outRoom();
+                }}
+                style={{
+                  margin: '10px',
+                  border: '1px solid black',
+                  width: '150px',
+                  height: '89px',
+                }}
+              >
+                나가기
+              </button>
+            </span>
+          </div>
         </div>
       </div>
     ) : null}
