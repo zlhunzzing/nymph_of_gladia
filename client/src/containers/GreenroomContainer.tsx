@@ -33,7 +33,7 @@ export default function GreenroomContainer() {
     socketServer.emit('ready', roomId, userId);
   }
   function gamestart() {
-    socketServer.emit('gamestart', roomId);
+    socketServer.emit('gamestart', roomId, userId);
   }
   function sendMessage() {
     socketServer.emit('sendMessage', roomId, content);

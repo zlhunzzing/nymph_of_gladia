@@ -34,18 +34,20 @@ export default function socketRouter(io) {
       const roomInfo = await roomModel.findWithId(roomId);
       if (roomInfo.player2 === userId) {
         roomInfo.player2Ready = !roomInfo.player2Ready;
+        roomInfo.player2Socket = socket.id;
       }
       await roomModel.save(roomInfo);
       io.emit('getRoomInfo', roomInfo);
     });
 
-    socket.on('gamestart', async (roomId) => {
+    socket.on('gamestart', async (roomId, userId) => {
       const roomInfo = await roomModel.findWithId(roomId);
+      if (roomInfo.player1 === userId) roomInfo.player1Socket = socket.id;
       if (roomInfo.player2Ready && roomInfo.player1Character) {
         io.emit('gamestart', roomInfo);
         roomInfo.player2Ready = false;
-        await roomModel.save(roomInfo);
       }
+      await roomModel.save(roomInfo);
     });
 
     socket.on('outRoom', async (roomId, userId) => {
@@ -73,8 +75,37 @@ export default function socketRouter(io) {
       await roomModel.save(roomInfo);
     });
 
-    socket.on('disconnect', () => {
+    socket.on('disconnect', async () => {
       console.log('user disconnected');
+
+      let roomInfo: any = {};
+      const rooms = await roomModel.findAll();
+      for (let i = 0; i <= rooms.length; i += 1) {
+        if (rooms[i] && rooms[i].player1Socket === socket.id) {
+          roomInfo = { ...rooms[i] };
+          roomInfo.headcount -= 1;
+          roomInfo.player1 = 0;
+          roomInfo.player1Socket = null;
+          roomInfo.player1Character = null;
+          roomInfo.player1Ready = false;
+          roomInfo.player1set = false;
+        }
+        if (rooms[i] && rooms[i].player2Socket === socket.id) {
+          roomInfo = { ...rooms[i] };
+          roomInfo.headcount -= 1;
+          roomInfo.player2 = 0;
+          roomInfo.player2Socket = null;
+          roomInfo.player2Character = null;
+          roomInfo.player2Ready = false;
+          roomInfo.player2set = false;
+        }
+      }
+      if (roomInfo.headcount === 0) {
+        await roomModel.delete(roomInfo.id);
+      } else {
+        await roomModel.save(roomInfo);
+        io.emit('disconnect', roomInfo);
+      }
     });
   };
 }

@@ -99,6 +99,26 @@ function App() {
         }
       }
     });
+
+    socketServer.on('disconnect', (roomInfo: any) => {
+      console.log('1');
+      if (roomInfo.id === store.getState().Socket.roomInfo.id) {
+        console.log('2');
+        if (
+          document.location.pathname === '/battle' ||
+          store.getState().Battle.isTurn
+        ) {
+          console.log('3');
+          store.dispatch(
+            HandleModalActions.setModalContent({
+              content: '상대와의 연결이 끊겼다',
+            }),
+          );
+          store.dispatch(HandleModalActions.setModalIsOpen({ isOpen: true }));
+          store.dispatch(HandleModalActions.set_is_link());
+        }
+      }
+    });
   });
 
   store.subscribe(() => {

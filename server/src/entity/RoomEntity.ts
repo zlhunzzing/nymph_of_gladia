@@ -11,14 +11,6 @@ export class RoomEntity {
   @Column()
   host: number;
 
-  @Column()
-  player1: number;
-
-  @Column({
-    default: null,
-  })
-  player2: number;
-
   @Column({
     default: 0,
   })
@@ -28,6 +20,24 @@ export class RoomEntity {
     default: 2,
   })
   maxHeadcount: number;
+
+  @Column()
+  player1: number;
+
+  @Column({
+    default: null,
+  })
+  player2: number;
+
+  @Column({
+    default: null,
+  })
+  player1Socket: string;
+
+  @Column({
+    default: null,
+  })
+  player2Socket: string;
 
   @Column({
     default: null,
