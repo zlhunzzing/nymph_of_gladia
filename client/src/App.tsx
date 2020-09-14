@@ -42,8 +42,6 @@ function App() {
     if (isChat) {
       store.dispatch(socketActions.set_is_chat());
       socketServer.on('sendMessage', (roomId: number, content: string) => {
-        console.log('?');
-        console.log(store.getState().Socket.roomInfo.id, roomId);
         if (store.getState().Socket.roomInfo.id === Number(roomId)) {
           const message = document.createElement('div');
           message.innerHTML = content;
@@ -101,14 +99,11 @@ function App() {
     });
 
     socketServer.on('disconnect', (roomInfo: any) => {
-      console.log('1');
       if (roomInfo.id === store.getState().Socket.roomInfo.id) {
-        console.log('2');
         if (
           document.location.pathname === '/battle' ||
           store.getState().Battle.isTurn
         ) {
-          console.log('3');
           store.dispatch(
             HandleModalActions.setModalContent({
               content: '상대와의 연결이 끊겼다',
@@ -116,6 +111,8 @@ function App() {
           );
           store.dispatch(HandleModalActions.setModalIsOpen({ isOpen: true }));
           store.dispatch(HandleModalActions.set_is_link());
+        } else {
+          store.dispatch(socketActions.set_room_info({ roomInfo }));
         }
       }
     });

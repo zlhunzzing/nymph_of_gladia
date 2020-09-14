@@ -5,10 +5,10 @@ export class RoomEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ default: null })
   roomname: string;
 
-  @Column()
+  @Column({ default: null })
   host: number;
 
   @Column({
@@ -21,7 +21,7 @@ export class RoomEntity {
   })
   maxHeadcount: number;
 
-  @Column()
+  @Column({ default: null })
   player1: number;
 
   @Column({

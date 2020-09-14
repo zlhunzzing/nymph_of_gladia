@@ -43,8 +43,8 @@ export default function GreenroomContainer() {
   }
 
   useEffect(() => {
-    socketServer.emit('getRoomInfo', roomId);
-  }, [roomId]);
+    socketServer.emit('getRoomInfo', roomId, userId);
+  }, [roomId, userId]);
 
   return (
     <GreenroomPresenter

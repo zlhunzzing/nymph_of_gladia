@@ -10,8 +10,11 @@ export default function socketRouter(io) {
       io.emit('rooms', await roomModel.findAll());
     });
 
-    socket.on('getRoomInfo', async (roomId) => {
+    socket.on('getRoomInfo', async (roomId, userId) => {
       const roomInfo = await roomModel.findWithId(roomId);
+      if (roomInfo.player1 === userId) roomInfo.player1Socket = socket.id;
+      if (roomInfo.player2 === userId) roomInfo.player2Socket = socket.id;
+      await roomModel.save(roomInfo);
       io.emit('getRoomInfo', roomInfo);
     });
 
@@ -34,7 +37,6 @@ export default function socketRouter(io) {
       const roomInfo = await roomModel.findWithId(roomId);
       if (roomInfo.player2 === userId) {
         roomInfo.player2Ready = !roomInfo.player2Ready;
-        roomInfo.player2Socket = socket.id;
       }
       await roomModel.save(roomInfo);
       io.emit('getRoomInfo', roomInfo);
@@ -42,7 +44,6 @@ export default function socketRouter(io) {
 
     socket.on('gamestart', async (roomId, userId) => {
       const roomInfo = await roomModel.findWithId(roomId);
-      if (roomInfo.player1 === userId) roomInfo.player1Socket = socket.id;
       if (roomInfo.player2Ready && roomInfo.player1Character) {
         io.emit('gamestart', roomInfo);
         roomInfo.player2Ready = false;
