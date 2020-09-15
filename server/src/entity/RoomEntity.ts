@@ -52,6 +52,11 @@ export class RoomEntity {
   @Column({
     default: false,
   })
+  player1Ready: boolean;
+
+  @Column({
+    default: false,
+  })
   player2Ready: boolean;
 
   @Column({

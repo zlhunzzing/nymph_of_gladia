@@ -74,9 +74,14 @@ export class UserService {
   async inRoomService(roomId, tokenData): Promise<void> {
     const insertData = {
       ...(await roomModel.findWithId(roomId)),
-      player2: tokenData.id,
       headcount: (await roomModel.findWithId(roomId)).headcount + 1,
     };
+
+    if (!insertData.player1) {
+      insertData.player1 = tokenData.id;
+    } else {
+      insertData.player2 = tokenData.id;
+    }
 
     roomModel.save(insertData);
   }

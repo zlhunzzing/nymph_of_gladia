@@ -35,26 +35,58 @@ export default function socketRouter(io) {
 
     socket.on('ready', async (roomId, userId) => {
       const roomInfo = await roomModel.findWithId(roomId);
-      if (roomInfo.player2 === userId) {
+      if (roomInfo.player1 === userId) {
+        roomInfo.player1Ready = !roomInfo.player1Ready;
+      } else {
         roomInfo.player2Ready = !roomInfo.player2Ready;
       }
       await roomModel.save(roomInfo);
       io.emit('getRoomInfo', roomInfo);
     });
 
-    socket.on('gamestart', async (roomId, userId) => {
+    socket.on('gamestart', async (roomId) => {
       const roomInfo = await roomModel.findWithId(roomId);
-      if (roomInfo.player2Ready && roomInfo.player1Character) {
-        io.emit('gamestart', roomInfo);
+      if (roomInfo.host === roomInfo.player1 && roomInfo.player2Ready) {
+        roomInfo.player1Ready = false;
         roomInfo.player2Ready = false;
+        io.emit('gamestart', roomInfo);
+      } else if (roomInfo.host === roomInfo.player2 && roomInfo.player1Ready) {
+        roomInfo.player1Ready = false;
+        roomInfo.player2Ready = false;
+        io.emit('gamestart', roomInfo);
       }
       await roomModel.save(roomInfo);
     });
 
     socket.on('outRoom', async (roomId, userId) => {
       const roomInfo = await roomModel.findWithId(roomId);
-      if (roomInfo.player1 === userId) roomInfo.player1 = 0;
-      if (roomInfo.player1 === 0) await roomModel.delete(roomInfo.id);
+      if (roomInfo.player1 === userId) {
+        if (roomInfo.player1 === roomInfo.host && roomInfo.player2) {
+          roomInfo.host = roomInfo.player2;
+        }
+        roomInfo.headcount -= 1;
+        roomInfo.player1 = 0;
+        roomInfo.player1Socket = null;
+        roomInfo.player1Character = null;
+        roomInfo.player1Ready = false;
+        roomInfo.player1set = false;
+      } else {
+        if (roomInfo.player2 === roomInfo.host && roomInfo.player1) {
+          roomInfo.host = roomInfo.player1;
+        }
+        roomInfo.headcount -= 1;
+        roomInfo.player2 = 0;
+        roomInfo.player2Socket = null;
+        roomInfo.player2Character = null;
+        roomInfo.player2Ready = false;
+        roomInfo.player2set = false;
+      }
+      if (roomInfo.headcount === 0) {
+        await roomModel.delete(roomInfo.id);
+      } else {
+        await roomModel.save(roomInfo);
+        io.emit('getRoomInfo', roomInfo);
+      }
     });
 
     socket.on('setHand', async (roomId, userId, hand) => {
@@ -84,8 +116,11 @@ export default function socketRouter(io) {
       for (let i = 0; i <= rooms.length; i += 1) {
         if (rooms[i] && rooms[i].player1Socket === socket.id) {
           roomInfo = { ...rooms[i] };
+          if (roomInfo.player1 === roomInfo.host && roomInfo.player2) {
+            roomInfo.host = roomInfo.player2;
+          }
           roomInfo.headcount -= 1;
-          roomInfo.player1 = 0;
+          roomInfo.player1 = null;
           roomInfo.player1Socket = null;
           roomInfo.player1Character = null;
           roomInfo.player1Ready = false;
@@ -93,8 +128,11 @@ export default function socketRouter(io) {
         }
         if (rooms[i] && rooms[i].player2Socket === socket.id) {
           roomInfo = { ...rooms[i] };
+          if (roomInfo.player2 === roomInfo.host && roomInfo.player1) {
+            roomInfo.host = roomInfo.player1;
+          }
           roomInfo.headcount -= 1;
-          roomInfo.player2 = 0;
+          roomInfo.player2 = null;
           roomInfo.player2Socket = null;
           roomInfo.player2Character = null;
           roomInfo.player2Ready = false;
@@ -103,7 +141,7 @@ export default function socketRouter(io) {
       }
       if (roomInfo.headcount === 0) {
         await roomModel.delete(roomInfo.id);
-      } else {
+      } else if (roomInfo.id) {
         await roomModel.save(roomInfo);
         io.emit('disconnect', roomInfo);
       }

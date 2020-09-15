@@ -34,6 +34,7 @@ function App() {
     });
 
     socketServer.on('getRoomInfo', (roomInfo: any) => {
+      console.log('room', roomInfo);
       if (document.location.pathname === `/greenroom/${roomInfo.id}`) {
         store.dispatch(socketActions.set_room_info({ roomInfo }));
       }
@@ -99,7 +100,7 @@ function App() {
     });
 
     socketServer.on('disconnect', (roomInfo: any) => {
-      if (roomInfo.id === store.getState().Socket.roomInfo.id) {
+      if (roomInfo && roomInfo.id === store.getState().Socket.roomInfo.id) {
         if (
           document.location.pathname === '/battle' ||
           store.getState().Battle.isTurn

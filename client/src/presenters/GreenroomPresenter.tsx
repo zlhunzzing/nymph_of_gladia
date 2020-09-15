@@ -42,7 +42,13 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
                   bottom: '0%',
                 }}
               >
-                {roomInfo.host === userId ? '방장' : ''}
+                {roomInfo.host === roomInfo.player1
+                  ? '방장'
+                  : roomInfo.player1
+                  ? roomInfo.player1Ready
+                    ? '준비완료'
+                    : '준비안됨'
+                  : ''}
               </span>
             </span>
 
@@ -56,8 +62,10 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
                   bottom: '0%',
                 }}
               >
-                {roomInfo.player2
-                  ? roomInfo.host !== 'player2' && roomInfo.player2Ready
+                {roomInfo.host === roomInfo.player2
+                  ? '방장'
+                  : roomInfo.player2
+                  ? roomInfo.player2Ready
                     ? '준비완료'
                     : '준비안됨'
                   : ''}
