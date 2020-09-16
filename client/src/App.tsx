@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
-import store from './index';
-import { socketServer } from './modules/Socket';
-import * as socketActions from './modules/Socket';
+import { useHistory } from 'react-router-dom';
 import Modal from 'react-modal';
 import modalCustomStyles from './common/ModalCustomStyles';
+import store from './index';
 import * as HandleModalActions from './modules/HandleModal';
+import { socketServer } from './modules/Socket';
+import * as socketActions from './modules/Socket';
 import * as battleActions from './modules/Battle';
-import { useHistory } from 'react-router-dom';
 
 /* pages */
 import Main from './pages/Main';
@@ -29,6 +29,24 @@ function App() {
   const isChat = useSelector((state: any) => state.Socket.isChat);
 
   useEffect(() => {
+    socketServer.on('socketCheck', (userId: number, socketId: string) => {
+      if (store.getState().Auth.userId === userId) {
+        console.log('id', store.getState().Auth.userId, userId);
+        if (!store.getState().Socket.socketId) {
+          store.dispatch(socketActions.set_socket_id({ socketId }));
+        } else if (store.getState().Socket.socketId !== socketId) {
+          history.push('/');
+          history.go(0);
+          // store.dispatch(
+          //   HandleModalActions.setModalContent({
+          //     content: '다른 사용자가 접속했다',
+          //   }),
+          // );
+          // store.dispatch(HandleModalActions.setModalIsOpen({ isOpen: true }));
+        }
+      }
+    });
+
     socketServer.on('rooms', (rooms: any) => {
       store.dispatch(socketActions.set_rooms({ rooms }));
     });
@@ -100,7 +118,11 @@ function App() {
     });
 
     socketServer.on('disconnect', (roomInfo: any) => {
-      if (roomInfo && roomInfo.id === store.getState().Socket.roomInfo.id) {
+      if (
+        roomInfo &&
+        store.getState().Socket.roomInfo &&
+        roomInfo.id === store.getState().Socket.roomInfo.id
+      ) {
         if (
           document.location.pathname === '/battle' ||
           store.getState().Battle.isTurn

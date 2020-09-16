@@ -6,6 +6,10 @@ export default function socketRouter(io) {
   return async (socket) => {
     console.log('user connected');
 
+    socket.on('socketCheck', (userId) => {
+      io.emit('socketCheck', userId, socket.id);
+    });
+
     socket.on('rooms', async () => {
       io.emit('rooms', await roomModel.findAll());
     });

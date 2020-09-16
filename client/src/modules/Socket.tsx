@@ -3,15 +3,21 @@ import io from 'socket.io-client';
 
 export const socketServer = io('http://localhost:3000');
 
+const SET_SOCKET_ID = 'App/Socket/SET_SOCKET_ID';
 const SET_ROOMS = 'App/Socket/SET_ROOMS';
 const SET_ROOM_INFO = 'App/Socket/SET_ROOM_INFO';
 const SET_IS_CHAT = 'App/Socket/SET_IS_CHAT';
 
+export const set_socket_id = createAction(SET_SOCKET_ID);
+// payload: {socketId: }
 export const set_rooms = createAction(SET_ROOMS);
+// payload: {rooms: }
 export const set_room_info = createAction(SET_ROOM_INFO);
+// payload: {roomInfo: }
 export const set_is_chat = createAction(SET_IS_CHAT);
 
 const initialState = {
+  socketId: null,
   rooms: [],
   roomInfo: null,
   isChat: true,
@@ -19,6 +25,11 @@ const initialState = {
 
 export default function Socket(state: any = initialState, action: any) {
   switch (action.type) {
+    case SET_SOCKET_ID:
+      return {
+        ...state,
+        socketId: action.payload.socketId,
+      };
     case SET_ROOMS:
       return {
         ...state,

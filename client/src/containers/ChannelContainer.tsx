@@ -10,8 +10,9 @@ export default function ChannelContainer() {
   const rooms = useSelector((state: any) => state.Socket.rooms);
   const [roomname, setRoomname] = useState('');
   const [isModal, setIsModal] = useState(false);
-  const history = useState(useHistory())[0];
   const isUser = useState(store.getState().Auth.isUser)[0];
+  const userId = useSelector((state: any) => state.Auth.userId);
+  const history = useState(useHistory())[0];
 
   async function createRoom() {
     await apis.createRoom(roomname, history);
@@ -24,7 +25,8 @@ export default function ChannelContainer() {
 
   useEffect(() => {
     socketServer.emit('rooms');
-  }, []);
+    socketServer.emit('socketCheck', userId);
+  }, [userId]);
 
   return (
     <ChannelPresenter
