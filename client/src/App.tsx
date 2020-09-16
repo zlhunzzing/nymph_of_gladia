@@ -61,7 +61,10 @@ function App() {
     if (isChat) {
       store.dispatch(socketActions.set_is_chat());
       socketServer.on('sendMessage', (roomId: number, content: string) => {
-        if (store.getState().Socket.roomInfo.id === Number(roomId)) {
+        if (
+          store.getState().Socket.roomInfo &&
+          store.getState().Socket.roomInfo.id === Number(roomId)
+        ) {
           const message = document.createElement('div');
           message.innerHTML = content;
           message.style.textAlign = 'left';
@@ -92,7 +95,10 @@ function App() {
     });
 
     socketServer.on('setHand', (roomId: number, userId: number, hand: any) => {
-      if (roomId === store.getState().Socket.roomInfo.id) {
+      if (
+        store.getState().Socket.roomInfo &&
+        roomId === store.getState().Socket.roomInfo.id
+      ) {
         if (userId === store.getState().Socket.roomInfo.player1) {
           store.dispatch(
             battleActions.set_player1_hand({
@@ -110,7 +116,10 @@ function App() {
     });
 
     socketServer.on('setTurn', (roomId: number, roomInfo: any) => {
-      if (roomId === store.getState().Socket.roomInfo.id) {
+      if (
+        store.getState().Socket.roomInfo &&
+        roomId === store.getState().Socket.roomInfo.id
+      ) {
         if (roomInfo.player1set && roomInfo.player2set) {
           store.dispatch(battleActions.set_turn_true());
         }
