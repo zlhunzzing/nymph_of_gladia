@@ -37,28 +37,28 @@ const ChannelPresenter: React.FunctionComponent<Props> = ({
             <div
               key={room.id}
               style={{
-                // width: '25%',
-                // height: '20%',
-                width: '100px',
-                height: '50px',
+                width: '596px',
+                height: '30px',
                 border: '1px solid black',
                 float: 'left',
                 margin: '1px',
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                if (room.headcount < room.maxHeadcount) {
+                  inRoom(room.id);
+                } else {
+                  alert('방의 자리가 부족합니다.');
+                }
               }}
             >
-              {room.id} ㅣ {room.roomname} ㅣ ({room.headcount}/
-              {room.maxHeadcount})<br></br>
-              <button
-                onClick={() => {
-                  if (room.headcount < room.maxHeadcount) {
-                    inRoom(room.id);
-                  } else {
-                    alert('방의 자리가 부족합니다.');
-                  }
-                }}
-              >
-                입장
-              </button>
+              <span style={{ paddingLeft: '10px', float: 'left' }}>
+                {room.id}
+              </span>
+              {room.roomname}
+              <span style={{ paddingRight: '10px', float: 'right' }}>
+                ({room.headcount}/{room.maxHeadcount})
+              </span>
             </div>
           ))
         : null}
@@ -85,7 +85,7 @@ const ChannelPresenter: React.FunctionComponent<Props> = ({
           if (isUser) createRoom();
         }}
       >
-        {isUser ? '방 제목을 입력하시오.' : '방을 만들려면 로그인 해야합니다'}
+        {isUser ? '방 제목을 입력하시오' : '방을 만들려면 로그인 해야합니다'}
         <br></br>
         {isUser ? (
           <input
