@@ -65,6 +65,7 @@ export class UserService {
       roomname: roomInfo.roomname,
       host: tokenData.id,
       player1: tokenData.id,
+      player1name: tokenData.username,
       headcount: 1,
     };
 
@@ -79,8 +80,10 @@ export class UserService {
 
     if (!insertData.player1) {
       insertData.player1 = tokenData.id;
+      insertData.player1name = tokenData.username;
     } else {
       insertData.player2 = tokenData.id;
+      insertData.player2name = tokenData.username;
     }
 
     roomModel.save(insertData);

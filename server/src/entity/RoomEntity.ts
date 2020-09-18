@@ -32,6 +32,16 @@ export class RoomEntity {
   @Column({
     default: null,
   })
+  player1name: string;
+
+  @Column({
+    default: null,
+  })
+  player2name: string;
+
+  @Column({
+    default: null,
+  })
   player1Socket: string;
 
   @Column({

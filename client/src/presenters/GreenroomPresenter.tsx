@@ -31,10 +31,19 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
     {roomInfo ? (
       <div>
         <div className="inners">
-          <div className="innerTop">
+          <div className="roomTitle">
+            <span style={{ paddingLeft: '10px', float: 'left' }}>
+              {roomInfo.id}번방
+            </span>
+            {roomInfo.roomname}
+            <span style={{ paddingRight: '10px', float: 'right' }}>
+              ({roomInfo.headcount}/{roomInfo.maxHeadcount})
+            </span>
+          </div>
+          <div className="innerMid">
             <span className="seat">
               <span className="seatUser">
-                {roomInfo.player1 ? '있음' : null}
+                {roomInfo.player1 ? roomInfo.player1name : null}
               </span>
               <span
                 className="seatUser"
@@ -54,7 +63,7 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
 
             <span className="seat">
               <span className="seatUser">
-                {roomInfo.player2 ? '있음' : null}
+                {roomInfo.player2 ? roomInfo.player2name : null}
               </span>
               <span
                 className="seatUser"
@@ -71,7 +80,9 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
                   : ''}
               </span>
             </span>
+
             <ul>
+              캐릭터 선택
               <li>
                 <a
                   href="#1"
@@ -93,6 +104,7 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
                 </a>
               </li>
             </ul>
+            <div className="chrStat"></div>
           </div>
           <div>
             <form
@@ -121,7 +133,7 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
                 style={{
                   border: '1px solid black',
                   width: '150px',
-                  height: '89px',
+                  height: '79px',
                 }}
                 onClick={() => {
                   if (character) {
@@ -149,7 +161,7 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
                   margin: '10px',
                   border: '1px solid black',
                   width: '150px',
-                  height: '89px',
+                  height: '79px',
                 }}
               >
                 나가기

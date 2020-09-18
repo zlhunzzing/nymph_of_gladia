@@ -15,9 +15,10 @@
   margin-top: 40px;
 }
 
-ul {
-  margin: 0;
-  padding: 0;
+/* ul {
+  float: left;
+  margin: 15px;
+  padding-left: 15px;
 }
 
 ul li {
@@ -25,20 +26,21 @@ ul li {
 }
 
 ul li a {
-  border: 3px solid black;
-  color: #000;
+  border: 2px solid black;
   text-decoration: none;
   display: inline-block;
   width: 75px;
   height: 75px;
+  margin: 1px;
+  color: #000;
 }
 
 ul li a:focus {
-  border: 3px inset white;
+  border: 2px inset white;
   color: gray;
   font-weight: bold;
 }
 
 ul li a:hover {
   font-weight: bold;
-}
+} */
