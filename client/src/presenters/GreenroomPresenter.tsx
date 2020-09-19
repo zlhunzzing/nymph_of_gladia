@@ -13,6 +13,11 @@ interface Props {
   sendMessage: Function;
 }
 
+const imageRequires = {
+  SEKI: require('../images/chracterImage/seki.png'),
+  RETI: require('../images/chracterImage/reti.png'),
+};
+
 const GreenroomrPresenter: React.FunctionComponent<Props> = ({
   roomInfo,
   outRoom,
@@ -51,6 +56,12 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
                   bottom: '0%',
                 }}
               >
+                {roomInfo.player1Character === '세키' ? (
+                  <img src={imageRequires.SEKI} alt="" className="card"></img>
+                ) : null}
+                {roomInfo.player1Character === '레티' ? (
+                  <img src={imageRequires.RETI} alt="" className="card"></img>
+                ) : null}
                 {roomInfo.host === roomInfo.player1
                   ? '방장'
                   : roomInfo.player1
@@ -71,6 +82,12 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
                   bottom: '0%',
                 }}
               >
+                {roomInfo.player2Character === '세키' ? (
+                  <img src={imageRequires.SEKI} alt="" className="card"></img>
+                ) : null}
+                {roomInfo.player2Character === '레티' ? (
+                  <img src={imageRequires.RETI} alt="" className="card"></img>
+                ) : null}
                 {roomInfo.host === roomInfo.player2
                   ? '방장'
                   : roomInfo.player2
