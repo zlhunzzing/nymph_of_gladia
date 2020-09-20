@@ -16,6 +16,8 @@ interface Props {
 const imageRequires = {
   SEKI: require('../images/chracterImage/seki.png'),
   RETI: require('../images/chracterImage/reti.png'),
+  SEKI_INFO: require('../images/chracterImage/01_info.png'),
+  RETI_INFO: require('../images/chracterImage/02_info.png'),
 };
 
 const GreenroomrPresenter: React.FunctionComponent<Props> = ({
@@ -121,7 +123,22 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
                 </a>
               </li>
             </ul>
-            <div className="chrStat"></div>
+            <div>
+              {character === '세키' ? (
+                <img
+                  src={imageRequires.SEKI_INFO}
+                  alt=""
+                  className="chrStat"
+                ></img>
+              ) : null}
+              {character === '레티' ? (
+                <img
+                  src={imageRequires.RETI_INFO}
+                  alt=""
+                  className="chrStat"
+                ></img>
+              ) : null}
+            </div>
           </div>
           <div>
             <form

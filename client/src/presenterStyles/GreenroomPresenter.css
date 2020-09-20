@@ -54,10 +54,10 @@ ul li a:hover {
 }
 .chrStat {
   float: left;
-  border: 1px solid black;
-  width: 155px;
-  height: 125px;
-  margin-left: 30px;
+  /* border: 1px solid black; */
+  width: 100px;
+  /* height: 125px; */
+  margin-left: 60px;
 }
 
 .chatBox {
