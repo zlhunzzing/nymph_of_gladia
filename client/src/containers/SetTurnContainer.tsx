@@ -9,13 +9,16 @@ import CARD_DICTIONARY from '../common/CardDictionary';
 
 export default function SetTurnContainer() {
   const entryModal = useState(store.getState().HandleModal.entryModal)[0];
+  const userId = useSelector((state: any) => state.Auth.userId);
+  const roomInfo = useSelector((state: any) => state.Socket.roomInfo);
   const [player1, setPlayer1] = useState(store.getState().Battle.player1);
   const player2 = useState(store.getState().Battle.player2)[0];
-  const [usedMana, setUsedMana] = useState(player1.mp);
+  const [usedMana, setUsedMana] = useState(
+    roomInfo.player1 === userId ? player1.mp : player2.mp,
+  );
   const [handMana, setHandMana] = useState(0);
   const userhand = useSelector((state: any) => state.Battle.userhand);
   const roomId = useSelector((state: any) => state.Socket.roomInfo.id);
-  const userId = useSelector((state: any) => state.Auth.userId);
   const [isTurn, setIsTurn] = useState(false);
   const [content, setContent] = useState('');
 
@@ -68,6 +71,8 @@ export default function SetTurnContainer() {
 
   return (
     <SetTurnPresenter
+      roomInfo={roomInfo}
+      userId={userId}
       player1={player1}
       player2={player2}
       setPlayer1={setPlayer1}

@@ -1,8 +1,6 @@
 import React from 'react';
 import '../presenterStyles/FieldPresenter.css';
-import store from '..';
 import { Player } from '../common/interface/BattleInterface';
-import * as battleActions from '../modules/Battle';
 import CARD_DICTIONARY from '../common/CardDictionary';
 
 const imageRequires = {
@@ -11,6 +9,7 @@ const imageRequires = {
 };
 
 interface Props {
+  roomInfo: any;
   player1: Player;
   player2: Player;
   field: Array<object>;
@@ -18,6 +17,7 @@ interface Props {
 }
 
 const FieldPresenter: React.FunctionComponent<Props> = ({
+  roomInfo,
   player1,
   player2,
   field,
@@ -28,25 +28,18 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
       <div className="status">
         <div className="player1Status">
           <div>
-            <div>NAME: {player1.name}</div>
+            <div>NAME: {player1.name + `(${roomInfo.player1name})`}</div>
             <div>HP: {player1.hp}</div>
             <div>MP: {player1.mp}</div>
           </div>
         </div>
         <div className="player2Status">
-          <div>NAME: {player2.name}</div>
+          <div>NAME: {player2.name + `(${roomInfo.player2name})`}</div>
           <div>HP: {player2.hp}</div>
           <div>MP: {player2.mp}</div>
         </div>
       </div>
     ) : null}
-    <button
-      onClick={() => {
-        store.dispatch(battleActions.set_is_turn());
-      }}
-    >
-      임시
-    </button>
 
     <div className="field">
       {field

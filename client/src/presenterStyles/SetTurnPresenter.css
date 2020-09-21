@@ -58,6 +58,9 @@
   height: 20px;
   float: left;
 }
+.continueButton {
+  margin-left: 100px;
+}
 .miniField {
   margin: 20px;
   float: right;

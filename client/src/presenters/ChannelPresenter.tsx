@@ -36,6 +36,7 @@ const ChannelPresenter: React.FunctionComponent<Props> = ({
         ? rooms.map((room: any) => (
             <div
               key={room.id}
+              className="room"
               style={{
                 width: '596px',
                 height: '30px',
@@ -53,7 +54,7 @@ const ChannelPresenter: React.FunctionComponent<Props> = ({
               }}
             >
               <span style={{ paddingLeft: '10px', float: 'left' }}>
-                {room.id}
+                {room.id}번방
               </span>
               {room.roomname}
               <span style={{ paddingRight: '10px', float: 'right' }}>

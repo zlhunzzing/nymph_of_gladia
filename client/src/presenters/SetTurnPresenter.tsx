@@ -7,6 +7,8 @@ import * as battleActions from '../modules/Battle';
 import CARD_DICTIONARY from '../common/CardDictionary';
 
 interface Props {
+  roomInfo: any;
+  userId: number;
   player1: Player;
   setPlayer1: Dispatch<object>;
   player2: Player;
@@ -24,6 +26,8 @@ interface Props {
 }
 
 const SetTurnPresenter: React.FunctionComponent<Props> = ({
+  roomInfo,
+  userId,
   player1,
   setPlayer1,
   player2,
@@ -44,17 +48,21 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
       <div className="status">
         <div className="player1Status">
           <div>
-            <div>NAME: {player1.name}</div>
+            <div>NAME: {player1.name + `(${roomInfo.player1name})`}</div>
             <div>HP: {player1.hp}</div>
             <div>
-              MP: {usedMana}/{player1.mp}
+              MP: {roomInfo.player1 === userId ? `${usedMana}/` : null}
+              {player1.mp}
             </div>
           </div>
         </div>
         <div className="player2Status">
-          <div>NAME: {player2.name}</div>
+          <div>NAME: {player2.name + `(${roomInfo.player2name})`}</div>
           <div>HP: {player2.hp}</div>
-          <div>MP: {player2.mp}</div>
+          <div>
+            MP: {roomInfo.player2 === userId ? `${usedMana}/` : null}
+            {player2.mp}
+          </div>
         </div>
       </div>
     ) : null}
@@ -180,7 +188,7 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
             setTurn();
           }}
         >
-          확인
+          준비완료
         </button>
       )}
 
