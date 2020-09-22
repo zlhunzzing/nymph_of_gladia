@@ -1,7 +1,11 @@
 import { createAction } from 'redux-actions';
 import { Card, PhaseNumber } from '../common/interface/BattleInterface';
 import store from '..';
-import CARD_DICTIONARY, { Deck1 } from '../common/CardDictionary';
+import CARD_DICTIONARY, {
+  Deck1,
+  Seki_Deck,
+  Reti_Deck,
+} from '../common/CardDictionary';
 import { Dispatch } from 'react';
 import * as handleModalActions from '../modules/HandleModal';
 
@@ -91,8 +95,9 @@ const initialState = {
   },
   createCharacter: function (name: string, sequenceNum: number) {
     const character = new initialState.Instance(name, Deck1);
-    // if (name === '세키' || '레티') {
-    // }
+    if (name === '세키') character.deck = Seki_Deck;
+    if (name === '레티') character.deck = Reti_Deck;
+
     if (sequenceNum === 1) {
       character.position = { x: 0, y: 1 };
     } else {

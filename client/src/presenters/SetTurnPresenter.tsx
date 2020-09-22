@@ -68,7 +68,7 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
     ) : null}
 
     <div className="deck">
-      {player1.deck
+      {roomInfo.player1 === userId
         ? player1.deck.map((card: Card, id: number) => (
             <span key={id}>
               <img
@@ -108,7 +108,45 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
               {id === 4 ? <br></br> : null}
             </span>
           ))
-        : null}
+        : player2.deck.map((card: Card, id: number) => (
+            <span key={id}>
+              <img
+                // src={card.image}
+                src={usedMana < card.cost ? card.darkImage : card.image}
+                alt=""
+                className={`card ${card.position} ${
+                  store.getState().Battle.checkHand(card)
+                    ? 'selectedCard'
+                    : null
+                }`}
+                onClick={() => {
+                  let el = document.querySelector(
+                    `.${card.position}`,
+                  ) as HTMLElement;
+                  for (let e in userhand) {
+                    if (
+                      userhand[e].type === 'NONE' &&
+                      el.className !== `card ${card.position} selectedCard` &&
+                      usedMana >= card.cost
+                    ) {
+                      userhand[e] = card;
+                      store.dispatch(
+                        battleActions.set_user_hand({
+                          hand: userhand.slice(0, 3),
+                        }),
+                      );
+                      setHand(userhand);
+                      setPlayer1({ ...player1 });
+                      setUsedMana(usedMana - card.cost);
+                      setHandMana(handMana + card.cost);
+                      break;
+                    }
+                  }
+                }}
+              ></img>
+              {id === 4 ? <br></br> : null}
+            </span>
+          ))}
     </div>
 
     <span className="setHand">
