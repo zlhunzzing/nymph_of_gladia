@@ -6,6 +6,8 @@ import CARD_DICTIONARY from '../common/CardDictionary';
 const imageRequires = {
   PLAYER: require('../images/player.gif'),
   PLAYER_ATTACK: require('../images/playerAttack.png'),
+  SEKI: require('../images/chracterImage/Seki.gif'),
+  RETI: require('../images/chracterImage/Reti.gif'),
 };
 
 interface Props {
@@ -57,7 +59,9 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
                       src={
                         player1.isAttack
                           ? imageRequires.PLAYER_ATTACK
-                          : imageRequires.PLAYER
+                          : player1.name === '세키'
+                          ? imageRequires.SEKI
+                          : imageRequires.RETI
                       }
                       style={
                         player1.position.x > player2.position.x
@@ -76,7 +80,9 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
                       src={
                         player2.isAttack
                           ? imageRequires.PLAYER_ATTACK
-                          : imageRequires.PLAYER
+                          : player2.name === '세키'
+                          ? imageRequires.SEKI
+                          : imageRequires.RETI
                       }
                       style={
                         player1.position.x < player2.position.x
