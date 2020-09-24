@@ -29,6 +29,7 @@ const MOVE_PLAYER2_X_POSITION = 'App/Battle/MOVE_PLAYER2_X_POSITION';
 const MOVE_PLAYER2_Y_POSITION = 'App/Battle/MOVE_PLAYER2_Y_POSITION';
 const FIELD_RESET = 'App/Battle/FIELD_RESET';
 const FIELD_ACTIVATION = 'App/Battle/FIELD_ACTIVATION';
+const SET_USING_CARD = 'App/Battle/SET_USING_CARD';
 
 export const select_player1 = createAction(SELECT_PLAYER1);
 // payload: {name: Seki <string> }
@@ -66,6 +67,8 @@ export const move_player2_y_position = createAction(MOVE_PLAYER2_Y_POSITION);
 export const field_reset = createAction(FIELD_RESET);
 export const field_activation = createAction(FIELD_ACTIVATION);
 // payload: {field: ...[[{effect:true},{},{},{}],[],[]] Array<Array<object>> }
+export const set_using_card = createAction(SET_USING_CARD);
+// payload: {usingCard: <Card> }
 
 const initialState = {
   Instance: class Character {
@@ -108,6 +111,7 @@ const initialState = {
   player1: {},
   player2: {},
   userhand: [CARD_DICTIONARY.NONE, CARD_DICTIONARY.NONE, CARD_DICTIONARY.NONE],
+  usingCard: null,
   isTurn: false,
   field: [
     [
@@ -307,6 +311,7 @@ const initialState = {
         case 'ATT':
           let mana = store.getState().Battle.player1.mp - card.cost;
           store.dispatch(set_player1_mp({ mp: mana }));
+          store.dispatch(set_using_card({ usingCard: card }));
           setPlayer1({ ...store.getState().Battle.player1, isAttack: true });
 
           let effectiveRangeX = null;
@@ -389,6 +394,7 @@ const initialState = {
         case 'ATT':
           let mana = store.getState().Battle.player2.mp - card.cost;
           store.dispatch(set_player2_mp({ mp: mana }));
+          store.dispatch(set_using_card({ usingCard: card }));
           setPlayer2({ ...store.getState().Battle.player2, isAttack: true });
 
           let effectiveRangeX = null;
@@ -756,6 +762,11 @@ export default function Battle(state: any = initialState, action: any) {
       return {
         ...state,
         field: action.payload.field,
+      };
+    case SET_USING_CARD:
+      return {
+        ...state,
+        usingCard: action.payload.usingCard,
       };
     default:
       return state;

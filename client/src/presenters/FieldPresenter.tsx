@@ -16,6 +16,7 @@ interface Props {
   player2: Player;
   field: Array<object>;
   isUsing: Array<Array<boolean>>;
+  usingCard: any;
 }
 
 const FieldPresenter: React.FunctionComponent<Props> = ({
@@ -24,8 +25,10 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
   player2,
   field,
   isUsing,
+  usingCard,
 }: Props) => (
   <div className="Main">
+    {console.log(usingCard)}
     {player1 ? (
       <div className="status">
         <div className="player1Status">
@@ -58,19 +61,18 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
                       alt=""
                       src={
                         player1.isAttack
-                          ? imageRequires.PLAYER_ATTACK
+                          ? usingCard.actionImage
                           : player1.name === '세키'
                           ? imageRequires.SEKI
                           : imageRequires.RETI
                       }
-                      style={
+                      className={`${
+                        player1.isAttack ? 'attackAction' : 'basicAction'
+                      } ${
                         player1.position.x > player2.position.x
-                          ? {
-                              width: '75px',
-                              transform: 'scaleX(-1)',
-                            }
-                          : { width: '75px' }
-                      }
+                          ? 'turnAction'
+                          : null
+                      }`}
                     />
                   ) : null}
                   {player2.position.x === roomId &&
@@ -79,18 +81,23 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
                       alt=""
                       src={
                         player2.isAttack
-                          ? imageRequires.PLAYER_ATTACK
+                          ? usingCard.actionImage
                           : player2.name === '세키'
                           ? imageRequires.SEKI
                           : imageRequires.RETI
                       }
                       style={
-                        player1.position.x < player2.position.x
+                        player2.isAttack
+                          ? {
+                              position: 'absolute',
+                              transform: 'translate(-50%, -50%)',
+                            }
+                          : player1.position.x > player2.position.x
                           ? {
                               width: '75px',
                               transform: 'scaleX(-1)',
                             }
-                          : { width: '75' }
+                          : { width: '75px' }
                       }
                     />
                   ) : null}

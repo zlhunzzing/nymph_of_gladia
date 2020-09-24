@@ -14,6 +14,7 @@ export default function FieldContainer() {
     [false, false],
     [false, false],
   ]);
+  const usingCard = useSelector((state: any) => state.Battle.usingCard);
 
   useEffect(() => {
     if (isTurn) {
@@ -30,6 +31,7 @@ export default function FieldContainer() {
       player2={player2}
       field={field}
       isUsing={isUsing}
+      usingCard={usingCard}
     />
   );
 }
