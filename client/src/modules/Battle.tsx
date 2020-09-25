@@ -22,7 +22,7 @@ const SET_PLAYER1_DEF = 'App/Battle/SET_PLAYER1_DEF';
 const SET_PLAYER2_HAND = 'App/Battle/SET_PLAYER2_HAND';
 const SET_PLAYER2_HP = 'App/Battle/SET_PLAYER2_HP';
 const SET_PLAYER2_MP = 'App/Battle/SET_PLAYER2_MP';
-const SET_PLAYER2_DEF = 'App/Battle/SET_PLAYER1_DEF';
+const SET_PLAYER2_DEF = 'App/Battle/SET_PLAYER2_DEF';
 const MOVE_PLAYER1_X_POSITION = 'App/Battle/MOVE_PLAYER1_X_POSITION';
 const MOVE_PLAYER1_Y_POSITION = 'App/Battle/MOVE_PLAYER1_Y_POSITION';
 const MOVE_PLAYER2_X_POSITION = 'App/Battle/MOVE_PLAYER2_X_POSITION';
@@ -54,7 +54,7 @@ export const set_player2_hp = createAction(SET_PLAYER2_HP);
 // payload: {hp: 75 <number> }
 export const set_player2_mp = createAction(SET_PLAYER2_MP);
 // payload: {mp: 50 <mumber> }
-export const set_player2_def = createAction(SET_PLAYER1_DEF);
+export const set_player2_def = createAction(SET_PLAYER2_DEF);
 // payload: {defence: 10 <number> }
 export const move_player1_x_position = createAction(MOVE_PLAYER1_X_POSITION);
 // payload: {x: 1 <number> }
@@ -79,7 +79,7 @@ const initialState = {
     deck: Array<object>;
     hand: Array<Card>;
     position: object;
-    isAttack: boolean;
+    isAction: boolean;
 
     constructor(name: string, deck: Array<Card>) {
       this.name = name;
@@ -93,7 +93,7 @@ const initialState = {
         CARD_DICTIONARY.NONE,
       ];
       this.position = { x: 0, y: 1 };
-      this.isAttack = false;
+      this.isAction = false;
     }
   },
   createCharacter: function (name: string, sequenceNum: number) {
@@ -282,6 +282,7 @@ const initialState = {
     setField(store.getState().Battle.field);
     setPlayer1(store.getState().Battle.player1);
     setPlayer2(store.getState().Battle.player2);
+    store.dispatch(set_using_card({ usingCard: card }));
     if (isUser) {
       switch (card.type) {
         case CARD_DICTIONARY.UP.type:
@@ -311,8 +312,7 @@ const initialState = {
         case 'ATT':
           let mana = store.getState().Battle.player1.mp - card.cost;
           store.dispatch(set_player1_mp({ mp: mana }));
-          store.dispatch(set_using_card({ usingCard: card }));
-          setPlayer1({ ...store.getState().Battle.player1, isAttack: true });
+          setPlayer1({ ...store.getState().Battle.player1, isAction: true });
 
           let effectiveRangeX = null;
           let effectiveRangeY = null;
@@ -334,12 +334,15 @@ const initialState = {
                 effectiveRangeX === player2Position.x &&
                 effectiveRangeY === player2Position.y
               ) {
-                let hp = store.getState().Battle.player2.hp - card.power;
+                let hp =
+                  store.getState().Battle.player2.hp -
+                  (card.power - store.getState().Battle.player2.def);
                 store.dispatch(
                   set_player2_hp({
                     hp: hp,
                   }),
                 );
+                store.dispatch(set_player2_def({ def: 0 }));
                 setPlayer2({ ...store.getState().Battle.player2 });
               }
             }
@@ -348,6 +351,7 @@ const initialState = {
           }
           break;
         case CARD_DICTIONARY.MANA_UP.type:
+          setPlayer1({ ...store.getState().Battle.player1, isAction: true });
           let mp = store.getState().Battle.player1.mp + 15;
           if (mp >= 100) mp = 100;
           store.dispatch(
@@ -355,12 +359,12 @@ const initialState = {
               mp,
             }),
           );
-          setPlayer1({ ...store.getState().Battle.player1 });
           break;
         case CARD_DICTIONARY.GUARD.type:
+          setPlayer1({ ...store.getState().Battle.player1, isAction: true });
           store.dispatch(
             set_player1_def({
-              defence: 10,
+              def: 15,
             }),
           );
           break;
@@ -395,7 +399,7 @@ const initialState = {
           let mana = store.getState().Battle.player2.mp - card.cost;
           store.dispatch(set_player2_mp({ mp: mana }));
           store.dispatch(set_using_card({ usingCard: card }));
-          setPlayer2({ ...store.getState().Battle.player2, isAttack: true });
+          setPlayer2({ ...store.getState().Battle.player2, isAction: true });
 
           let effectiveRangeX = null;
           let effectiveRangeY = null;
@@ -417,12 +421,15 @@ const initialState = {
                 effectiveRangeX === player1Position.x &&
                 effectiveRangeY === player1Position.y
               ) {
-                let hp = store.getState().Battle.player1.hp - card.power;
+                let hp =
+                  store.getState().Battle.player1.hp -
+                  (card.power - store.getState().Battle.player1.def);
                 store.dispatch(
                   set_player1_hp({
                     hp: hp,
                   }),
                 );
+                store.dispatch(set_player1_def({ def: 0 }));
                 setPlayer1({ ...store.getState().Battle.player1 });
               }
             }
@@ -431,6 +438,7 @@ const initialState = {
           }
           break;
         case CARD_DICTIONARY.MANA_UP.type:
+          setPlayer2({ ...store.getState().Battle.player2, isAction: true });
           let mp = store.getState().Battle.player2.mp + 15;
           if (mp >= 100) mp = 100;
           store.dispatch(
@@ -440,11 +448,13 @@ const initialState = {
           );
           break;
         case CARD_DICTIONARY.GUARD.type:
+          setPlayer2({ ...store.getState().Battle.player2, isAction: true });
           store.dispatch(
             set_player2_def({
-              defence: 10,
+              def: 15,
             }),
           );
+          console.log('방어상승2', store.getState().Battle.player2.def);
           break;
       }
     }
@@ -580,7 +590,8 @@ const initialState = {
       } else {
         store.dispatch(
           handleModalActions.setModalContent({
-            content: store.getState().Battle.player1.name + '가 이겼다.',
+            content:
+              store.getState().Socket.roominfo.player1name + '가 이겼다.',
           }),
         );
         store.dispatch(handleModalActions.set_is_link());
@@ -593,7 +604,7 @@ const initialState = {
     } else if (player2Hp <= 0) {
       store.dispatch(
         handleModalActions.setModalContent({
-          content: store.getState().Battle.player2.name + '가 이겼다.',
+          content: store.getState().Socket.roominfo.player1name + '가 이겼다.',
         }),
       );
       store.dispatch(handleModalActions.set_is_link());
@@ -673,7 +684,7 @@ export default function Battle(state: any = initialState, action: any) {
         ...state,
         player1: {
           ...state.player1,
-          defence: action.payload.defence,
+          def: action.payload.def,
         },
       };
     case SET_PLAYER2_HAND:
@@ -699,7 +710,7 @@ export default function Battle(state: any = initialState, action: any) {
         ...state,
         player2: {
           ...state.player2,
-          defence: action.payload.defence,
+          def: action.payload.def,
         },
       };
     case MOVE_PLAYER1_X_POSITION:

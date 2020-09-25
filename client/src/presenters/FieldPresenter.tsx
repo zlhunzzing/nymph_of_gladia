@@ -60,14 +60,14 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
                     <img
                       alt=""
                       src={
-                        player1.isAttack
+                        player1.isAction
                           ? usingCard.actionImage
                           : player1.name === '세키'
                           ? imageRequires.SEKI
                           : imageRequires.RETI
                       }
                       className={`${
-                        player1.isAttack ? 'attackAction' : 'basicAction'
+                        player1.isAction ? 'usingAction' : 'basicAction'
                       } ${
                         player1.position.x > player2.position.x
                           ? 'turnAction'
@@ -80,14 +80,14 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
                     <img
                       alt=""
                       src={
-                        player2.isAttack
+                        player2.isAction
                           ? usingCard.actionImage
                           : player2.name === '세키'
                           ? imageRequires.SEKI
                           : imageRequires.RETI
                       }
                       style={
-                        player2.isAttack
+                        player2.isAction
                           ? {
                               position: 'absolute',
                               transform: 'translate(-50%, -50%)',
