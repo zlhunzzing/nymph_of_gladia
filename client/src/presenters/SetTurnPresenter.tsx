@@ -159,7 +159,7 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                 key={id}
                 className="card"
                 onClick={() => {
-                  if (card.type !== 'NONE') {
+                  if (card.type !== 'NONE' && !isTurn) {
                     userhand[id] = CARD_DICTIONARY.NONE;
                     store.dispatch(
                       battleActions.set_user_hand({

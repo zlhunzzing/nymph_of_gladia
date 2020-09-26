@@ -591,7 +591,7 @@ const initialState = {
         store.dispatch(
           handleModalActions.setModalContent({
             content:
-              store.getState().Socket.roominfo.player1name + '가 이겼다.',
+              store.getState().Socket.roomInfo.player1name + '가 이겼다.',
           }),
         );
         store.dispatch(handleModalActions.set_is_link());
@@ -604,7 +604,7 @@ const initialState = {
     } else if (player2Hp <= 0) {
       store.dispatch(
         handleModalActions.setModalContent({
-          content: store.getState().Socket.roominfo.player1name + '가 이겼다.',
+          content: store.getState().Socket.roomInfo.player1name + '가 이겼다.',
         }),
       );
       store.dispatch(handleModalActions.set_is_link());
