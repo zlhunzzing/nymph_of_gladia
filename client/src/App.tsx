@@ -60,13 +60,13 @@ function App() {
 
     if (isChat) {
       store.dispatch(socketActions.set_is_chat());
-      socketServer.on('sendMessage', (roomId: number, content: string) => {
+      socketServer.on('sendMessage', (roomId: number, content: string, username: string) => {
         if (
           store.getState().Socket.roomInfo &&
           store.getState().Socket.roomInfo.id === Number(roomId)
         ) {
           const message = document.createElement('div');
-          message.innerHTML = content;
+          message.innerHTML = username + ':' + content;
           message.style.textAlign = 'left';
           message.style.paddingLeft = '5px';
 

@@ -36,7 +36,10 @@ export default function GreenroomContainer() {
     socketServer.emit('gamestart', roomId, userId);
   }
   function sendMessage() {
-    socketServer.emit('sendMessage', roomId, content);
+    let username
+    if(roomInfo.player1 === userId) username = roomInfo.player1name
+    if(roomInfo.player2 === userId) username = roomInfo.player2name
+    socketServer.emit('sendMessage', roomId, content, username);
     setContent('');
     const el = document.querySelector('.inputReset') as HTMLElement;
     el.click();
