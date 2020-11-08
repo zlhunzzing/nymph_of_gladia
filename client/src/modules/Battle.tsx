@@ -334,6 +334,7 @@ const initialState = {
                 effectiveRangeX === player2Position.x &&
                 effectiveRangeY === player2Position.y
               ) {
+                store.getState().SoundControl.playHitSound()
                 let hp =
                   store.getState().Battle.player2.hp -
                   (card.power - store.getState().Battle.player2.def);

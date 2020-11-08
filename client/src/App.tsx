@@ -8,6 +8,7 @@ import * as HandleModalActions from './modules/HandleModal';
 import { socketServer } from './modules/Socket';
 import * as socketActions from './modules/Socket';
 import * as battleActions from './modules/Battle';
+import { useSelector } from 'react-redux';
 
 /* pages */
 import Main from './pages/Main';
@@ -16,7 +17,9 @@ import Channel from './pages/Channel';
 import Greenroom from './pages/Greenroom';
 import SelectCharacter from './pages/SelectCharacter';
 import Battle from './pages/Battle';
-import { useSelector } from 'react-redux';
+
+/* components */
+import Sound from './component/Sound'
 
 Modal.setAppElement('#root');
 
@@ -31,13 +34,12 @@ function App() {
   useEffect(() => {
     socketServer.on('socketCheck', (userId: number, socketId: string) => {
       if (store.getState().Auth.userId === userId) {
-        console.log('id', store.getState().Auth.userId, userId);
         if (!store.getState().Socket.socketId) {
           store.dispatch(socketActions.set_socket_id({ socketId }));
         } else if (store.getState().Socket.socketId !== socketId) {
           history.push('/');
           history.go(0);
-          // store.dispatch(
+          // store.dispatch( as any,
           //   HandleModalActions.setModalContent({
           //     content: '다른 사용자가 접속했다',
           //   }),
@@ -167,6 +169,7 @@ function App() {
 
   return (
     <div className="App">
+      <Sound></Sound>
       <Switch>
         <Route path="/main" render={() => <Main></Main>}></Route>
         <Route path="/signup" render={() => <Signup></Signup>}></Route>
