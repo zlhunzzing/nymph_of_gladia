@@ -335,6 +335,9 @@ const initialState = {
                 effectiveRangeY === player2Position.y
               ) {
                 store.getState().SoundControl.playHitSound()
+                if(store.getState().Battle.player2.def) {
+                  store.getState().SoundControl.playGuardSound()
+                }
                 let hp =
                   store.getState().Battle.player2.hp -
                   (card.power - store.getState().Battle.player2.def);
@@ -422,6 +425,10 @@ const initialState = {
                 effectiveRangeX === player1Position.x &&
                 effectiveRangeY === player1Position.y
               ) {
+                store.getState().SoundControl.playHitSound()
+                if(store.getState().Battle.player1.def) {
+                  store.getState().SoundControl.playGuardSound()
+                }
                 let hp =
                   store.getState().Battle.player1.hp -
                   (card.power - store.getState().Battle.player1.def);
@@ -589,6 +596,7 @@ const initialState = {
         store.dispatch(set_turn_false());
         return false;
       } else {
+        // store.dispatch
         store.dispatch(
           handleModalActions.setModalContent({
             content:
@@ -605,7 +613,7 @@ const initialState = {
     } else if (player2Hp <= 0) {
       store.dispatch(
         handleModalActions.setModalContent({
-          content: store.getState().Socket.roomInfo.player1name + '가 이겼다.',
+          content: store.getState().Socket.roomInfo.player2name + '가 이겼다.',
         }),
       );
       store.dispatch(handleModalActions.set_is_link());
