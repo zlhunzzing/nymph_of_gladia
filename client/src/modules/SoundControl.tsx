@@ -1,6 +1,14 @@
 // import { createAction } from 'redux-actions';
 
 const initialState = {
+  playMoveSound: function() {
+    if((document.querySelector('.moveSound') as any).paused) {
+      (document.querySelector('.moveSound') as any).play()
+    } else {
+      (document.querySelector('.moveSound') as any).pause()
+      (document.querySelector('.moveSound') as any).currentTime = 0
+    }
+  },
   playHitSound: function() {
     if((document.querySelector('.hitSound') as any).paused) {
       (document.querySelector('.hitSound') as any).play()

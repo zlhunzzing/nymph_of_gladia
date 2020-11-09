@@ -54,7 +54,6 @@ function App() {
     });
 
     socketServer.on('getRoomInfo', (roomInfo: any) => {
-      console.log('room', roomInfo);
       if (document.location.pathname === `/greenroom/${roomInfo.id}`) {
         store.dispatch(socketActions.set_room_info({ roomInfo }));
       }

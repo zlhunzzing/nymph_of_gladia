@@ -28,7 +28,6 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
   usingCard,
 }: Props) => (
   <div className="Main">
-    {console.log(usingCard)}
     {player1 ? (
       <div className="status">
         <div className="player1Status">

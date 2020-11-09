@@ -286,24 +286,28 @@ const initialState = {
     if (isUser) {
       switch (card.type) {
         case CARD_DICTIONARY.UP.type:
+          store.getState().SoundControl.playMoveSound()
           let upY = store.getState().Battle.player1.position.y - 1;
           if (upY < 0) upY = 0;
           store.dispatch(move_player1_y_position({ y: upY }));
           setPlayer1({ ...store.getState().Battle.player1 });
           break;
         case CARD_DICTIONARY.DOWN.type:
+          store.getState().SoundControl.playMoveSound()
           let downY = store.getState().Battle.player1.position.y + 1;
           if (downY > 2) downY = 2;
           store.dispatch(move_player1_y_position({ y: downY }));
           setPlayer1({ ...store.getState().Battle.player1 });
           break;
         case CARD_DICTIONARY.LEFT.type:
+          store.getState().SoundControl.playMoveSound()
           let leftX = store.getState().Battle.player1.position.x - 1;
           if (leftX < 0) leftX = 0;
           store.dispatch(move_player1_x_position({ x: leftX }));
           setPlayer1({ ...store.getState().Battle.player1 });
           break;
         case CARD_DICTIONARY.RIGHT.type:
+          store.getState().SoundControl.playMoveSound()
           let rightX = store.getState().Battle.player1.position.x + 1;
           if (rightX > 3) rightX = 3;
           store.dispatch(move_player1_x_position({ x: rightX }));
@@ -376,24 +380,28 @@ const initialState = {
     } else {
       switch (card.type) {
         case CARD_DICTIONARY.UP.type:
+          store.getState().SoundControl.playMoveSound()
           let upY = store.getState().Battle.player2.position.y - 1;
           if (upY < 0) upY = 0;
           store.dispatch(move_player2_y_position({ y: upY }));
           setPlayer2({ ...store.getState().Battle.player2 });
           break;
         case CARD_DICTIONARY.DOWN.type:
+          store.getState().SoundControl.playMoveSound()
           let downY = store.getState().Battle.player2.position.y + 1;
           if (downY > 2) downY = 2;
           store.dispatch(move_player2_y_position({ y: downY }));
           setPlayer2({ ...store.getState().Battle.player2 });
           break;
         case CARD_DICTIONARY.LEFT.type:
+          store.getState().SoundControl.playMoveSound()
           let leftX = store.getState().Battle.player2.position.x - 1;
           if (leftX < 0) leftX = 0;
           store.dispatch(move_player2_x_position({ x: leftX }));
           setPlayer2({ ...store.getState().Battle.player2 });
           break;
         case CARD_DICTIONARY.RIGHT.type:
+          store.getState().SoundControl.playMoveSound()
           let rightX = store.getState().Battle.player2.position.x + 1;
           if (rightX > 3) rightX = 3;
           store.dispatch(move_player2_x_position({ x: rightX }));
@@ -462,7 +470,6 @@ const initialState = {
               def: 15,
             }),
           );
-          console.log('방어상승2', store.getState().Battle.player2.def);
           break;
       }
     }
