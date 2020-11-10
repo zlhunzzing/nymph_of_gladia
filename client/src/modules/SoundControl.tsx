@@ -9,6 +9,14 @@ const initialState = {
       (document.querySelector('.moveSound') as any).currentTime = 0
     }
   },
+  playManaUpSound: function() {
+    if((document.querySelector('.manaUpSound') as any).paused) {
+      (document.querySelector('.manaUpSound') as any).play()
+    } else {
+      (document.querySelector('.manaUpSound') as any).pause()
+      (document.querySelector('.manaUpSound') as any).currentTime = 0
+    }
+  },
   playHitSound: function() {
     if((document.querySelector('.hitSound') as any).paused) {
       (document.querySelector('.hitSound') as any).play()

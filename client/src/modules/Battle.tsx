@@ -359,6 +359,7 @@ const initialState = {
           }
           break;
         case CARD_DICTIONARY.MANA_UP.type:
+          store.getState().SoundControl.playManaUpSound()
           setPlayer1({ ...store.getState().Battle.player1, isAction: true });
           let mp = store.getState().Battle.player1.mp + 15;
           if (mp >= 100) mp = 100;
@@ -454,6 +455,7 @@ const initialState = {
           }
           break;
         case CARD_DICTIONARY.MANA_UP.type:
+          store.getState().SoundControl.playManaUpSound()
           setPlayer2({ ...store.getState().Battle.player2, isAction: true });
           let mp = store.getState().Battle.player2.mp + 15;
           if (mp >= 100) mp = 100;
