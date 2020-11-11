@@ -32,7 +32,15 @@ const initialState = {
       (document.querySelector('.guardSound') as any).pause()
       (document.querySelector('.guardSound') as any).currentTime = 0
     }
-  }
+  },
+  playWinSound: function() {
+    if((document.querySelector('.winSound') as any).paused) {
+      (document.querySelector('.winSound') as any).play()
+    } else {
+      (document.querySelector('.winSound') as any).pause()
+      (document.querySelector('.winSound') as any).currentTime = 0
+    }
+  },
 };
 
 export default function SoundControl(state: any = initialState, action: any) {

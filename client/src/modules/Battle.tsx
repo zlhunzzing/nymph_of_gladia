@@ -605,7 +605,9 @@ const initialState = {
         store.dispatch(set_turn_false());
         return false;
       } else {
-        // store.dispatch
+        if(store.getState().Socket.roomInfo.player1 === store.getState().Auth.userId) {
+          store.getState().SoundControl.playWinSound()
+        }
         store.dispatch(
           handleModalActions.setModalContent({
             content:
@@ -620,6 +622,9 @@ const initialState = {
         return false;
       }
     } else if (player2Hp <= 0) {
+      if(store.getState().Socket.roomInfo.player2 === store.getState().Auth.userId) {
+        store.getState().SoundControl.playWinSound()
+      }
       store.dispatch(
         handleModalActions.setModalContent({
           content: store.getState().Socket.roomInfo.player2name + '가 이겼다.',
