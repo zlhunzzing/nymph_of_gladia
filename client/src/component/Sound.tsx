@@ -9,6 +9,7 @@ export default function Sound() {
       <audio className='hitSound' src='https://zlhunzzing.net/wp-content/uploads/2019/12/118513__thefsoundman__punch-02.wav'></audio>
       <audio className='guardSound' src='https://zlhunzzing.net/wp-content/uploads/2020/11/370203__nekoninja__shield-guard.wav'></audio>
       <audio className='winSound' src='https://nymph-of-gladia-s3.s3.ap-northeast-2.amazonaws.com/sound_nog/521949__kastenfrosch__success-jingle.ogg'></audio>
+      <audio className='loseSound' src='https://nymph-of-gladia-s3.s3.ap-northeast-2.amazonaws.com/sound_nog/370209__jugraf__fail-down.wav'></audio>
     </span>
   );
 }

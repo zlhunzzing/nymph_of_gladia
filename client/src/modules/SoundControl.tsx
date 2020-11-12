@@ -41,6 +41,14 @@ const initialState = {
       (document.querySelector('.winSound') as any).currentTime = 0
     }
   },
+  playLoseSound: function() {
+    if((document.querySelector('.loseSound') as any).paused) {
+      (document.querySelector('.loseSound') as any).play()
+    } else {
+      (document.querySelector('.loseSound') as any).pause()
+      (document.querySelector('.loseSound') as any).currentTime = 0
+    }
+  },
 };
 
 export default function SoundControl(state: any = initialState, action: any) {
