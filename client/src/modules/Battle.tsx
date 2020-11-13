@@ -593,6 +593,7 @@ const initialState = {
     let player2Hp = store.getState().Battle.player2.hp;
     if (player1Hp <= 0) {
       if (player2Hp <= 0 && player1Hp <= 0) {
+        store.getState().SoundControl.playDrawSound()
         store.dispatch(
           handleModalActions.setModalContent({
             content: '무승부 했다.',

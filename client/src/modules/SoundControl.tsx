@@ -49,6 +49,14 @@ const initialState = {
       (document.querySelector('.loseSound') as any).currentTime = 0
     }
   },
+  playDrawSound: function() {
+    if((document.querySelector('.drawSound') as any).paused) {
+      (document.querySelector('.drawSound') as any).play()
+    } else {
+      (document.querySelector('.drawSound') as any).pause()
+      (document.querySelector('.drawSound') as any).currentTime = 0
+    }
+  },
 };
 
 export default function SoundControl(state: any = initialState, action: any) {
