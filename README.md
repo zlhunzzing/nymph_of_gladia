@@ -8,7 +8,7 @@
 
 - 방 만들기
 
-<img src='readmeImage/makeRoom.gif' />
+<img src='readmeImage/makeRoom.gif' width="600" />
 
 - 방 입장 (+채팅)
 
