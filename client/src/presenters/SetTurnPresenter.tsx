@@ -49,19 +49,56 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
         <div className="player1Status">
           <div>
             <div>NAME: {player1.name + `(${roomInfo.player1name})`}</div>
-            <div>HP: {player1.hp}</div>
-            <div>
-              MP: {roomInfo.player1 === userId ? `${usedMana}/` : null}
-              {player1.mp}
+            <div className="progress-bar">
+              <span
+                className="progress-hp"
+                style={{
+                  width: `${player1.hp}%`
+                }}
+              >
+              </span>
+              <span className="progress-text">
+                HP: {player1.hp}
+              </span>
+            </div>
+            <div className="progress-bar">
+              <span
+                className="progress-mp"
+                style={{
+                  width: `${player1.mp}%`
+                }}
+              ></span>
+              <span className="progress-text">
+                MP: {roomInfo.player1 === userId ? `${usedMana}/` : null}
+                {player1.mp}
+              </span>
             </div>
           </div>
         </div>
         <div className="player2Status">
           <div>NAME: {player2.name + `(${roomInfo.player2name})`}</div>
-          <div>HP: {player2.hp}</div>
-          <div>
-            MP: {roomInfo.player2 === userId ? `${usedMana}/` : null}
-            {player2.mp}
+          <div className="progress-bar">
+          <span
+            className="progress-hp"
+            style={{
+              width: `${player2.hp}%`
+            }}
+          ></span>
+          <span className="progress-text">
+            HP: {player2.hp}
+          </span>
+          </div>
+          <div className="progress-bar">
+            <span
+              className="progress-mp"
+              style={{
+                width: `${player2.mp}%`
+              }}
+            ></span>
+            <span className="progress-text">
+              MP: {roomInfo.player2 === userId ? `${usedMana}/` : null}
+              {player2.mp}
+            </span>
           </div>
         </div>
       </div>

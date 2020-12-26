@@ -30,6 +30,7 @@ function App() {
   const [isLink, setIsLink] = useState(false);
   const history = useState(useHistory())[0];
   const isChat = useSelector((state: any) => state.Socket.isChat);
+  const ws = new WebSocket('ws://localhost:3001');
 
   useEffect(() => {
     socketServer.on('socketCheck', (userId: number, socketId: string) => {
