@@ -5,6 +5,30 @@
   float: right;
 }
 
+.progress-bar {
+  position: relative;
+  width: 200px;
+  height: 20px;
+}
+.progress-hp {
+  position: absolute;
+  left: 0%;
+  height: 20px;
+  background-color: rgb(255, 72, 72);
+}
+.progress-mp {
+  position: absolute;
+  left: 0%;
+  height: 20px;
+  background-color: rgb(43, 43, 255);
+}
+.progress-text {
+  position: absolute;
+  left: 0%;
+  width: 200px;
+  height: 20px;
+}
+
 .deck {
   margin-top: 90px;
 }

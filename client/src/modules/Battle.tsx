@@ -230,6 +230,8 @@ const initialState = {
         [false, true],
       ],
     ];
+    store.dispatch(set_player1_def({ def: 0 }));
+    store.dispatch(set_player2_def({ def: 0 }));
     setIsUsing(isUsings[phaseNumber].slice(0));
     if (player1Hand[phaseNumber].speed <= player2Hand[phaseNumber].speed) {
       initialState.cardAction(
