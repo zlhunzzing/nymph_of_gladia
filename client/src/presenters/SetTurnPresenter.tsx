@@ -5,6 +5,7 @@ import * as handleModalActions from '../modules/HandleModal';
 import { Player, Card } from '../common/interface/BattleInterface';
 import * as battleActions from '../modules/Battle';
 import CARD_DICTIONARY from '../common/CardDictionary';
+import { imageRequires } from '../common/CardDictionary'
 
 interface Props {
   roomInfo: any;
@@ -110,7 +111,9 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
             <span key={id}>
               <img
                 // src={card.image}
-                src={usedMana < card.cost ? card.darkImage : card.image}
+                src={usedMana < card.cost
+                  ? (imageRequires as any)[card.darkImage]
+                  : (imageRequires as any)[card.image]}
                 alt=""
                 className={`card ${card.position} ${
                   store.getState().Battle.checkHand(card)
@@ -133,7 +136,6 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                           hand: userhand.slice(0, 3),
                         }),
                       );
-                      setHand(userhand);
                       setPlayer1({ ...player1 });
                       setUsedMana(usedMana - card.cost);
                       setHandMana(handMana + card.cost);
@@ -149,7 +151,9 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
             <span key={id}>
               <img
                 // src={card.image}
-                src={usedMana < card.cost ? card.darkImage : card.image}
+                src={usedMana < card.cost
+                  ? (imageRequires as any)[card.darkImage]
+                  : (imageRequires as any)[card.image]}
                 alt=""
                 className={`card ${card.position} ${
                   store.getState().Battle.checkHand(card)
@@ -172,7 +176,6 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                           hand: userhand.slice(0, 3),
                         }),
                       );
-                      setHand(userhand);
                       setPlayer1({ ...player1 });
                       setUsedMana(usedMana - card.cost);
                       setHandMana(handMana + card.cost);
@@ -191,7 +194,7 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
         {userhand
           ? userhand.map((card: Card, id: number) => (
               <img
-                src={card.image}
+                src={(imageRequires as any)[card.image]}
                 alt=""
                 key={id}
                 className="card"
@@ -203,7 +206,6 @@ const SetTurnPresenter: React.FunctionComponent<Props> = ({
                         hand: userhand.slice(0, 3),
                       }),
                     );
-                    setHand(userhand);
                     setPlayer1({ ...player1 });
                     setUsedMana(usedMana + card.cost);
                     setHandMana(handMana - card.cost);

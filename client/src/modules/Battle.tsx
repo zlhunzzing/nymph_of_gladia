@@ -8,6 +8,7 @@ import CARD_DICTIONARY, {
 } from '../common/CardDictionary';
 import { Dispatch } from 'react';
 import * as handleModalActions from '../modules/HandleModal';
+import { cardRanges } from '../common/CardDictionary'
 
 const SELECT_PLAYER1 = 'App/Battle/SELECT_PLAYER1';
 const SELECT_PLAYER2 = 'App/Battle/SELECT_PLAYER2';
@@ -325,9 +326,10 @@ const initialState = {
           let player1Position = store.getState().Battle.player1.position;
           let player2Position = store.getState().Battle.player2.position;
           let field = store.getState().Battle.field;
-          for (let i = 0; i < card.range.length; i++) {
-            effectiveRangeX = player1Position.x + card.range[i][0];
-            effectiveRangeY = player1Position.y + card.range[i][1];
+          let cardRange = (cardRanges as any)[card.range]
+          for (let i = 0; i < cardRange.length; i++) {
+            effectiveRangeX = player1Position.x + cardRange[i][0];
+            effectiveRangeY = player1Position.y + cardRange[i][1];
             if (
               effectiveRangeX <= 3 &&
               effectiveRangeX >= 0 &&
@@ -421,9 +423,10 @@ const initialState = {
           let player2Position = store.getState().Battle.player2.position;
           let player1Position = store.getState().Battle.player1.position;
           let field = store.getState().Battle.field;
-          for (let i = 0; i < card.range.length; i++) {
-            effectiveRangeX = player2Position.x + card.range[i][0];
-            effectiveRangeY = player2Position.y + card.range[i][1];
+          let cardRange = (cardRanges as any)[card.range]
+          for (let i = 0; i < cardRange.length; i++) {
+            effectiveRangeX = player2Position.x + cardRange[i][0];
+            effectiveRangeY = player2Position.y + cardRange[i][1];
             if (
               effectiveRangeX <= 3 &&
               effectiveRangeX >= 0 &&
@@ -478,118 +481,118 @@ const initialState = {
       }
     }
   },
-  autoCardSet: function () {
-    let cardSet: Array<Card> = [];
-    let player1 = store.getState().Battle.player1;
-    let player2 = store.getState().Battle.player2;
-    let mana = store.getState().Battle.player2.mp;
+  // autoCardSet: function () {
+  //   let cardSet: Array<Card> = [];
+  //   let player1 = store.getState().Battle.player1;
+  //   let player2 = store.getState().Battle.player2;
+  //   let mana = store.getState().Battle.player2.mp;
 
-    const checkHand = function (card: Card) {
-      for (let i = 0; i < cardSet.length; i++) {
-        if (cardSet[i].id === card.id) {
-          return false;
-        }
-      }
-      return true;
-    };
+  //   const checkHand = function (card: Card) {
+  //     for (let i = 0; i < cardSet.length; i++) {
+  //       if (cardSet[i].id === card.id) {
+  //         return false;
+  //       }
+  //     }
+  //     return true;
+  //   };
 
-    if (
-      player1.position.y < player2.position.y &&
-      checkHand(CARD_DICTIONARY.UP)
-    ) {
-      cardSet.push(CARD_DICTIONARY.UP);
-    }
-    if (
-      player1.position.y > player2.position.y &&
-      checkHand(CARD_DICTIONARY.DOWN)
-    ) {
-      cardSet.push(CARD_DICTIONARY.DOWN);
-    }
-    if (
-      player1.position.x < player2.position.x &&
-      checkHand(CARD_DICTIONARY.LEFT)
-    ) {
-      cardSet.push(CARD_DICTIONARY.LEFT);
-    }
-    if (
-      player1.position.x > player2.position.x &&
-      checkHand(CARD_DICTIONARY.RIGHT)
-    ) {
-      cardSet.push(CARD_DICTIONARY.RIGHT);
-    }
-    if (Math.abs(player1.position.x - player2.position.x) <= 1) {
-      if (mana >= 15) {
-        mana = mana - 15;
-        cardSet.push(CARD_DICTIONARY.ATT1);
-      }
-      if (mana < 15) {
-        cardSet.push(CARD_DICTIONARY.MANA_UP);
-      }
-    }
-    if (Math.abs(player1.position.x - player2.position.x) <= 1) {
-      if (mana >= 25) {
-        mana = mana - 25;
-        cardSet.push(CARD_DICTIONARY.ATT2);
-      }
-      if (mana < 25 && checkHand(CARD_DICTIONARY.MANA_UP)) {
-        cardSet.push(CARD_DICTIONARY.MANA_UP);
-      }
-    }
-    if (
-      Math.abs(player1.position.x - player2.position.x) <= 1 &&
-      Math.abs(player1.position.y - player2.position.y) <= 1
-    ) {
-      if (mana >= 25) {
-        mana = mana - 25;
-        cardSet.push(CARD_DICTIONARY.ATT3);
-      }
-      if (mana < 25 && checkHand(CARD_DICTIONARY.MANA_UP)) {
-        cardSet.push(CARD_DICTIONARY.MANA_UP);
-      }
-    }
-    if (player1.position === player2.position) {
-      if (mana >= 45) {
-        mana = mana - 45;
-        cardSet.push(CARD_DICTIONARY.ATT4);
-      }
-      if (mana < 45 && checkHand(CARD_DICTIONARY.MANA_UP)) {
-        cardSet.push(CARD_DICTIONARY.MANA_UP);
-      }
-    }
-    if (checkHand(CARD_DICTIONARY.GUARD)) {
-      cardSet.push(CARD_DICTIONARY.GUARD);
-    }
-    if (mana < 15) {
-      if (
-        player1.position.y < player2.position.y &&
-        checkHand(CARD_DICTIONARY.DOWN)
-      ) {
-        cardSet.push(CARD_DICTIONARY.DOWN);
-      }
-      if (
-        player1.position.y > player2.position.y &&
-        checkHand(CARD_DICTIONARY.UP)
-      ) {
-        cardSet.push(CARD_DICTIONARY.UP);
-      }
-      if (
-        player1.position.x <= player2.position.x &&
-        checkHand(CARD_DICTIONARY.RIGHT)
-      ) {
-        cardSet.push(CARD_DICTIONARY.RIGHT);
-      }
-      if (
-        player1.position.x >= player2.position.x &&
-        checkHand(CARD_DICTIONARY.LEFT)
-      ) {
-        cardSet.push(CARD_DICTIONARY.LEFT);
-      }
-    }
-    if (checkHand(CARD_DICTIONARY.MANA_UP)) {
-      cardSet.push(CARD_DICTIONARY.MANA_UP);
-    }
-    store.dispatch(set_player2_hand({ hand: cardSet.slice(0, 3) }));
-  },
+  //   if (
+  //     player1.position.y < player2.position.y &&
+  //     checkHand(CARD_DICTIONARY.UP)
+  //   ) {
+  //     cardSet.push(CARD_DICTIONARY.UP);
+  //   }
+  //   if (
+  //     player1.position.y > player2.position.y &&
+  //     checkHand(CARD_DICTIONARY.DOWN)
+  //   ) {
+  //     cardSet.push(CARD_DICTIONARY.DOWN);
+  //   }
+  //   if (
+  //     player1.position.x < player2.position.x &&
+  //     checkHand(CARD_DICTIONARY.LEFT)
+  //   ) {
+  //     cardSet.push(CARD_DICTIONARY.LEFT);
+  //   }
+  //   if (
+  //     player1.position.x > player2.position.x &&
+  //     checkHand(CARD_DICTIONARY.RIGHT)
+  //   ) {
+  //     cardSet.push(CARD_DICTIONARY.RIGHT);
+  //   }
+  //   if (Math.abs(player1.position.x - player2.position.x) <= 1) {
+  //     if (mana >= 15) {
+  //       mana = mana - 15;
+  //       cardSet.push(CARD_DICTIONARY.ATT1);
+  //     }
+  //     if (mana < 15) {
+  //       cardSet.push(CARD_DICTIONARY.MANA_UP);
+  //     }
+  //   }
+  //   if (Math.abs(player1.position.x - player2.position.x) <= 1) {
+  //     if (mana >= 25) {
+  //       mana = mana - 25;
+  //       cardSet.push(CARD_DICTIONARY.ATT2);
+  //     }
+  //     if (mana < 25 && checkHand(CARD_DICTIONARY.MANA_UP)) {
+  //       cardSet.push(CARD_DICTIONARY.MANA_UP);
+  //     }
+  //   }
+  //   if (
+  //     Math.abs(player1.position.x - player2.position.x) <= 1 &&
+  //     Math.abs(player1.position.y - player2.position.y) <= 1
+  //   ) {
+  //     if (mana >= 25) {
+  //       mana = mana - 25;
+  //       cardSet.push(CARD_DICTIONARY.ATT3);
+  //     }
+  //     if (mana < 25 && checkHand(CARD_DICTIONARY.MANA_UP)) {
+  //       cardSet.push(CARD_DICTIONARY.MANA_UP);
+  //     }
+  //   }
+  //   if (player1.position === player2.position) {
+  //     if (mana >= 45) {
+  //       mana = mana - 45;
+  //       cardSet.push(CARD_DICTIONARY.ATT4);
+  //     }
+  //     if (mana < 45 && checkHand(CARD_DICTIONARY.MANA_UP)) {
+  //       cardSet.push(CARD_DICTIONARY.MANA_UP);
+  //     }
+  //   }
+  //   if (checkHand(CARD_DICTIONARY.GUARD)) {
+  //     cardSet.push(CARD_DICTIONARY.GUARD);
+  //   }
+  //   if (mana < 15) {
+  //     if (
+  //       player1.position.y < player2.position.y &&
+  //       checkHand(CARD_DICTIONARY.DOWN)
+  //     ) {
+  //       cardSet.push(CARD_DICTIONARY.DOWN);
+  //     }
+  //     if (
+  //       player1.position.y > player2.position.y &&
+  //       checkHand(CARD_DICTIONARY.UP)
+  //     ) {
+  //       cardSet.push(CARD_DICTIONARY.UP);
+  //     }
+  //     if (
+  //       player1.position.x <= player2.position.x &&
+  //       checkHand(CARD_DICTIONARY.RIGHT)
+  //     ) {
+  //       cardSet.push(CARD_DICTIONARY.RIGHT);
+  //     }
+  //     if (
+  //       player1.position.x >= player2.position.x &&
+  //       checkHand(CARD_DICTIONARY.LEFT)
+  //     ) {
+  //       cardSet.push(CARD_DICTIONARY.LEFT);
+  //     }
+  //   }
+  //   if (checkHand(CARD_DICTIONARY.MANA_UP)) {
+  //     cardSet.push(CARD_DICTIONARY.MANA_UP);
+  //   }
+  //   store.dispatch(set_player2_hand({ hand: cardSet.slice(0, 3) }));
+  // },
   turnCheck: function (setField: Dispatch<Array<Array<object>>>) {
     let player1Hp = store.getState().Battle.player1.hp;
     let player2Hp = store.getState().Battle.player2.hp;

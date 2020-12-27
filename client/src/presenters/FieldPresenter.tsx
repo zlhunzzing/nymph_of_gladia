@@ -2,13 +2,7 @@ import React from 'react';
 import '../presenterStyles/FieldPresenter.css';
 import { Player } from '../common/interface/BattleInterface';
 import CARD_DICTIONARY from '../common/CardDictionary';
-
-const imageRequires = {
-  PLAYER: require('../images/player.gif'),
-  PLAYER_ATTACK: require('../images/playerAttack.png'),
-  SEKI: require('../images/chracterImage/Seki.gif'),
-  RETI: require('../images/chracterImage/Reti.gif'),
-};
+import { imageRequires } from '../common/CardDictionary'
 
 interface Props {
   roomInfo: any;
@@ -101,7 +95,7 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
                       alt=""
                       src={
                         player1.isAction
-                          ? usingCard.actionImage
+                          ? (imageRequires as any)[usingCard.actionImage]
                           : player1.name === '세키'
                           ? imageRequires.SEKI
                           : imageRequires.RETI
@@ -121,7 +115,7 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
                       alt=""
                       src={
                         player2.isAction
-                          ? usingCard.actionImage
+                          ? (imageRequires as any)[usingCard.actionImage]
                           : player2.name === '세키'
                           ? imageRequires.SEKI
                           : imageRequires.RETI
@@ -156,7 +150,9 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
               .reverse()
               .map((card: any, id: number) => (
                 <img
-                  src={isUsing[id][0] ? card.image : CARD_DICTIONARY.NONE.image}
+                  src={isUsing[id][0]
+                    ? (imageRequires as any)[card.image]
+                    :  (imageRequires as any)[CARD_DICTIONARY.NONE.image]}
                   alt=""
                   key={id}
                   className="card"
@@ -168,7 +164,9 @@ const FieldPresenter: React.FunctionComponent<Props> = ({
         {player2.hand
           ? player2.hand.map((card: any, id: number) => (
               <img
-                src={isUsing[id][1] ? card.image : CARD_DICTIONARY.NONE.image}
+              src={isUsing[id][1]
+                ? (imageRequires as any)[card.image]
+                :  (imageRequires as any)[CARD_DICTIONARY.NONE.image]}
                 alt=""
                 key={id}
                 className="card"

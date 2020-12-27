@@ -26,6 +26,7 @@ export default function SetTurnContainer() {
     socketServer.emit('setHand', roomId, userId, hand);
   }
   function setTurn() {
+    socketServer.emit('setHand', roomId, userId, userhand);
     socketServer.emit('setTurn', roomId, userId);
   }
   function sendMessage() {

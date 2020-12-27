@@ -14,7 +14,7 @@ export interface Card {
   speed: number;
   cost: number;
   power: number;
-  range: Array<Array<number>>;
+  range: string;
   position: string;
   image: string;
   darkImage: string;
