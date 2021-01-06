@@ -15,7 +15,7 @@
     "@types/react-router-dom": "^5.1.4",
     "@types/redux-actions": "^2.6.1",
     "@types/socket.io-client": "^1.4.33",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-modal": "^3.11.2",
