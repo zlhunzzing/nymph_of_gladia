@@ -596,40 +596,40 @@ const initialState = {
   turnCheck: function (setField: Dispatch<Array<Array<object>>>) {
     let player1Hp = store.getState().Battle.player1.hp;
     let player2Hp = store.getState().Battle.player2.hp;
-    if (player1Hp <= 0) {
-      if (player2Hp <= 0 && player1Hp <= 0) {
-        store.getState().SoundControl.playDrawSound()
-        store.dispatch(
-          handleModalActions.setModalContent({
-            content: '무승부 했다.',
-          }),
-        );
-        store.dispatch(handleModalActions.set_is_link());
-        store.dispatch(handleModalActions.setModalIsOpen({ isOpen: true }));
-        store.dispatch(field_reset());
-        setField(store.getState().Battle.field);
-        store.dispatch(set_turn_false());
-        return false;
-      } else {
-        if(store.getState().Socket.roomInfo.player1 === store.getState().Auth.userId) {
-          store.getState().SoundControl.playWinSound()
-        } else { 
-          store.getState().SoundControl.playLoseSound()
-        }
-        store.dispatch(
-          handleModalActions.setModalContent({
-            content:
-              store.getState().Socket.roomInfo.player1name + '가 이겼다.',
-          }),
-        );
-        store.dispatch(handleModalActions.set_is_link());
-        store.dispatch(handleModalActions.setModalIsOpen({ isOpen: true }));
-        store.dispatch(field_reset());
-        setField(store.getState().Battle.field);
-        store.dispatch(set_turn_false());
-        return false;
+    if (player2Hp <= 0 && player1Hp <= 0) {
+      store.getState().SoundControl.playDrawSound()
+      store.dispatch(
+        handleModalActions.setModalContent({
+          content: '무승부 했다.',
+        }),
+      );
+      store.dispatch(handleModalActions.set_is_link());
+      store.dispatch(handleModalActions.setModalIsOpen({ isOpen: true }));
+      store.dispatch(field_reset());
+      setField(store.getState().Battle.field);
+      store.dispatch(set_turn_false());
+      return false;
+    } 
+    if (player2Hp <= 0) {
+      if(store.getState().Socket.roomInfo.player1 === store.getState().Auth.userId) {
+        store.getState().SoundControl.playWinSound()
+      } else { 
+        store.getState().SoundControl.playLoseSound()
       }
-    } else if (player2Hp <= 0) {
+      store.dispatch(
+        handleModalActions.setModalContent({
+          content:
+            store.getState().Socket.roomInfo.player1name + '가 이겼다.',
+        }),
+      );
+      store.dispatch(handleModalActions.set_is_link());
+      store.dispatch(handleModalActions.setModalIsOpen({ isOpen: true }));
+      store.dispatch(field_reset());
+      setField(store.getState().Battle.field);
+      store.dispatch(set_turn_false());
+      return false;
+    }
+    if (player1Hp <= 0) {
       if(store.getState().Socket.roomInfo.player2 === store.getState().Auth.userId) {
         store.getState().SoundControl.playWinSound()
       } else { 
