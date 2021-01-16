@@ -42,7 +42,9 @@ const GreenroomrPresenter: React.FunctionComponent<Props> = ({
             <span style={{ paddingLeft: '10px', float: 'left' }}>
               {roomInfo.id}번방
             </span>
-            {roomInfo.roomname}
+            <div style={{ height: '25px'}}>
+              {roomInfo.roomname}
+            </div>
             <span style={{ paddingRight: '10px', float: 'right' }}>
               ({roomInfo.headcount}/{roomInfo.maxHeadcount})
             </span>
