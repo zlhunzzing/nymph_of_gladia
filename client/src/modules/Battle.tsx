@@ -201,7 +201,13 @@ const initialState = {
     setTimeout(() => {
       if (lastPhase) {
         continueTurn = initialState.turnCheck(setField);
-        if (continueTurn) store.dispatch(set_is_turn());
+        if (continueTurn) {
+          let player1Mp = store.getState().Battle.player1.mp + 15
+          store.dispatch(set_player1_mp({ mp: player1Mp }))
+          let player2Mp = store.getState().Battle.player2.mp + 15
+          store.dispatch(set_player2_mp({ mp: player2Mp }))
+          store.dispatch(set_is_turn());
+        }
       }
     }, 6000);
   },
