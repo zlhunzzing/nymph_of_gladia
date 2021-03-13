@@ -1,4 +1,4 @@
-# 검투의 요정 (nymph_of_gladia)
+# 매직콜로세움 (MagicColosseum)
 
 - 전략카드게임
 
