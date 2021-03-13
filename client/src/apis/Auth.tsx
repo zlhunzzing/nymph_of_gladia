@@ -1,8 +1,9 @@
 import axios from 'axios';
 import store from '..';
 import * as authActions from '../modules/Auth';
+import { envServer } from '../env'
 
-const serverIp = 'localhost:3000';
+const serverIp = envServer;
 
 export function signup(
   email: string,

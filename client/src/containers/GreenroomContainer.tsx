@@ -18,6 +18,7 @@ export default function GreenroomContainer() {
 
   async function outRoom() {
     await socketServer.emit('outRoom', roomId, userId);
+    socketServer.emit('rooms');
     history.push('/channel');
   }
   function select(name: string) {
