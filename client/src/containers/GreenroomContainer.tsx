@@ -48,6 +48,26 @@ export default function GreenroomContainer() {
 
   useEffect(() => {
     socketServer.emit('getRoomInfo', roomId, userId);
+    
+    let prevInfo = store.getState().Socket.roomInfo
+    if (prevInfo) {
+      if (prevInfo.player1 === userId) {
+        setCharacter(prevInfo.player1Character)
+        if (prevInfo.player1 === userId) {
+          store.dispatch(battleActions.select_player1({ name : prevInfo.player1Character }));
+        } else {
+          store.dispatch(battleActions.select_player2({ name : prevInfo.player2Character }));
+        }
+      }
+      if (prevInfo.player2 === userId) {
+        setCharacter(prevInfo.player1Character)
+        if (prevInfo.player1 === userId) {
+          store.dispatch(battleActions.select_player1({ name : prevInfo.player1Character }));
+        } else {
+          store.dispatch(battleActions.select_player2({ name : prevInfo.player2Character }));
+        }
+      }
+    }
   }, [roomId, userId]);
 
   return (

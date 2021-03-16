@@ -714,6 +714,7 @@ export default function Battle(state: any = initialState, action: any) {
         player1: { ...state.player1, hp: action.payload.hp },
       };
     case SET_PLAYER1_MP:
+      if (action.payload.mp) action.payload.mp = 100;
       return {
         ...state,
         player1: { ...state.player1, mp: action.payload.mp },
@@ -740,6 +741,7 @@ export default function Battle(state: any = initialState, action: any) {
         player2: { ...state.player2, hp: action.payload.hp },
       };
     case SET_PLAYER2_MP:
+      if (action.payload.mp) action.payload.mp = 100;
       return {
         ...state,
         player2: { ...state.player2, mp: action.payload.mp },
